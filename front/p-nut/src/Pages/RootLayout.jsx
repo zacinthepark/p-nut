@@ -5,7 +5,7 @@ function RootLayout() {
   return (
     <div className="flex flex-col min-h-screen">
       <NavBar />
-      <main>
+      <main className="flex">
         <Outlet />
       </main>
     </div>

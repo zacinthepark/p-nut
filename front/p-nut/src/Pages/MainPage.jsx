@@ -4,8 +4,8 @@ const MainPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div>
-      <h1 className="font-nanum">Main</h1>
+    <div className="relative w-full">
+      <h1 className="flex font-nanum">Main</h1>
       <button
         type="button"
         onClick={() => {
