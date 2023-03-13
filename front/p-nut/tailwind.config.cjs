@@ -10,7 +10,15 @@ module.exports = {
     "./node_modules/tw-elements/dist/js/**/*.js",
   ],
   theme: {
-    extend: { fontFamily: { sans: "Noto Sans KR", nanum: "Nanum Square" } },
+    extend: {
+      fontFamily: {
+        sans: "Noto Sans KR",
+        nanum: "Nanum Square",
+      },
+      spacing: {
+        100: "100px",
+      },
+    },
   },
   variants: {
     extend: {},
