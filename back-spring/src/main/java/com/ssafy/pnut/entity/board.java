@@ -1,7 +1,7 @@
-package com.ssafy.pnut.entity;
+//package com.ssafy.pnut.entity;
 
-public class board {
-
-
-
-}
+//public class board {
+//
+//
+//
+//}
