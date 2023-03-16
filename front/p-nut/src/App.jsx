@@ -3,7 +3,7 @@ import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import RootLayout from "./Pages/RootLayout";
-import HomePage from "./Pages/HomePage";
+import MainPage from "./Pages/MainPage";
 import ArticleCreatePage from "./Pages/ArticleCreatePage";
 
 const router = createBrowserRouter([
@@ -11,7 +11,7 @@ const router = createBrowserRouter([
     path: "/",
     element: <RootLayout />,
     children: [
-      { index: true, element: <HomePage /> },
+      { index: true, element: <MainPage /> },
       {
         path: "newpost",
         element: <ArticleCreatePage />,

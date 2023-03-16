@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
 
-const HomePage = () => {
+const MainPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div>
-      <h1 className="font-nanum">홈페이지</h1>
+    <div className="relative w-full">
+      <h1 className="flex font-nanum">Main</h1>
       <button
         type="button"
         onClick={() => {
@@ -18,4 +18,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default MainPage;
