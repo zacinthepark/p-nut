@@ -6,6 +6,9 @@ import RootLayout from "./Pages/RootLayout";
 import MainPage from "./Pages/MainPage";
 import ArticleCreatePage from "./Pages/ArticleCreatePage";
 
+import LoginPage from "./Pages/LoginPage";
+import SignupPage from "./Pages/SignupPage";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -17,6 +20,14 @@ const router = createBrowserRouter([
         element: <ArticleCreatePage />,
       },
     ],
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
+  },
+  {
+    path: "/signup",
+    element: <SignupPage />,
   },
 ]);
 
