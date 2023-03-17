@@ -1,4 +1,5 @@
-import ArticleListThumbnailComponent from "../Components/ArticleListThumbnailComponent.jsx";
+import React from "react";
+import ArticleListThumbnailComponent from "../Components/ArticleListThumbnailComponent";
 
 const ArticleListPage = () => {
   return (
