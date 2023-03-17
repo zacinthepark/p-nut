@@ -1,6 +1,6 @@
 import React from "react";
 
-function ArticleImgBlockComponent(props) {
+const ArticleImgBlockComponent = (props) => {
   const { size, text } = props;
 
   return (
@@ -11,6 +11,6 @@ function ArticleImgBlockComponent(props) {
       <div className="mt-20 text-2xl">{text}</div>
     </div>
   );
-}
+};
 
 export default ArticleImgBlockComponent;
