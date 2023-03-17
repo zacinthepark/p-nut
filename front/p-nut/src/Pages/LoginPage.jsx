@@ -6,7 +6,7 @@ const LoginPage = () => {
   const direction = "Register now";
 
   return (
-    <div className="w-full h-screen bg-stone-400 flex place-content-center">
+    <div className="w-full h-screen bg-stone-400 flex justify-center place-items-center">
       <LoginSignupForm className="" phrase={phrase} direction={direction}>
         <LoginForm />
       </LoginSignupForm>
