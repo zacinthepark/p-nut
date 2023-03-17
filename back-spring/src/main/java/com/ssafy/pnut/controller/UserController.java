@@ -1,6 +1,7 @@
 package com.ssafy.pnut.controller;
 
 import com.ssafy.pnut.dto.UserDto;
+import com.ssafy.pnut.dto.UserMailMessageDto;
 import com.ssafy.pnut.entity.User;
 import com.ssafy.pnut.util.JwtService;
 import com.ssafy.pnut.util.MailService;
@@ -38,11 +39,11 @@ public class UserController {
     @ApiOperation(value = "이메일 중복검사", notes = "이메일 중복 확인 API", response = Map.class)
     @PostMapping("/check")
     public ResponseEntity<?> emailCheck(
-            @RequestBody @ApiParam(value = "이메일 중복 여부", required = true) String email){
+            @RequestBody @ApiParam(value = "이메일 중복 여부", required = true) UserDto userDto){
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status;
         try{
-            if(userMailService.eamilCheck(email)){
+            if(userMailService.eamilCheck(userDto.getEmail())){
                 resultMap.put("message", SUCCESS);
                 status = HttpStatus.OK;
             }else{
@@ -60,16 +61,45 @@ public class UserController {
     @ApiOperation(value = "이메일 인증", notes = "이메일 인증 요청 API", response = Map.class)
     @PostMapping("/certification")
     public ResponseEntity<?> emailCertification(
-            @RequestBody @ApiParam(value="이메일 인증", required = true) String email){
+            @RequestBody @ApiParam(value="이메일 인증", required = true) UserDto userDto){
         HttpStatus status;
-        try{
-//            userMailService.sendMail();
-        }catch (Exception e){
+        Map<String, Object> resultMap = new HashMap<>();
+        UserMailMessageDto userMailMessageDto = new UserMailMessageDto(userDto.getEmail(), "인증코드 발송 안내 드립니다.", null);
 
+        try{
+            String authNum = userMailService.sendMail(userMailMessageDto, "email");
+            resultMap.put("authNum", authNum);
+            status = HttpStatus.OK;
+        }catch (Exception e){
+            logger.error("인증번호 발송 실패 : {}", e);
+            resultMap.put("message", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
-        return null;
+        return new ResponseEntity<>(resultMap, status);
     }
 
+    @ApiOperation(value = "이메일 인증 확인", notes = "이메일 인증 확인 API", response = Map.class)
+    @PostMapping("/checkAuth")
+    public ResponseEntity<?> emailAuthrization(
+            @RequestBody @ApiParam(value = "인증번호 확인", required = true) UserDto userDto){
+        HttpStatus status;
+        Map<String, Object> resultMap = new HashMap<>();
+        try{
+            if(userMailService.checkCode(userDto.getAuth())){
+                resultMap.put("message", SUCCESS);
+                resultMap.put("authNum", "");
+                status = HttpStatus.OK;
+            }else{
+                resultMap.put("message", FAIL);
+                status = HttpStatus.ACCEPTED;
+            }
+        }catch(Exception e){
+            logger.error("인증 번호 다름 : {}", e);
+            resultMap.put("message", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<>(resultMap, status);
+    }
 
     @ApiOperation(value = "회원가입", notes = "회원가입 요청 API", response = Map.class)
     @PostMapping("")
@@ -78,18 +108,24 @@ public class UserController {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status;
 
+
         try{
             //create UserEntity by Builder Pattern
-            User user = userDto.toEntity();
-            User result = userService.registerUser(user);
-            if(result != null){
-                resultMap.put("message", SUCCESS);
-                status = HttpStatus.OK;
-                //if success register, return success message , 200 response code
-            } else{
+            if(userDto.getAuth().equals("")) {
                 resultMap.put("message", FAIL);
-                status = HttpStatus.ACCEPTED;
-                // if fail register user, return fail message , user info no validation, 204 response code
+                status = HttpStatus.BAD_REQUEST;
+            }else{
+                User user = userDto.toEntity();
+                User result = userService.registerUser(user);
+                if (result != null) {
+                    resultMap.put("message", SUCCESS);
+                    status = HttpStatus.OK;
+                    //if success register, return success message , 200 response code
+                } else {
+                    resultMap.put("message", FAIL);
+                    status = HttpStatus.ACCEPTED;
+                    // if fail register user, return fail message , user info no validation, 204 response code
+                }
             }
         }catch (Exception e){
             logger.error("회원가입 실패 : {}", e);

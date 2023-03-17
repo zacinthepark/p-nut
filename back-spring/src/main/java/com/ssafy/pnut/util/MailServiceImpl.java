@@ -1,6 +1,8 @@
 package com.ssafy.pnut.util;
 
 import com.ssafy.pnut.dto.UserMailMessageDto;
+import com.ssafy.pnut.entity.User;
+import com.ssafy.pnut.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -11,6 +13,7 @@ import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.util.Optional;
 import java.util.Random;
 
 @Slf4j
@@ -20,9 +23,14 @@ public class MailServiceImpl implements MailService {
     private final JavaMailSender javaMailSender;
     private final TemplateEngine templateEngine;
     private final RedisUtilImpl redisUtil;
+    private final UserRepository userRepository;
 
     @Override
     public boolean eamilCheck(String email) {
+        User userEmail = userRepository.findByEmail(email);
+        if(userEmail==null){
+            return true;
+        }
         return false;
     }
 

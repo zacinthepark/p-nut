@@ -26,6 +26,7 @@ public class User {
     private String profile_image_url;
     private int age;
     private int gender;
+    private String auth;
 
 
 }

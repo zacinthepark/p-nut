@@ -20,6 +20,7 @@ public class UserDto {
     private String profileImageUrl;
     private int age;
     private int gender;
+    private String auth;
 
     public static UserDto toDto(User user){
         return new UserDto(
@@ -31,11 +32,12 @@ public class UserDto {
                 user.getJoin_date(),
                 user.getProfile_image_url(),
                 user.getAge(),
-                user.getGender()
+                user.getGender(),
+                user.getAuth()
         );
     }
 
     public User toEntity(){
-        return new User(email, password, null, null, nickname, name, type, joinDate, profileImageUrl, age, gender);
+        return new User(email, password, null, null, nickname, name, type, joinDate, profileImageUrl, age, gender, auth);
     }
 }
