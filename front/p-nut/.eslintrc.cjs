@@ -18,6 +18,10 @@ module.exports = {
     "react/jsx-props-no-spreading": "off",
     "prettier/prettier": ["error", { endOfLine: "auto" }],
     "react/prop-types": "off",
+    "react/function-component-definition": [
+      2,
+      { namedComponents: ["arrow-function"] },
+    ],
   },
   settings: {
     react: {
