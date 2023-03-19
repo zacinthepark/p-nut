@@ -7,7 +7,7 @@ const LoginSignupForm = (props) => {
         <p className="font-nanum font-semibold text-xl ml-11 mt-11 mb-8">
           Welcome !
         </p>
-        <div className="flex justify-center">
+        <div className="flex justify-center w-344 h-196">
           <img src="src\assets\Logo.png" alt="Logo Image" />
         </div>
         <div className="ml-10 mt-8">
