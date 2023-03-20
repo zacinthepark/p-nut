@@ -555,6 +555,10 @@ video {
   display: flex;
 }
 
+.h-196 {
+  height: 196px;
+}
+
 .h-60 {
   height: 60px;
 }
@@ -571,10 +575,6 @@ video {
   height: 100vh;
 }
 
-.h-196 {
-  height: 196px;
-}
-
 .min-h-screen {
   min-height: 100vh;
 }
@@ -587,12 +587,12 @@ video {
   width: 1232px;
 }
 
-.w-full {
-  width: 100%;
-}
-
 .w-344 {
   width: 344px;
+}
+
+.w-full {
+  width: 100%;
 }
 
 .max-w-screen-lg {
@@ -656,6 +656,11 @@ video {
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+
+.object-cover {
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 .p-3 {

@@ -7,7 +7,7 @@ const LoginForm = () => {
   };
   return (
     <Fragment>
-      <p className="font-nanum font-semibold text-xl ml-11 mt-11 mb-8">
+      <p className="mb-8 text-xl font-semibold font-nanum ml-11 mt-11">
         로그인
       </p>
       <form onSubmit={submitHandler}>

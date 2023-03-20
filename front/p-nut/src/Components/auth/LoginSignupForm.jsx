@@ -8,7 +8,11 @@ const LoginSignupForm = (props) => {
           Welcome !
         </p>
         <div className="flex justify-center w-344 h-196">
-          <img src="src\assets\Logo.png" alt="Logo Image" />
+          <img
+            className="object-cover"
+            src="src\assets\Logo.png"
+            alt="Logo Image"
+          />
         </div>
         <div className="ml-10 mt-8">
           <span>{props.phrase}</span>
