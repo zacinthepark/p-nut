@@ -3,10 +3,7 @@ package com.ssafy.pnut.service;
 import com.ssafy.pnut.dto.UserSocialLoginDto;
 import com.ssafy.pnut.entity.User;
 import com.ssafy.pnut.repository.UserRepository;
-//import com.ssafy.pnut.util.S3Upload;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
