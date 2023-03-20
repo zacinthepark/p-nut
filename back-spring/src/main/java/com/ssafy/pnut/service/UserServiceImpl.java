@@ -35,7 +35,6 @@ public class UserServiceImpl implements UserService{
         String pw = user.getPassword();
         String hex = "";
         SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
-        System.out.println(0);
         byte[] bytes = new byte[16];
         random.nextBytes(bytes);
         String salt = new String(Base64.getEncoder().encode(bytes));
