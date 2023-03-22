@@ -1,11 +1,11 @@
 import axiosInterface from "./axiosInterface";
 
-/** Response status code in P-NUT is 200 or 401.
+/** Response status code is 200 or 401.
  * This function is needed email, password.
  */
 
 async function loginAPI(email, password) {
-  const response = await axiosInterface("POST", "/api/login", {
+  const response = await axiosInterface("POST", "/user/login", {
     email,
     password,
   });

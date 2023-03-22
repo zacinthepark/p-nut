@@ -1,7 +1,7 @@
 import axios from "axios";
 
 /** axiosInterface is using axios module.
- * It's just help to fetch easly axios's argument.
+ * This is just to help easily fetch easly axios's argument.
  * baseurl is fixed. So if you want to change this, you have to change in axiosInterface.
  * method and url are required. And their type is String.
  * data, headers and params, their type is object, they work like data in axios.
@@ -15,18 +15,21 @@ export default async function axiosInterface(
   headers = {},
   params = {}
 ) {
+  // https://soheemon.tistory.com/entry/JavaScript-%EB%B3%B4%EC%95%88%EC%9D%84-%EC%9C%84%ED%95%B4-console-%EB%A1%9C%EA%B7%B8-%EB%A7%89%EA%B8%B0
   console.log = function () {};
   console.error = function () {};
   console.warn = function () {};
 
+  // authorization이 필요한 요청인 경우
+  // https://gisastudy.tistory.com/127
   if (headers.Authorization) {
     const myInterceptor = axios.interceptors.response.use(
-      function (res) {
+      (res) => {
         axios.interceptors.response.eject(myInterceptor);
         console.log(res);
         return res;
       },
-      async function (err) {
+      async (err) => {
         console.log("err");
         const { config } = err;
         const responseData = err.response;
@@ -36,6 +39,7 @@ export default async function axiosInterface(
         if (responseData.data.msg === "Login Require") {
           axios.interceptors.response.eject(myInterceptor);
 
+          // token refresh
           const refreshResponse = await axios({
             method: "post",
             baseURL: "",
@@ -67,6 +71,7 @@ export default async function axiosInterface(
     );
   }
 
+  // authorization 검증이 필요하지 않은 경우
   let response = await axios({
     method: method,
     url: url,
