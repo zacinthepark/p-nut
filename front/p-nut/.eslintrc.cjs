@@ -27,6 +27,7 @@ module.exports = {
     "react/destructuring-assignment": "off",
     "jsx-a11y/label-has-associated-control": "off",
     "jsx-a11y/img-redundant-alt": "off",
+    "jsx-a11y/anchor-is-valid": "off",
     "no-console": "off",
     "func-names": "off",
     "no-shadow": "off",
