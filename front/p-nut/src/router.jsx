@@ -38,7 +38,7 @@ const router = createBrowserRouter([
         element: <RecipeDetailPage />,
       },
       {
-        path: "surveys",
+        path: "survey",
         element: <SurveyRecommendPage />,
       },
     ],
