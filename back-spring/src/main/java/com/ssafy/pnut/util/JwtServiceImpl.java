@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.Map;
+import java.util.function.Function;
 
 @Service
 public class JwtServiceImpl implements JwtService {
@@ -99,5 +100,16 @@ public class JwtServiceImpl implements JwtService {
             e.printStackTrace();
             return false;
         }
+    }
+    @Override
+    public String getUserNameFromToken(String token){
+        return Jwts.parser().setSigningKey(generateKey()).parseClaimsJws(token).getBody().get("email").toString();
+    }
+    public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver){
+        final Claims claims = getAllClaimsFromToken(token);
+        return claimsResolver.apply(claims);
+    }
+    public Claims getAllClaimsFromToken(String token){
+        return Jwts.parser().setSigningKey(this.generateKey()).parseClaimsJws(token).getBody();
     }
 }

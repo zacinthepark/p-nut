@@ -95,6 +95,9 @@ public class UserController {
                 resultMap.put("nickname", loginUser.getNickname());
                 resultMap.put("type", loginUser.getType());
                 resultMap.put("message", SUCCESS);
+                System.out.println(accessToken);
+
+                System.out.println(jwtService.getUserNameFromToken(accessToken));
                 status = HttpStatus.OK;
             }else{
                 logger.debug("password error");
@@ -239,6 +242,7 @@ public class UserController {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status;
         String token = request.getHeader("access-token");
+
 
         //액세스토큰이 유효한지 확인한 후 결과 반환.
         if(jwtService.checkToken(token)){

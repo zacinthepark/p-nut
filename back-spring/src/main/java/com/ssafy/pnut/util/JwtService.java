@@ -9,4 +9,5 @@ public interface JwtService {
     Map<String, Object> get(String key);
     String getUserEmail();
     boolean checkToken(String jwt);
+    String getUserNameFromToken(String token);
 }

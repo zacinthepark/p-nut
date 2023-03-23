@@ -3,6 +3,7 @@ package com.ssafy.pnut.service;
 import com.ssafy.pnut.dto.UserSocialLoginDto;
 import com.ssafy.pnut.entity.User;
 import com.ssafy.pnut.repository.UserRepository;
+import com.ssafy.pnut.util.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,8 @@ import java.util.Map;
 public class UserServiceImpl implements UserService{
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private JwtService jwtService;
 //    @Autowired
 //    private S3Upload s3Upload;
 
@@ -155,5 +158,10 @@ public class UserServiceImpl implements UserService{
         user.setRefreshToken(refreshToken);
         userRepository.save(user);
         return socialLoginDto;
+    }
+
+    @Override
+    public User getUserByToken(String token) {
+        return userRepository.findByEmail(jwtService.getUserNameFromToken(token));
     }
 }
