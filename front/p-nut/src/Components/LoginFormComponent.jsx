@@ -1,10 +1,36 @@
-import { Fragment } from "react";
+import { Fragment, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { loginHandler } from "../stores/auth";
 
 const LoginFormComponent = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [userInputEmail, setUserInputEmail] = useState("");
+  const [userInputPassword, setUserInputPassword] = useState("");
+
+  const token = useSelector((state) => state.auth.authentication.token);
+
+  const emailChangeHandler = (event) => {
+    setUserInputEmail(event.target.value);
+  };
+  const passwordChageHandler = (event) => {
+    setUserInputPassword(event.target.value);
+  };
   const submitHandler = (event) => {
     event.preventDefault();
-    return;
+    dispatch(
+      loginHandler({ email: userInputEmail, password: userInputPassword })
+    );
   };
+
+  useEffect(() => {
+    if (token) {
+      navigate("/");
+    }
+  }, [token, navigate]);
+
   return (
     <Fragment>
       <p className="mx-75 my-50 text-xl font-semibold">로그인</p>
@@ -18,6 +44,7 @@ const LoginFormComponent = () => {
             className="px-10 mx-75 my-12 w-465 h-50 border border-gray-300 rounded-xl"
             id="email"
             placeholder="이메일 주소를 입력해주세요."
+            onChange={emailChangeHandler}
           />
         </div>
         <div className="mt-15 flex flex-col">
@@ -29,6 +56,7 @@ const LoginFormComponent = () => {
             className="px-10 mx-75 my-12 w-465 h-50 border border-gray-300 rounded-xl bg-white text-gray-400 font-noto"
             id="password"
             placeholder="********"
+            onChange={passwordChageHandler}
           />
         </div>
         <button

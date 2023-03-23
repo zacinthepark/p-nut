@@ -5,7 +5,7 @@ import axiosInterface from "./axiosInterface";
  */
 
 async function loginAPI(email, password) {
-  const response = await axiosInterface("POST", "/user/login", {
+  const response = await axiosInterface("POST", "/users/login", {
     email,
     password,
   });

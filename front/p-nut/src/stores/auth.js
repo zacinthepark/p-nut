@@ -28,6 +28,7 @@ const authSlice = createSlice({
 });
 
 export const loginHandler = (data) => {
+  console.log("login handler start");
   return async (dispatch) => {
     try {
       const response = await loginAPI(data.email, data.password);
@@ -37,11 +38,14 @@ export const loginHandler = (data) => {
         throw new Error(response.data.message);
       }
 
+      console.log("loginAPI: ", response.data);
+
       const userData = {
-        token: response.data.accessToken,
-        refreshToken: response.data.refreshToken,
-        email: data.email,
+        token: response.data["access-token"],
+        refreshToken: response.data["refresh-token"],
+        email: response.data.email,
       };
+      console.log("userData: ", userData);
 
       dispatch(authActions.changeAuth(userData));
 

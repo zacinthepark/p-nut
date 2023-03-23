@@ -16,9 +16,9 @@ export default async function axiosInterface(
   params = {}
 ) {
   // https://soheemon.tistory.com/entry/JavaScript-%EB%B3%B4%EC%95%88%EC%9D%84-%EC%9C%84%ED%95%B4-console-%EB%A1%9C%EA%B7%B8-%EB%A7%89%EA%B8%B0
-  console.log = function () {};
-  console.error = function () {};
-  console.warn = function () {};
+  // console.log = function () {};
+  // console.error = function () {};
+  // console.warn = function () {};
 
   // authorization이 필요한 요청인 경우
   // https://gisastudy.tistory.com/127
@@ -42,8 +42,8 @@ export default async function axiosInterface(
           // token refresh
           const refreshResponse = await axios({
             method: "post",
-            baseURL: "",
-            url: "",
+            baseURL: "http://j8a704.p.ssafy.io:9090/",
+            url: "/users/refresh",
             data: {
               grantType: "Bearer",
               accessToken: authentication.authentication.token,
@@ -75,7 +75,7 @@ export default async function axiosInterface(
   let response = await axios({
     method: method,
     url: url,
-    baseURL: "",
+    baseURL: "http://j8a704.p.ssafy.io:9090/",
     data: data,
     headers: headers,
     params: params,
