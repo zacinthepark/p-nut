@@ -1,5 +1,6 @@
 package com.ssafy.pnut.service;
 
+import com.ssafy.pnut.dto.UserDto;
 import com.ssafy.pnut.dto.UserSocialLoginDto;
 import com.ssafy.pnut.entity.User;
 
@@ -17,6 +18,6 @@ public interface UserService {
     void delRefreshToken(String email);
     Map<String, Object> searchUser(String keyword, int pageNo);
     UserSocialLoginDto socialLogin(User user, String refreshToken);
-    User getUserByToken(String token);
+    UserDto getUserByToken(String token);
 
 }

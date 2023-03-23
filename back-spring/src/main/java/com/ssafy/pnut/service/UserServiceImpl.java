@@ -1,5 +1,6 @@
 package com.ssafy.pnut.service;
 
+import com.ssafy.pnut.dto.UserDto;
 import com.ssafy.pnut.dto.UserSocialLoginDto;
 import com.ssafy.pnut.entity.User;
 import com.ssafy.pnut.repository.UserRepository;
@@ -161,7 +162,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User getUserByToken(String token) {
-        return userRepository.findByEmail(jwtService.getUserNameFromToken(token));
+    public UserDto getUserByToken(String token) {
+        return UserDto.toDto(userRepository.findByEmail(jwtService.getUserNameFromToken(token)));
     }
 }
