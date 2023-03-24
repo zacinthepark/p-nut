@@ -86,36 +86,6 @@ const ArticleListPage = () => {
               profileImg="./assets/Article_circle.png"
             />
           ))}
-          <ArticleListThumbnailComponent
-            imgSrc="./assets/recipe_2.png"
-            title="최고 맛있는 닭도리탕"
-            author="콩이"
-            profileImg="./assets/Article_circle.png"
-          />
-          <ArticleListThumbnailComponent
-            imgSrc="./assets/recipe_3.png"
-            title="둘이 먹다 하콩이 죽어도 모를 닭도리탕"
-            author="콩이"
-            profileImg="./assets/Article_circle.png"
-          />
-          <ArticleListThumbnailComponent
-            imgSrc="./assets/recipe_1.png"
-            title="졸라 맛있는 닭도리탕"
-            author="콩이"
-            profileImg="./assets/Article_circle.png"
-          />
-          <ArticleListThumbnailComponent
-            imgSrc="./assets/recipe_2.png"
-            title="최고 맛있는 닭도리탕"
-            author="콩이"
-            profileImg="./assets/Article_circle.png"
-          />
-          <ArticleListThumbnailComponent
-            imgSrc="./assets/recipe_3.png"
-            title="둘이 먹다 하콩이 죽어도 모를 닭도리탕"
-            author="콩이"
-            profileImg="./assets/Article_circle.png"
-          />
         </div>
       </div>
     </div>
