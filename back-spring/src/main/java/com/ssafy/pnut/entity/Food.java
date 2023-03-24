@@ -13,7 +13,7 @@ import javax.persistence.Id;
 @ToString
 public class Food {
     @Id
-    private Long foodId;
+    private Long food_id;
     private String name;
     private String desc;
     private int time;

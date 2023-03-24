@@ -17,7 +17,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,6 +51,11 @@ public class UserController {
         try{
             //create UserEntity by Builder Pattern
 //            if(redisUtil.getData(userDto.getEmail()).equals("validate")){
+            LocalDateTime time = LocalDateTime.now();
+            userDto.setJoinDate(time);
+            userDto.setAuth("");
+            userDto.setProfileImageUrl("");
+            userDto.setType("");
                 User user = userDto.toEntity();
                 User result = userService.registerUser(user);
                 if (result != null) {
@@ -336,10 +343,11 @@ public class UserController {
     }
 
     @ApiOperation(value = "이메일본인인증확인", notes = "email을 통해 인증번호 요청해 본인인증", response = Map.class)
-    @GetMapping("/eamil")
-    public ResponseEntity<?> validateEmailCheck(@RequestParam String code){
+    @GetMapping("/email/{code}")
+    public ResponseEntity<?> validateEmailCheck(@PathVariable String code){
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status;
+
 
         if(userMailService.checkCode(code)){
             resultMap.put("message", SUCCESS);
@@ -352,7 +360,7 @@ public class UserController {
     }
 
     @ApiOperation(value = "본인인증 여부 확인", notes = "본인인증이 되었는지 확인", response = Map.class)
-    @GetMapping("/auth")
+    @PostMapping("/auth")
     public ResponseEntity<?> checkAuthentication(@RequestParam String email){
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status;
@@ -362,7 +370,7 @@ public class UserController {
             status = HttpStatus.OK;
         }else{
             resultMap.put("message", FAIL);
-            status = HttpStatus.REQUEST_TIMEOUT;
+            status = HttpStatus.UNAUTHORIZED;
         }
         return new ResponseEntity<>(resultMap, status);
     }
