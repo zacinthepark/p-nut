@@ -17,10 +17,10 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
         </div>
         {/* 설문조사 수정 */}
         <div className="rounded-10 bg-#FF6B6C/30 text-#FF6B6C">
-          <p className="font-bold py-15">설문조사 수정</p>
+          <p className="font-extrabold py-15">설문조사 수정</p>
         </div>
         {/* 내비게이션 */}
-        <div className="text-start divide-y divide-gray-500 text-#535453 font-semibold ">
+        <div className="text-start divide-y divide-gray-200 text-#535453 font-semibold ">
           <div
             className={`flex py-15 px-10 hover:bg-gray-100  ${
               activeTab === "nutrientStatus" ? "bg-gray-100 " : ""
@@ -69,7 +69,7 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
         {/* 로그아웃, 회원탈퇴 */}
         <div className="space-y-10">
           <div className="rounded-10 text-#FF6B6C border border-#FF6B6C">
-            <p className="font-bold py-15">로그아웃</p>
+            <p className="font-extrabold py-15">로그아웃</p>
           </div>
           <p className="flex items-center justify-center text-gray-500">
             회원탈퇴
