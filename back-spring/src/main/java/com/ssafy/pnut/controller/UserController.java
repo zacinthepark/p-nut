@@ -60,6 +60,8 @@ public class UserController {
                 User result = userService.registerUser(user);
                 if (result != null) {
                     resultMap.put("message", SUCCESS);
+                    resultMap.put("email", user.getEmail());
+                    resultMap.put("password", user.getPassword());
                     status = HttpStatus.OK;
                     //if success register, return success message , 200 response code
                 } else {
@@ -296,18 +298,20 @@ public class UserController {
     }
 
     @ApiOperation(value = "중복검사", notes = "email, nickname 중복검사", response = Map.class)
-    @GetMapping("/check")
-    public ResponseEntity<?> checkDuplicate(@RequestParam String type, @RequestParam String value){
+    @PostMapping("/check")
+    public ResponseEntity<?> checkDuplicate(@RequestParam String email, @RequestParam String nickname){
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status;
 
         try{
-            User result = userService.checkUser(type, value);
-            if(result != null){
+            int result = userService.checkUser(email, nickname);
+            if(result == 1){
                 //존재하는 값인 경우, 200과 중복 메시지 반환
-                resultMap.put("message", ALREADY_EXIST);
-            }else{
+                resultMap.put("message", "email 중복");
+            }else if(result==2){
                 //200과 정상 메시지 반환
+                resultMap.put("message", "nickname 중복");
+            }else{
                 resultMap.put("message", SUCCESS);
             }
             status = HttpStatus.OK;
