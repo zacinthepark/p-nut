@@ -1,5 +1,6 @@
-import React, { useRef, useState } from "react";
+import React, { createRef, useRef, useState } from "react";
 import ArticleImgBlockComponent from "../Components/ArticleImgBlockComponent";
+import newpostAPI from "../api/newpostAPI";
 
 const ArticleCreatePage = () => {
   const subTitle = "font-semibold mb-24";
@@ -7,9 +8,9 @@ const ArticleCreatePage = () => {
   const [thumbnailImgFile, setThumbnailImgFile] = useState(null);
   const [title, setTitle] = useState(null);
   const [content, setContent] = useState(null);
-  const [cookingTime, setCookingTime] = useState(null);
+  const [cookingTime, setCookingTime] = useState(0);
   const [ingredients, setIngredient] = useState(null);
-  const [quantity, setQuantity] = useState(null);
+  const [quantity, setQuantity] = useState(1);
 
   const cookingTimeRefArr = [
     useRef(null),
@@ -18,20 +19,39 @@ const ArticleCreatePage = () => {
     useRef(null),
   ];
 
+  const [stepContentRef, setStepContentRef] = useState([useRef(null)]);
+  const [stepImgFileRef, setStepImgFileRef] = useState([useRef(null)]);
   const [stepContent, setStepContent] = useState([""]);
-  const stepContentRef = [useRef(null)];
-  const stepImgFileRef = [useRef(null)];
+  const [stepImgFile, setStepImgFile] = useState([null]);
+  const [stepNums, setStepNums] = useState([]);
 
-  // 단계 추가 버튼 핸들러
+  // 요리 단계 추가 버튼
   const addStepBtnHandler = () => {
     const lastIdx = orderArr.length + 1;
-    setOrderArr((pre) => {
-      return [...pre, lastIdx];
+    setStepContentRef((prev) => {
+      const newRefs = [...prev];
+      newRefs.push(createRef(null));
+      return newRefs;
+    });
+    setStepImgFileRef((prev) => {
+      const newRefs = [...prev];
+      newRefs.push(createRef(null));
+      return newRefs;
+    });
+    setStepContent((prev) => {
+      return [...prev, null];
+    });
+    setStepImgFile((prev) => {
+      return [...prev, null];
+    });
+    setOrderArr((prev) => {
+      return [...prev, lastIdx];
     });
   };
 
   // 요리시간 버튼 핸들러
-  const cookingTimeBtnHandler = (idx) => {
+  const cookingTimeBtnHandler = (e) => {
+    const idx = Number(e.target.id.split("time")[1]);
     cookingTimeRefArr.forEach((ref) => {
       ref.current.classList.remove("border-#2F80ED");
       ref.current.classList.remove("text-#2F80ED");
@@ -39,6 +59,7 @@ const ArticleCreatePage = () => {
 
     cookingTimeRefArr[idx].current.classList.add("border-#2F80ED");
     cookingTimeRefArr[idx].current.classList.add("text-#2F80ED");
+    cookingTimeRefArr[idx].current.classList.remove("border-#7F807F");
 
     setCookingTime(idx);
   };
@@ -56,6 +77,48 @@ const ArticleCreatePage = () => {
     }
   };
 
+  // 이미지, 텍스트 입력 핸들링
+  const stepChangeHandler = (e) => {
+    const { type, id } = e.target;
+    const idx = Number(id.split("-")[2]) - 1;
+
+    if (type === "text") {
+      stepContent[idx] = e.target.value;
+    }
+    if (type === "file") {
+      const file = e.target.files[0];
+      stepImgFile[idx] = file;
+      setStepNums((prev) => {
+        const newArr = [...prev, idx];
+        newArr.sort();
+        return newArr;
+      });
+    }
+  };
+
+  // 글 등록
+  const newpostBtnClickHandler = (e) => {
+    e.preventDefault();
+    const jsonData = {
+      content: content.toString(),
+      ingredients: ingredients.toString(),
+      quantity: quantity.toString(),
+      recipe_steps: stepContent,
+      time: cookingTime.toString(),
+      title: title,
+      userEmail: "admin@ssafy.com",
+      stepNums: stepNums,
+    };
+
+    newpostAPI(jsonData, thumbnailImgFile, stepImgFile)
+      .then(() => {
+        console.log("hi");
+      })
+      .catch(() => {
+        console.log("error");
+      });
+  };
+
   return (
     <>
       <div className="flex items-center flex-col justify-evenly w-full h-100 px-auto grey-underbar">
@@ -65,14 +128,25 @@ const ArticleCreatePage = () => {
         <button
           type="button"
           className="bg-#2F80ED rounded-20 text-prettywhite font-semibold px-50 py-5 text-xl"
+          onClick={(e) => {
+            newpostBtnClickHandler(e);
+          }}
         >
           글 등록하기
         </button>
       </div>
-      <div className="w-1200 mx-auto border-x border-solid border-#7F807F px-203 pt-41">
+      <div
+        className="w-1200 mx-auto border-x border-solid border-#7F807F px-203 pt-41"
+        onChange={(e) => {
+          if (e.target.type !== "file") {
+            return;
+          }
+          const file = e.target.files[0];
+          setThumbnailImgFile(file);
+        }}
+      >
         <ArticleImgBlockComponent
           division="thumbnail"
-          setThumbnailImgFile={setThumbnailImgFile}
           text="대표 이미지 업로드"
           size="w-full h-354"
         />
@@ -84,7 +158,10 @@ const ArticleCreatePage = () => {
               id="title"
               placeholder="레시피의 이름이 무엇인가요?"
               className="py-26 w-full px-38 inline-block"
-              onChange={setTitle}
+              onChange={(e) => {
+                e.stopPropagation();
+                setTitle(e.target.value);
+              }}
             />
             <div className="inline">0/30</div>
           </div>
@@ -96,18 +173,23 @@ const ArticleCreatePage = () => {
               rows="10"
               className="resize-none py-26 px-38 w-full"
               placeholder="레시피에 대한 간단한 설명을 붙여주세요"
-              onChange={setContent}
+              onChange={(e) => {
+                e.stopPropagation();
+                setContent(e.target.value);
+              }}
             />
             <div className="inline">0/30</div>
           </div>
-          <div className="px-40 mt-24 pb-31 grey-underbar">
+          {/* 이 요소의 하위 항목에 버튼이 존재하고 키보드 작동이 가능합니다. */}
+          {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */}
+          <div
+            className="px-40 mt-24 pb-31 grey-underbar"
+            onClick={cookingTimeBtnHandler}
+          >
             <div className={subTitle}>예상 소요 시간</div>
             <button
               type="button"
-              className="border border-#7F807F p-10 mr-20 border-#2F80ED text-#2F80ED"
-              onClick={() => {
-                cookingTimeBtnHandler(0);
-              }}
+              className="border p-10 mr-20 border-#2F80ED text-#2F80ED"
               id="time0"
               ref={cookingTimeRefArr[0]}
             >
@@ -116,9 +198,6 @@ const ArticleCreatePage = () => {
             <button
               type="button"
               className="border border-#7F807F p-10 mr-20"
-              onClick={() => {
-                cookingTimeBtnHandler(1);
-              }}
               id="time1"
               ref={cookingTimeRefArr[1]}
             >
@@ -127,9 +206,6 @@ const ArticleCreatePage = () => {
             <button
               type="button"
               className="border border-#7F807F p-10 mr-20"
-              onClick={() => {
-                cookingTimeBtnHandler(2);
-              }}
               id="time2"
               ref={cookingTimeRefArr[2]}
             >
@@ -138,9 +214,6 @@ const ArticleCreatePage = () => {
             <button
               type="button"
               className="border border-#7F807F p-10"
-              onClick={() => {
-                cookingTimeBtnHandler(3);
-              }}
               id="time3"
               ref={cookingTimeRefArr[3]}
             >
@@ -182,12 +255,15 @@ const ArticleCreatePage = () => {
                 rows="10"
                 className="resize-none w-full py-26"
                 placeholder="재료를 입력해주세요"
-                onChange={setIngredient}
+                onChange={(e) => setIngredient(e.target.value)}
               />
               <div className="inline">0/30</div>
             </div>
           </div>
-          <div className="px-40 w-full mt-26 pb-31">
+          <div
+            className="px-40 w-full mt-26 pb-31"
+            onChange={stepChangeHandler}
+          >
             <div className={subTitle}>만드는 방법</div>
             {orderArr.map((value) => (
               <div className="flex flex-row" key={`div-${value}`}>
@@ -197,11 +273,17 @@ const ArticleCreatePage = () => {
                 <div className="text-26">
                   <input
                     type="text"
-                    id="howtomake"
-                    className="h-70 p-3"
+                    id={`step-content-${value}`}
+                    ref={stepContentRef[value - 1]}
+                    className="h-70 p-3 w-full"
                     placeholder="만드는 방법을 입력하세요."
                   />
-                  <ArticleImgBlockComponent size="w-624 h-120" />
+                  <ArticleImgBlockComponent
+                    setRef={stepImgFileRef[value - 1]}
+                    division={`step-img-${value}`}
+                    text="이미지 업로드(선택)"
+                    size="w-624 h-auto"
+                  />
                 </div>
               </div>
             ))}

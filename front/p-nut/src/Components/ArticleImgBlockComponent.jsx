@@ -1,7 +1,8 @@
 import React from "react";
 
+/** @params division, size, text */
 const ArticleImgBlockComponent = (props) => {
-  const { division, size, text } = props;
+  const { division, size, text, setRef } = props;
 
   return (
     <div
@@ -13,7 +14,8 @@ const ArticleImgBlockComponent = (props) => {
         type="file"
         id={division}
         className=""
-        onChange={(e) => props.setThumbnailImgFile(e.target.files[0])}
+        ref={setRef}
+        // onChange={(e) => props.setThumbnailImgFile(e.target.files[0])}
       />
     </div>
   );
