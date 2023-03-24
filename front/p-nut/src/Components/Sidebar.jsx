@@ -17,10 +17,10 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
         </div>
         {/* 설문조사 수정 */}
         <div className="rounded-10 bg-#FF6B6C/30 text-#FF6B6C">
-          <p className="text-lg font-bold py-15">설문조사 수정</p>
+          <p className="font-bold py-15">설문조사 수정</p>
         </div>
         {/* 내비게이션 */}
-        <div className="text-start divide-y divide-gray-500 text-#535453 text-lg">
+        <div className="text-start divide-y divide-gray-500 text-#535453 font-semibold ">
           <div
             className={`flex py-15 px-10 hover:bg-gray-100  ${
               activeTab === "nutrientStatus" ? "bg-gray-100 " : ""
@@ -28,10 +28,8 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
             onClick={() => setActiveTab("nutrientStatus")}
           >
             나의 영양 정보
-            <div>
-              <p className="font-bold text-center text-sm bg-#FF6B6C text-white rounded-full w-30 p-5 ml-10">
-                13
-              </p>
+            <div className="bg-#FF6B6C rounded-full w-25 h-25 justify-center items-center ml-10 flex">
+              <p className="text-sm font-bold text-center text-white">13</p>
             </div>
           </div>
           <div
@@ -41,10 +39,8 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
             onClick={() => setActiveTab("updateUserData")}
           >
             회원 정보 수정
-            <div>
-              <p className="font-bold text-center text-sm bg-#FF6B6C text-white rounded-full w-30 p-5 ml-10">
-                13
-              </p>
+            <div className="bg-#FF6B6C rounded-full w-25 h-25 justify-center items-center ml-10 flex">
+              <p className="text-sm font-bold text-center text-white">13</p>
             </div>
           </div>
           <div
@@ -54,10 +50,8 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
             onClick={() => setActiveTab("myRecipe")}
           >
             내가 작성한 레시피
-            <div>
-              <p className="font-bold text-center text-sm bg-#FF6B6C text-white rounded-full w-30 p-5 ml-10">
-                13
-              </p>
+            <div className="bg-#FF6B6C rounded-full w-25 h-25 justify-center items-center ml-10 flex">
+              <p className="text-sm font-bold text-center text-white">13</p>
             </div>
           </div>
           <div
@@ -67,17 +61,15 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
             onClick={() => setActiveTab("bookmarkedRecipe")}
           >
             북마크한 레시피
-            <div>
-              <p className="font-bold text-center text-sm bg-#FF6B6C text-white rounded-full w-30 p-5 ml-10">
-                13
-              </p>
+            <div className="bg-#FF6B6C rounded-full w-25 h-25 justify-center items-center ml-10 flex">
+              <p className="text-sm font-bold text-center text-white">13</p>
             </div>
           </div>
         </div>
         {/* 로그아웃, 회원탈퇴 */}
         <div className="space-y-10">
           <div className="rounded-10 text-#FF6B6C border border-#FF6B6C">
-            <p className="text-lg font-bold py-15">로그아웃</p>
+            <p className="font-bold py-15">로그아웃</p>
           </div>
           <p className="flex items-center justify-center text-gray-500">
             회원탈퇴
