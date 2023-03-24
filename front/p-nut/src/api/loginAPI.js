@@ -1,8 +1,9 @@
 import axiosInterface from "./axiosInterface";
 
-/** Response status code is 200 or 401.
- * This function is needed email, password.
- */
+/*
+Request needs email, password
+Response status: OK, ACCEPTED, INTERNAL_SERVER_ERROR
+*/
 
 async function loginAPI(email, password) {
   const response = await axiosInterface("POST", "/users/login", {

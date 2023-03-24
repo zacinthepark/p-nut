@@ -6,11 +6,10 @@ import { loginHandler } from "../stores/auth";
 const LoginFormComponent = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const token = useSelector((state) => state.auth.authentication.token);
 
   const [userInputEmail, setUserInputEmail] = useState("");
   const [userInputPassword, setUserInputPassword] = useState("");
-
-  const token = useSelector((state) => state.auth.authentication.token);
 
   const emailChangeHandler = (event) => {
     setUserInputEmail(event.target.value);

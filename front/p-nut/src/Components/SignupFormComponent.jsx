@@ -1,10 +1,63 @@
-import { Fragment } from "react";
+import { Fragment, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import createUserAPI from "../api/createUserAPI";
 
 const SignupFormComponent = () => {
+  const navigate = useNavigate();
+  const token = useSelector((state) => state.auth.authentication.token);
+
+  const [userInputNickname, setUserInputNickname] = useState("");
+  const [userInputName, setUserInputName] = useState("");
+  const [userInputEmail, setUserInputEmail] = useState("");
+  const [userInputAge, setUserInputAge] = useState("");
+  const [userInputGender, setUserInputGender] = useState("");
+  // const [userInputCode, setUserInputCode] = useState("");
+  const [userInputPassword1, setUserInputPassword1] = useState("");
+  // const [userInputPassword2, setUserInputPassword2] = useState("");
+
+  const nicknameChangeHandler = (event) => {
+    setUserInputNickname(event.target.value);
+  };
+  const nameChangeHandler = (event) => {
+    setUserInputName(event.target.value);
+  };
+  const genderChangeHandler = (event) => {
+    setUserInputGender(event.target.value);
+  };
+  const ageChangeHandler = (event) => {
+    setUserInputAge(event.target.value);
+  };
+  const emailChangeHandler = (event) => {
+    setUserInputEmail(event.target.value);
+  };
+  // const codeChangeHandler = (event) => {
+  //   setUserInputCode(event.target.value);
+  // };
+  const password1ChangeHandler = (event) => {
+    setUserInputPassword1(event.target.value);
+  };
+  // const password2ChangeHandler = (event) => {
+  //   setUserInputPassword2(event.target.value);
+  // };
+
   const submitHandler = (event) => {
     event.preventDefault();
-    return;
+    createUserAPI(
+      userInputAge,
+      userInputEmail,
+      userInputGender,
+      userInputName,
+      userInputNickname,
+      userInputPassword1
+    );
   };
+
+  useEffect(() => {
+    if (token) {
+      navigate("/");
+    }
+  }, [token, navigate]);
 
   return (
     <Fragment>
@@ -18,6 +71,7 @@ const SignupFormComponent = () => {
             type="text"
             id="nickname"
             className="px-10 mx-75 my-10 w-464 h-40 border border-gray-300 rounded-10"
+            onChange={nicknameChangeHandler}
           />
         </div>
 
@@ -30,6 +84,7 @@ const SignupFormComponent = () => {
               type="text"
               id="name"
               className="px-10 w-120 h-40 border border-gray-300 rounded-10"
+              onChange={nameChangeHandler}
             />
           </div>
           <div className="flex-1 flex flex-col">
@@ -39,12 +94,10 @@ const SignupFormComponent = () => {
             <select
               name="gender"
               className="px-10 w-120 h-40 border border-gray-300 rounded-10"
+              onChange={genderChangeHandler}
             >
-              <option className="hidden" value="" disabled selected>
-                남성 / 여성
-              </option>
-              <option value="m">남성</option>
-              <option value="f">여성</option>
+              <option value="0">남성</option>
+              <option value="1">여성</option>
             </select>
           </div>
           <div className="flex-1 flex flex-col">
@@ -55,6 +108,7 @@ const SignupFormComponent = () => {
               type="text"
               id="age"
               className="px-10 w-120 h-40 border border-gray-300 rounded-10"
+              onChange={ageChangeHandler}
             />
           </div>
         </div>
@@ -66,6 +120,7 @@ const SignupFormComponent = () => {
               id="email"
               className="px-15 mt-10 w-330 h-40 border border-gray-300 rounded-10"
               placeholder="이메일 주소를 입력해주세요."
+              onChange={emailChangeHandler}
             />
           </div>
           <div className="flex-1">
@@ -77,13 +132,23 @@ const SignupFormComponent = () => {
             </button>
           </div>
         </div>
-        <div className="ml-75 mt-5">
-          <input
-            type="text"
-            id="codenumber"
-            className="px-15 w-330 h-40 border border-gray-300 rounded-10"
-            placeholder="인증 번호를 입력해주세요."
-          />
+        <div className="flex">
+          <div className="ml-75 mt-5 flex-1 flex flex-col">
+            <input
+              type="text"
+              id="code"
+              className="px-15 w-330 h-40 border border-gray-300 rounded-10"
+              placeholder="인증 코드를 입력해주세요."
+            />
+          </div>
+          <div className="flex-1">
+            <button
+              type="button"
+              className="mx-15 mt-5 w-120 h-40 bg-#2F80ED rounded-xl text-white font-semibold"
+            >
+              인증번호 확인
+            </button>
+          </div>
         </div>
         <div className="ml-75 mt-20 inline-flex">
           <div className="flex flex-col">
@@ -93,6 +158,7 @@ const SignupFormComponent = () => {
               id="password"
               className="px-10 mt-10 w-200 h-40 border border-gray-300 rounded-10 text-gray-400 font-noto"
               placeholder="********"
+              onChange={password1ChangeHandler}
             />
           </div>
           <div className="flex flex-col ml-62">
