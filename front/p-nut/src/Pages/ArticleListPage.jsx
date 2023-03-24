@@ -1,7 +1,11 @@
+import axios from "axios";
 import React from "react";
+import { useLoaderData } from "react-router-dom";
 import ArticleListThumbnailComponent from "../Components/ArticleListThumbnailComponent";
 
 const ArticleListPage = () => {
+  const data = useLoaderData();
+
   return (
     <div className="flex flex-col items-center">
       <div className="relative flex items-center justify-center flex-col">
@@ -116,3 +120,13 @@ const ArticleListPage = () => {
 };
 
 export default ArticleListPage;
+
+export async function loader() {
+  const res = await axios("/boards");
+  try {
+    console.log(res);
+  } catch (e) {
+    console.log(e);
+  }
+  return res;
+}
