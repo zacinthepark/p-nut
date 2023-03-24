@@ -298,7 +298,7 @@ public class UserController {
     }
 
     @ApiOperation(value = "중복검사", notes = "email, nickname 중복검사", response = Map.class)
-    @PostMapping("/check")
+    @PostMapping("/duplication")
     public ResponseEntity<?> checkDuplicate(@RequestParam String email, @RequestParam String nickname){
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status;
