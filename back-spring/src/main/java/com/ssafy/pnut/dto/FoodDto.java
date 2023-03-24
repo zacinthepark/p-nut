@@ -11,20 +11,24 @@ import lombok.Setter;
 public class FoodDto {
     private long foodId;
     private String name;
-    private String desc;
+    private String description;
     private int time;
     private String efficiency;
+    private int amount;
+    private String unit;
 
     public static FoodDto toDto(Food food){
         return new FoodDto(
                 food.getFoodId(),
                 food.getName(),
-                food.getDesc(),
+                food.getDescription(),
                 food.getTime(),
-                food.getEfficiency()
+                food.getEfficiency(),
+                food.getAmount(),
+                food.getUnit()
         );
     }
     public Food toEntity(){
-        return new Food(foodId, name, desc, time, efficiency);
+        return new Food(foodId, name, description, time, efficiency, amount, unit);
     }
 }

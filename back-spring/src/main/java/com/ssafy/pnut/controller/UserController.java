@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -351,7 +352,6 @@ public class UserController {
     public ResponseEntity<?> validateEmailCheck(@PathVariable String code){
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status;
-
 
         if(userMailService.checkCode(code)){
             resultMap.put("message", SUCCESS);
