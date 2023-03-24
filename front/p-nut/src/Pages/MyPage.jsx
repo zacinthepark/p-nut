@@ -9,13 +9,13 @@ const MyPage = () => {
   const [activeTab, setActiveTab] = useState("nutrientStatus");
 
   return (
-    <div className="w-full flex justify-center text-#2B2C2B ">
-      <div className="flex w-1200">
-        <div className="w-1/4">
+    <div className="w-full flex justify-center text-#2B2C2B bg-gray-100">
+      <div className="flex bg-white w-1200">
+        <div className="w-1/4 border-r">
           <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
         </div>
         {/* MainContent */}
-        <div className="w-3/4">
+        <div className="w-3/4 p-75 px-30">
           {activeTab === "nutrientStatus" && <NutrientStatus />}
           {activeTab === "updateUserData" && <UpdateUserData />}
           {activeTab === "myRecipe" && <MyRecipe />}

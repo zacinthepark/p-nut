@@ -3,7 +3,7 @@ import React from "react";
 const Sidebar = ({ activeTab, setActiveTab }) => {
   return (
     <div className="flex justify-center w-full text-center">
-      <div className="flex flex-col w-250 space-y-50 my-100">
+      <div className="flex flex-col w-250 space-y-50 my-75">
         {/* <div className="w-full h-100" /> */}
         {/* 프로필 */}
         <div className="space-y-10">
