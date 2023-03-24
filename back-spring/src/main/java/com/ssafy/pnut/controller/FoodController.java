@@ -114,4 +114,15 @@ public class FoodController {
         return new ResponseEntity<>(resultMap, status);
     }
 
+//    @ApiOperation(value = "레시피에 필요한 정보 반환", notes = "요리 제목, 내용, 재료, 시간, 방법 모두 제공", response = Map.class)
+//    @GetMapping("/recipe-info/{foodId}")
+//    public ResponseEntity<?> getInfoByFoodId(
+//            @PathVariable @ApiParam(value = "음식 id", required = true) Long foodId){
+//        Map<String, Object> resultMap = new HashMap<>();
+//        HttpStatus status;
+//
+//        try{
+//
+//        }
+//    }
 }
