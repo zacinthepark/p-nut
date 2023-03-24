@@ -5,6 +5,7 @@ import ArticleListThumbnailComponent from "../Components/ArticleListThumbnailCom
 
 const ArticleListPage = () => {
   const data = useLoaderData();
+  console.log(data.data);
 
   return (
     <div className="flex flex-col items-center">
@@ -77,12 +78,14 @@ const ArticleListPage = () => {
           </div>
         </div>
         <div className="grid grid-cols-3 gap-65">
-          <ArticleListThumbnailComponent
-            imgSrc="./assets/recipe_1.png"
-            title="졸라 맛있는 닭도리탕"
-            author="콩이"
-            profileImg="./assets/Article_circle.png"
-          />
+          {data.data.map((ele) => (
+            <ArticleListThumbnailComponent
+              imgSrc={ele.thumbnail_image_url}
+              title={ele.title}
+              author={ele.nickName}
+              profileImg="./assets/Article_circle.png"
+            />
+          ))}
           <ArticleListThumbnailComponent
             imgSrc="./assets/recipe_2.png"
             title="최고 맛있는 닭도리탕"
