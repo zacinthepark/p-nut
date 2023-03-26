@@ -59,6 +59,7 @@ export const loginHandler = (data) => {
 
       dispatch(UIActions.resetNotification());
     } catch (error) {
+      console.log(error);
       dispatch(
         UIActions.changeNotification({
           status: "error",
