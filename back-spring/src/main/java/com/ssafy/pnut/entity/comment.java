@@ -3,6 +3,7 @@ package com.ssafy.pnut.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.bytebuddy.asm.Advice;
 
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class comment {
     @Id
     @Column(name = "comment_id")
@@ -34,8 +36,7 @@ public class comment {
     LocalDateTime createDate;
 
     @Builder
-    public comment(Long id, User userEmail, board boardId, String content, LocalDateTime createDate) {
-        this.id = id;
+    public comment(User userEmail, board boardId, String content, LocalDateTime createDate) {
         this.userEmail = userEmail;
         this.boardId = boardId;
         this.content = content;

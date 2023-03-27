@@ -204,7 +204,7 @@ public class BoardController {
         }
     }
 
-    @PostMapping("/comments/{commentId}")
+    @PostMapping("/comments/{boardId}")
     @ApiOperation(value = "게시판 댓글 작성", notes = "<strong>게시판 댓글 작성</strong>")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
@@ -213,7 +213,7 @@ public class BoardController {
             @ApiResponse(code = 404, message = "사용자 없음"),
             @ApiResponse(code = 500, message = "서버 오류")
     })
-    public ResponseEntity<? extends Object> commentBoard(@PathVariable("commentId") Long id, @RequestBody @ApiParam(value="댓글 내용", required = true) String content, HttpServletRequest request) throws IOException {
+    public ResponseEntity<? extends Object> commentBoard(@PathVariable("boardId") Long id, @RequestBody @ApiParam(value="댓글 내용", required = true) CommentReq commentReq, HttpServletRequest request) throws IOException {
         try {
             UserDto userDto = userService.getUserByToken(request.getHeader("Bearer"));
             System.out.println(request.getHeader("Bearer"));
@@ -221,8 +221,30 @@ public class BoardController {
             if(!Board.isPresent()) {
                 return ResponseEntity.status(200).body(BaseResponseBody.of(401, "There's no such BoardId"));
             }
-            CommentDto commentDto = new CommentDto(userDto.toEntity(), Board.get(), content, LocalDateTime.now());
+            CommentDto commentDto = new CommentDto(userDto.toEntity(), Board.get(), commentReq.getContent(), LocalDateTime.now());
             commentService.save(commentDto);
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(200).body(BaseResponseBody.of(401, "Bad Request"));
+        }
+    }
+
+    @DeleteMapping("/comments/{commentId}")
+    @ApiOperation(value = "게시판 댓글 삭제", notes = "<strong>게시판 댓글 삭제</strong>")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 204, message = "No Content"),
+            @ApiResponse(code = 401, message = "인증 실패"),
+            @ApiResponse(code = 404, message = "사용자 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<? extends Object> deleteCommentBoard(@PathVariable("commentId") Long id, HttpServletRequest request) throws IOException {
+        try {
+            if(!commentService.findById(id).isPresent()) {
+                return ResponseEntity.status(200).body(BaseResponseBody.of(401, "There's no such BoardId"));
+            }
+            commentService.deleteById(id);
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "success"));
         } catch (Exception e) {
             e.printStackTrace();
