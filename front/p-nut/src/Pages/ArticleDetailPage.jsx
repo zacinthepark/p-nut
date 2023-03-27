@@ -17,6 +17,8 @@ const ArticleDetailPage = () => {
     time,
     title,
     visit,
+    comments,
+    likes,
   } = data.data;
 
   const profileImgPath = "/assets/Article_circle.png";
@@ -30,9 +32,7 @@ const ArticleDetailPage = () => {
   //     orderImgPath: "/assets/orderImg2.png",
   //   },
   // ];
-  const commentIdList = [1234, 12345, 123456];
-  const commentIdListCnt = commentIdList.length;
-  const favoriteCnt = 13;
+  const commentsCnt = comments.length;
   const favoriteHeart = 1;
 
   return (
@@ -58,7 +58,7 @@ const ArticleDetailPage = () => {
           <div className="my-26 text-22 font-medium">{content}</div>
           <div className="w-full flex place-content-between">
             <div className="text-22">
-              댓글 {commentIdListCnt} 좋아요 {favoriteCnt}
+              댓글 {commentsCnt} 좋아요 {likes}
             </div>
             <img
               src={`/assets/heart${favoriteHeart}.png`}
@@ -75,12 +75,21 @@ const ArticleDetailPage = () => {
         </div>
       </div>
       {Object.entries(recipeSteps).map(([key, value], idx) => (
-        <OrderBlockComponent imgPath={key} text={value} idx={idx} />
+        <OrderBlockComponent imgPath={value} text={key} idx={idx} />
       ))}
-      <div className="mt-150 flex items-center w-1200 mx-auto">
-        <div className="text-37 font-bold">댓글</div>
-        <div className="text-55 text-#FF6B6C font-extrabold ml-22">
-          {commentIdListCnt}
+      <div className="mt-150 w-1200 mx-auto">
+        <div className="flex items-center">
+          <div className="text-37 font-bold">댓글</div>
+          <div className="text-55 text-#FF6B6C font-extrabold ml-22">
+            {commentsCnt}
+          </div>
+        </div>
+        <div>
+          <input
+            type="text"
+            className="text-26 w-full border border-[#DFE0DF] py-30 px-23"
+            placeholder="댓글을 입력하세요."
+          />
         </div>
       </div>
     </div>
@@ -90,7 +99,12 @@ const ArticleDetailPage = () => {
 export default ArticleDetailPage;
 
 export async function loader({ params }) {
-  const res = await axios.get(`/boards/board/${params.articleId}`);
+  const res = await axios.get(`/boards/board/${params.articleId}`, {
+    headers: {
+      Bearer:
+        "eyJ0eXAiOiJKV1QiLCJyZWdEYXRlIjoxNjc5ODk3Njk0ODI1LCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2Nzk4OTk0OTQsInN1YiI6ImFjY2Vzcy10b2tlbiIsImVtYWlsIjoiYWRtaW5Ac3NhZnkuY29tIn0.hm787uYxodsHcmvJbmJslj8KYP4ETBLlyG-w9qxYj4o",
+    },
+  });
   console.log(res);
   return res;
 }
