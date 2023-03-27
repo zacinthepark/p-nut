@@ -18,10 +18,7 @@ const ArticleDetailPage = () => {
     title,
     visit,
   } = data.data;
-  console.log(recipeSteps);
-  for (const value in recipeSteps) {
-    console.log(value, recipeSteps[value]);
-  }
+
   const profileImgPath = "/assets/Article_circle.png";
   // const recipeSteps = [
   //   {
