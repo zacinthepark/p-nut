@@ -2,6 +2,9 @@ import { Fragment, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import createUserAPI from "../api/createUserAPI";
+import checkDuplicationAPI from "../api/checkDuplicationAPI";
+import requestCodeAPI from "../api/requestCodeAPI";
+import checkCodeAPI from "../api/checkCodeAPI";
 
 const SignupFormComponent = () => {
   const navigate = useNavigate();
@@ -12,7 +15,7 @@ const SignupFormComponent = () => {
   const [userInputEmail, setUserInputEmail] = useState("");
   const [userInputAge, setUserInputAge] = useState("");
   const [userInputGender, setUserInputGender] = useState("");
-  // const [userInputCode, setUserInputCode] = useState("");
+  const [userInputCode, setUserInputCode] = useState("");
   const [userInputPassword1, setUserInputPassword1] = useState("");
   // const [userInputPassword2, setUserInputPassword2] = useState("");
 
@@ -31,15 +34,31 @@ const SignupFormComponent = () => {
   const emailChangeHandler = (event) => {
     setUserInputEmail(event.target.value);
   };
-  // const codeChangeHandler = (event) => {
-  //   setUserInputCode(event.target.value);
-  // };
+  const codeChangeHandler = (event) => {
+    setUserInputCode(event.target.value);
+  };
   const password1ChangeHandler = (event) => {
     setUserInputPassword1(event.target.value);
   };
   // const password2ChangeHandler = (event) => {
   //   setUserInputPassword2(event.target.value);
   // };
+
+  const duplicateNicknameCheckHandler = (event) => {
+    checkDuplicationAPI("nickname", event.target.value);
+  };
+
+  const duplicateEmailCheckHandler = (event) => {
+    checkDuplicationAPI("email", event.target.value);
+  };
+
+  const requestCodeHandler = () => {
+    requestCodeAPI(userInputEmail);
+  };
+
+  const checkCodeHandler = () => {
+    checkCodeAPI(userInputEmail, userInputCode);
+  };
 
   const submitHandler = (event) => {
     event.preventDefault();
@@ -72,6 +91,7 @@ const SignupFormComponent = () => {
             id="nickname"
             className="px-10 mx-75 my-10 w-464 h-40 border border-gray-300 rounded-10"
             onChange={nicknameChangeHandler}
+            onBlur={duplicateNicknameCheckHandler}
           />
         </div>
 
@@ -121,12 +141,14 @@ const SignupFormComponent = () => {
               className="px-15 mt-10 w-330 h-40 border border-gray-300 rounded-10"
               placeholder="이메일 주소를 입력해주세요."
               onChange={emailChangeHandler}
+              onBlur={duplicateEmailCheckHandler}
             />
           </div>
           <div className="flex-1">
             <button
               type="button"
               className="mx-15 mt-44 w-120 h-40 bg-red-400 rounded-xl text-white font-semibold"
+              onClick={requestCodeHandler}
             >
               인증번호 받기
             </button>
@@ -139,12 +161,14 @@ const SignupFormComponent = () => {
               id="code"
               className="px-15 w-330 h-40 border border-gray-300 rounded-10"
               placeholder="인증 코드를 입력해주세요."
+              onChange={codeChangeHandler}
             />
           </div>
           <div className="flex-1">
             <button
               type="button"
               className="mx-15 mt-5 w-120 h-40 bg-#2F80ED rounded-xl text-white font-semibold"
+              onClick={checkCodeHandler}
             >
               인증번호 확인
             </button>

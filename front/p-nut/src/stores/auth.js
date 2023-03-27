@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import { UIActions } from "./UISlice";
 import loginAPI from "../api/loginAPI";
+import logoutAPI from "../api/logoutAPI";
 
 const authSlice = createSlice({
   name: "auth",
@@ -65,6 +66,42 @@ export const loginHandler = (data) => {
           status: "error",
           title: "Login Failed",
           message: "Login has failed...",
+        })
+      );
+    }
+  };
+};
+
+export const logoutHandler = () => {
+  console.log("logout handler start");
+  return async (dispatch) => {
+    try {
+      const response = await logoutAPI();
+      if (response.status !== 200) {
+        throw new Error(response.data.message);
+      }
+
+      console.log("logoutAPI: ", response.data);
+
+      dispatch(authActions.logout());
+
+      dispatch(
+        UIActions.changeNotification({
+          status: "success",
+          title: "Success",
+          message: "Logout request successed!",
+        })
+      );
+
+      dispatch(UIActions.resetNotification());
+      Promise.resolve();
+    } catch (error) {
+      console.log("logout error: ", error);
+      dispatch(
+        UIActions.changeNotification({
+          status: "error",
+          title: "Logout Failed",
+          message: "Logout has failed...",
         })
       );
     }

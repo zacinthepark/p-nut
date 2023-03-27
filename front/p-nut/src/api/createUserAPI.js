@@ -19,7 +19,7 @@ async function createUserAPI(age, email, gender, name, nickname, password) {
     return response;
   }
 
-  return response.response;
+  return response;
 }
 
 export default createUserAPI;

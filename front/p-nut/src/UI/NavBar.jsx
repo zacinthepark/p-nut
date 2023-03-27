@@ -1,11 +1,29 @@
-import { Fragment, React } from "react";
+import { Fragment, React, useEffect } from "react";
 import { Menu, Transition } from "@headlessui/react";
+
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutHandler } from "../stores/auth";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
 const NavBar = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const token = useSelector((state) => state.auth.authentication.token);
+
+  const logout = () => {
+    dispatch(logoutHandler());
+  };
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+    }
+  }, [token, navigate]);
+
   return (
     <div className="fixed z-50 flex w-full p-3 h-60 bg-white/80">
       <div className="flex items-center w-full justify-evenly">
@@ -139,7 +157,10 @@ const NavBar = () => {
           <div className="px-12 py-8 text-gray-800 bg-gray-100 rounded-full">
             회원가입
           </div>
-          <div className="px-12 py-8 text-white font-semibold bg-#FF6B6C rounded-full">
+          <div
+            className="px-12 py-8 text-white font-semibold bg-#FF6B6C rounded-full"
+            onClick={logout}
+          >
             로그인
           </div>
         </div>
