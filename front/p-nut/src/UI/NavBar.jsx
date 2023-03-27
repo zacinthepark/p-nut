@@ -1,8 +1,8 @@
-import { Fragment, React, useEffect } from "react";
+import { Fragment, React } from "react";
 import { Menu, Transition } from "@headlessui/react";
 
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { logoutHandler } from "../stores/auth";
 
 function classNames(...classes) {
@@ -12,17 +12,11 @@ function classNames(...classes) {
 const NavBar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const token = useSelector((state) => state.auth.authentication.token);
 
-  const logout = () => {
-    dispatch(logoutHandler());
+  const logout = async () => {
+    await dispatch(logoutHandler());
+    navigate("/login");
   };
-
-  useEffect(() => {
-    if (!token) {
-      navigate("/login");
-    }
-  }, [token, navigate]);
 
   return (
     <div className="fixed z-50 flex w-full p-3 h-60 bg-white/80">

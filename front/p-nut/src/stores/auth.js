@@ -74,37 +74,40 @@ export const loginHandler = (data) => {
 
 export const logoutHandler = () => {
   console.log("logout handler start");
-  return async (dispatch) => {
-    try {
-      const response = await logoutAPI();
-      if (response.status !== 200) {
-        throw new Error(response.data.message);
+  return (dispatch) => {
+    return new Promise((resolve) => {
+      try {
+        logoutAPI().then((response) => {
+          if (response.status !== 200) {
+            throw new Error(response.data.message);
+          }
+
+          console.log("logoutAPI: ", response.data);
+
+          dispatch(authActions.logout());
+
+          dispatch(
+            UIActions.changeNotification({
+              status: "success",
+              title: "Success",
+              message: "Logout request successed!",
+            })
+          );
+
+          dispatch(UIActions.resetNotification());
+          resolve();
+        });
+      } catch (error) {
+        console.log("logout error: ", error);
+        dispatch(
+          UIActions.changeNotification({
+            status: "error",
+            title: "Logout Failed",
+            message: "Logout has failed...",
+          })
+        );
       }
-
-      console.log("logoutAPI: ", response.data);
-
-      dispatch(authActions.logout());
-
-      dispatch(
-        UIActions.changeNotification({
-          status: "success",
-          title: "Success",
-          message: "Logout request successed!",
-        })
-      );
-
-      dispatch(UIActions.resetNotification());
-      Promise.resolve();
-    } catch (error) {
-      console.log("logout error: ", error);
-      dispatch(
-        UIActions.changeNotification({
-          status: "error",
-          title: "Logout Failed",
-          message: "Logout has failed...",
-        })
-      );
-    }
+    });
   };
 };
 
