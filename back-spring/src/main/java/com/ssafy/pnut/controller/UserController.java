@@ -124,8 +124,7 @@ public class UserController {
 
     @ApiOperation(value = "로그아웃", notes = "로그아웃하는 유저의 refresh token을 삭제한다.", response = Map.class)
     @PostMapping("/logout")
-    public ResponseEntity<?> logoutUser(
-            @RequestBody @ApiParam(value = "로그아웃 할 유저의 이메일") HttpServletRequest request){
+    public ResponseEntity<?> logoutUser(HttpServletRequest request){
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status;
         String email = userService.getUserByToken(request.getHeader("access-token")).getEmail();
