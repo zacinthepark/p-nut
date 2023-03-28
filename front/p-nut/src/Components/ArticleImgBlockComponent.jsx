@@ -22,7 +22,7 @@ const ArticleImgBlockComponent = (props) => {
         const img = previewImgRef.current;
         img.classList.add("opacity-10");
       }}
-      onDragLeave={(e) => {
+      onDragLeave={() => {
         const div = opacityRef.current;
         div.classList.remove("opacity-90");
         const img = previewImgRef.current;
