@@ -1,5 +1,6 @@
 import axios from "axios";
-// import { changeTokenHandler } from "../stores/auth";
+import store from "../stores";
+import { updateTokenHandler } from "../stores/auth";
 
 /** axiosInterface is using axios module.
  * This is just to help easily fetch easly axios's argument.
@@ -30,7 +31,7 @@ export default async function axiosInterface(
         return res;
       },
       async (err) => {
-        console.log("Authorization Error Occured!", err);
+        console.log("invalid token", err);
         const { config, response } = err;
         // const responseData = err.response;
         const state = JSON.parse(localStorage.getItem("persist:root"));
@@ -68,9 +69,13 @@ export default async function axiosInterface(
             config.headers.Authorization = `Bearer ${newToken}`;
             const newResponse = await axios(config);
             console.log("new request! ", newResponse);
+            // 아래 newResponse에 업데이트된 토큰을 넣어줘서
+            // 토큰이 필요한 요청을 보내는 컴포넌트에서 useDispatch를 활용하여
+            // token 값을 업데이트하는 것도 방법
             // newResponse.newToken = refreshResponse.data["access-token"];
-            // changeTokenHandler(newToken);
 
+            // 하지만 그 과정이 귀찮으니 직접 리덕스 스토어의 토큰 값을 업데이트
+            store.dispatch(updateTokenHandler(newToken));
             return Promise.resolve(newResponse);
           } else if (
             refreshResponse.response.status === 202 ||

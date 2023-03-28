@@ -9,6 +9,7 @@ const authSlice = createSlice({
   initialState: { authentication: { token: "", refreshToken: "", email: "" } },
   reducers: {
     changeAuth(state, action) {
+      // console.log("action payload: ", action.payload);
       state.authentication = {
         token: action.payload.token,
         refreshToken: action.payload.refreshToken,
@@ -23,26 +24,28 @@ const authSlice = createSlice({
       };
     },
     updateToken(state, action) {
+      console.log("action payload: ", action.payload);
       state.authentication.token = action.payload;
     },
   },
 });
 
-// export const changeTokenHandler = (newToken) => {
-//   console.log("newToken");
-//   return async (dispatch) => {
-//     const state = JSON.parse(localStorage.getItem("persist:root"));
-//     const authentication = JSON.parse(state.auth);
+export const updateTokenHandler = (newToken) => {
+  console.log("newToken: ", newToken);
+  return async (dispatch) => {
+    // const state = JSON.parse(localStorage.getItem("persist:root"));
+    // const authentication = JSON.parse(state.auth);
 
-//     const userData = {
-//       token: newToken,
-//       refreshToken: authentication.authentication.refreshToken,
-//       email: authentication.authentication.email,
-//     };
+    // const userData = {
+    //   token: newToken,
+    //   refreshToken: authentication.authentication.refreshToken,
+    //   email: authentication.authentication.email,
+    // };
 
-//     dispatch(authActions.changeAuth(userData));
-//   };
-// };
+    // dispatch(authActions.changeAuth(userData));
+    dispatch(authActions.updateToken(newToken));
+  };
+};
 
 export const loginHandler = (data) => {
   console.log("login handler start");
