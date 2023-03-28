@@ -5,7 +5,6 @@ const ArticleImgBlockComponent = (props) => {
   const [previewImgSrc, setPreviewImgSrc] = useState("");
   const { division, width, height, text, setRef, fileSet } = props;
 
-  const fileInputRef = useRef();
   const opacityRef = useRef();
   const previewImgRef = useRef();
 
