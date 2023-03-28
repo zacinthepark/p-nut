@@ -33,16 +33,6 @@ const authSlice = createSlice({
 export const updateTokenHandler = (newToken) => {
   console.log("newToken: ", newToken);
   return async (dispatch) => {
-    // const state = JSON.parse(localStorage.getItem("persist:root"));
-    // const authentication = JSON.parse(state.auth);
-
-    // const userData = {
-    //   token: newToken,
-    //   refreshToken: authentication.authentication.refreshToken,
-    //   email: authentication.authentication.email,
-    // };
-
-    // dispatch(authActions.changeAuth(userData));
     dispatch(authActions.updateToken(newToken));
   };
 };

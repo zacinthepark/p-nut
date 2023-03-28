@@ -3,19 +3,7 @@ import axios from "axios";
 
 /*
 Request needs email, password
-Response status: OK, ACCEPTED, INTERNAL_SERVER_ERROR
 */
-
-// async function loginAPI(email, password) {
-//   const response = await axiosInterface("POST", "/users/login", {
-//     email,
-//     password,
-//   });
-//   if (response.status === 200) {
-//     return response;
-//   }
-//   return response;
-// }
 
 async function loginAPI(email, password) {
   const response = await axios({
