@@ -11,6 +11,7 @@ const ArticleCreatePage = () => {
   const [cookingTime, setCookingTime] = useState(0);
   const [ingredients, setIngredient] = useState(null);
   const [quantity, setQuantity] = useState(1);
+  const thumbnailInputRef = useRef(null);
 
   const cookingTimeRefArr = [
     useRef(null),
@@ -154,6 +155,7 @@ const ArticleCreatePage = () => {
       >
         <div className="w-792 h-354">
           <ArticleImgBlockComponent
+            setRef={thumbnailInputRef}
             division="thumbnail"
             text="대표 이미지 업로드"
             width="full"

@@ -9,7 +9,7 @@ const ArticleImgBlockComponent = (props) => {
   const previewImgRef = useRef();
 
   const inputButtonHandler = () => {
-    setRef.current.click();
+    setRef.current?.click();
   };
 
   return (
