@@ -40,6 +40,7 @@ module.exports = {
     "no-param-reassign": "off",
     "no-use-before-define": "off",
     "no-useless-return": "off",
+    "no-unused-vars": "off",
     "import/order": "off",
     "import/prefer-default-export": "off",
     "import/no-mutable-exports": "off",

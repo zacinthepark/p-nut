@@ -12,11 +12,20 @@ async function checkDuplicationAPI(type, value) {
     }
   );
   console.log("checkDuplicationAPI: ", response);
-  if (response.status === 200) {
-    return response;
+
+  if (response.status !== 200) {
+    throw new Error(response.data.message);
   }
 
-  return response;
+  if (response.data.message === "nickname duplication") {
+    return "nickname duplication";
+  }
+
+  if (response.data.message === "email duplication") {
+    return "email duplication";
+  }
+
+  return "available";
 }
 
 export default checkDuplicationAPI;

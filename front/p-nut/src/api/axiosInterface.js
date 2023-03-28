@@ -1,4 +1,5 @@
 import axios from "axios";
+// import { changeTokenHandler } from "../stores/auth";
 
 /** axiosInterface is using axios module.
  * This is just to help easily fetch easly axios's argument.
@@ -26,17 +27,17 @@ export default async function axiosInterface(
     const myInterceptor = axios.interceptors.response.use(
       (res) => {
         axios.interceptors.response.eject(myInterceptor);
-        console.log(res);
         return res;
       },
       async (err) => {
-        console.log("err");
-        const { config } = err;
-        const responseData = err.response;
+        console.log("Authorization Error Occured!", err);
+        const { config, response } = err;
+        // const responseData = err.response;
         const state = JSON.parse(localStorage.getItem("persist:root"));
         const authentication = JSON.parse(state.auth);
 
-        if (responseData.data.msg === "Login Require") {
+        // if (responseDate.data.msg === "Login Require")
+        if (response.status === 401) {
           axios.interceptors.response.eject(myInterceptor);
 
           // token refresh
@@ -44,10 +45,11 @@ export default async function axiosInterface(
             method: "post",
             baseURL: "http://j8a704.p.ssafy.io:9090/",
             url: "/users/refresh",
+            headers: {
+              "refresh-token": authentication.authentication.refreshToken,
+            },
             data: {
-              grantType: "Bearer",
-              accessToken: authentication.authentication.token,
-              refreshToken: authentication.authentication.refreshToken,
+              email: authentication.authentication.email,
             },
           })
             .then((refreshResponse) => refreshResponse)
@@ -55,15 +57,25 @@ export default async function axiosInterface(
               return error;
             });
 
-          console.log(refreshResponse);
+          console.log("refreshResponse: ", refreshResponse);
 
           if (refreshResponse.status === 200) {
-            config.headers.Authorization = `Bearer ${refreshResponse.data.accessToken}`;
-            const data2 = await axios(config);
-            data2.newToken = refreshResponse.data.accessToken;
+            console.log(
+              "new access token: ",
+              refreshResponse.data["access-token"]
+            );
+            const newToken = refreshResponse.data["access-token"];
+            config.headers.Authorization = `Bearer ${newToken}`;
+            const newResponse = await axios(config);
+            console.log("new request! ", newResponse);
+            // newResponse.newToken = refreshResponse.data["access-token"];
+            // changeTokenHandler(newToken);
 
-            return Promise.resolve(data2);
-          } else if (refreshResponse.response.status === 307) {
+            return Promise.resolve(newResponse);
+          } else if (
+            refreshResponse.response.status === 202 ||
+            refreshResponse.response.status === 401
+          ) {
             return Promise.reject(refreshResponse);
           }
         }

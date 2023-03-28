@@ -1,14 +1,14 @@
 import { Fragment, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+// import { useNavigate } from "react-router-dom";
+// import { useSelector } from "react-redux";
 import createUserAPI from "../api/createUserAPI";
 import checkDuplicationAPI from "../api/checkDuplicationAPI";
 import requestCodeAPI from "../api/requestCodeAPI";
 import checkCodeAPI from "../api/checkCodeAPI";
 
 const SignupFormComponent = () => {
-  const navigate = useNavigate();
-  const token = useSelector((state) => state.auth.authentication.token);
+  // const navigate = useNavigate();
+  // const token = useSelector((state) => state.auth.authentication.token);
 
   const [userInputNickname, setUserInputNickname] = useState("");
   const [userInputName, setUserInputName] = useState("");
@@ -18,6 +18,9 @@ const SignupFormComponent = () => {
   const [userInputCode, setUserInputCode] = useState("");
   const [userInputPassword1, setUserInputPassword1] = useState("");
   // const [userInputPassword2, setUserInputPassword2] = useState("");
+
+  const [isNicknameDuplicated, setIsNicknameDuplicated] = useState(false);
+  const [isEmailDuplicated, setIsEmailDuplicated] = useState(false);
 
   const nicknameChangeHandler = (event) => {
     setUserInputNickname(event.target.value);
@@ -44,12 +47,22 @@ const SignupFormComponent = () => {
   //   setUserInputPassword2(event.target.value);
   // };
 
-  const duplicateNicknameCheckHandler = (event) => {
-    checkDuplicationAPI("nickname", event.target.value);
+  const duplicateNicknameCheckHandler = async (event) => {
+    const message = await checkDuplicationAPI("nickname", event.target.value);
+    if (message === "nickname duplication") {
+      setIsNicknameDuplicated(true);
+    } else {
+      setIsNicknameDuplicated(false);
+    }
   };
 
-  const duplicateEmailCheckHandler = (event) => {
-    checkDuplicationAPI("email", event.target.value);
+  const duplicateEmailCheckHandler = async (event) => {
+    const message = await checkDuplicationAPI("email", event.target.value);
+    if (message === "email duplication") {
+      setIsEmailDuplicated(true);
+    } else {
+      setIsEmailDuplicated(false);
+    }
   };
 
   const requestCodeHandler = () => {
@@ -73,10 +86,9 @@ const SignupFormComponent = () => {
   };
 
   useEffect(() => {
-    if (token) {
-      navigate("/");
-    }
-  }, [token, navigate]);
+    console.log("isNicknameDuplicated: ", isNicknameDuplicated);
+    console.log("isEmailDuplicated: ", isEmailDuplicated);
+  }, [isNicknameDuplicated, isEmailDuplicated]);
 
   return (
     <Fragment>
@@ -86,13 +98,22 @@ const SignupFormComponent = () => {
           <label htmlFor="nickname" className="mx-75">
             닉네임
           </label>
-          <input
-            type="text"
-            id="nickname"
-            className="px-10 mx-75 my-10 w-464 h-40 border border-gray-300 rounded-10"
-            onChange={nicknameChangeHandler}
-            onBlur={duplicateNicknameCheckHandler}
-          />
+          <div className="flex items-center">
+            <input
+              type="text"
+              id="nickname"
+              className={`px-10 ml-75 my-10 w-300 h-40 border rounded-10 ${
+                isNicknameDuplicated ? "border-red-500" : "border-gray-300"
+              }`}
+              onChange={nicknameChangeHandler}
+              onBlur={duplicateNicknameCheckHandler}
+            />
+            {isNicknameDuplicated && (
+              <span className="ml-10 text-red-500">
+                사용 중인 아이디입니다.
+              </span>
+            )}
+          </div>
         </div>
 
         <div className="mx-75 my-10 flex">
@@ -133,7 +154,7 @@ const SignupFormComponent = () => {
           </div>
         </div>
         <div className="flex">
-          <div className="ml-75 my-10 flex-1 flex flex-col">
+          <div className="ml-75 mt-10 mb-4 flex-1 flex flex-col">
             <label htmlFor="email">이메일</label>
             <input
               type="text"
@@ -154,8 +175,13 @@ const SignupFormComponent = () => {
             </button>
           </div>
         </div>
+        {isEmailDuplicated && (
+          <span className="ml-75 px-15 text-red-500">
+            사용 중인 이메일입니다.
+          </span>
+        )}
         <div className="flex">
-          <div className="ml-75 mt-5 flex-1 flex flex-col">
+          <div className="ml-75 mt-5 mb-4 flex-1 flex flex-col">
             <input
               type="text"
               id="code"
@@ -174,6 +200,9 @@ const SignupFormComponent = () => {
             </button>
           </div>
         </div>
+        <span className="ml-75 px-15 text-red-500">
+          인증 번호가 일치하지 않습니다.
+        </span>
         <div className="ml-75 mt-20 inline-flex">
           <div className="flex flex-col">
             <label htmlFor="password">비밀번호</label>

@@ -1,6 +1,11 @@
 import React from "react";
+import testAPI from "../api/testAPI";
 
 const LoginSignupFormComponent = (props) => {
+  const tokenTest = () => {
+    testAPI(81);
+  };
+
   return (
     <div className="flex flex-row w-1232 h-661">
       <div className="w-1/2 bg-stone-300 rounded-l-xl">
@@ -16,6 +21,7 @@ const LoginSignupFormComponent = (props) => {
             <span className="text font-semibold">{props.direction}</span>
             <span className="absolute h-0.5 w-full bg-black bottom-1 left-0" />
           </span>
+          <span onClick={tokenTest}>TEST</span>
         </div>
       </div>
       <div className="w-1/2 bg-white rounded-r-xl">{props.children}</div>
