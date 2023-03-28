@@ -1,11 +1,18 @@
 import axios from "axios";
-import React from "react";
-import { useLoaderData } from "react-router-dom";
+import React, { useMemo, useState } from "react";
+import { useLoaderData, useParams } from "react-router-dom";
 import OrderBlockComponent from "../Components/OrderBlockComponent";
+import CommentComponent from "../Components/CommentComponent";
 
 const ArticleDetailPage = () => {
   // content ingredients nickNAme quantity recipeSteps thumbnail_image_url time title visit
   const data = useLoaderData();
+  const [newComment, setNewComment] = useState("");
+  const { articleId } = useParams();
+
+  const quantityArr = useMemo(() => {
+    return ["15분컷", "30분컷", "45분컷", "45분 이상"];
+  }, []);
 
   const {
     content,
@@ -19,21 +26,47 @@ const ArticleDetailPage = () => {
     visit,
     comments,
     likes,
+    likeOrNot,
   } = data.data;
 
   const profileImgPath = "/assets/Article_circle.png";
-  // const recipeSteps = [
-  //   {
-  //     orderDescription: "두부, 통조림햄, 소시지는 먹기 좋은 크기로 썰어주세요.",
-  //     orderImgPath: "/assets/orderImg1.png",
-  //   },
-  //   {
-  //     orderDescription: "끓이세요.",
-  //     orderImgPath: "/assets/orderImg2.png",
-  //   },
-  // ];
   const commentsCnt = comments.length;
-  const favoriteHeart = 1;
+
+  // 댓글 보여주기
+  let comment = <div className="text-#AEFEAE mb-40">댓글이 아직 없어요</div>;
+  if (commentsCnt > 0) {
+    comment = (
+      <div className="mb-40">
+        {comments.map((value) => (
+          <CommentComponent
+            content={value.content}
+            nickName={value.nickName}
+            date={value.createDate}
+          />
+        ))}
+      </div>
+    );
+  }
+
+  // 댓글 작성 이벤트
+  const newCommentSubmitHandler = () => {
+    const token =
+      "eyJ0eXAiOiJKV1QiLCJyZWdEYXRlIjoxNjc5OTY4MjE4NDkxLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2Nzk5NzAwMTgsInN1YiI6ImFjY2Vzcy10b2tlbiIsImVtYWlsIjoiYWRtaW5Ac3NhZnkuY29tIn0.Wp9z3ejSx-rWhr82ZN2SFMuUMudU-GciofED2GBCH8A";
+    axios
+      .post(
+        `/boards/comments/${articleId}`,
+        {
+          content: newComment,
+        },
+        {
+          headers: {
+            Bearer: `${token}`,
+          },
+        }
+      )
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  };
 
   return (
     <div className="flex w-1200 mx-auto flex-col">
@@ -51,17 +84,17 @@ const ArticleDetailPage = () => {
           <div className="text-33 font-bold mb-32 h-37">{title}</div>
           <div className="flex items-center pb-32 grey-underbar">
             <div className="border border-#2B2C2B text-26 px-10 py-5 font-semibold">
-              {time}
+              {quantityArr[time]}
             </div>
-            <div className="ml-27 text-26 font-semibold">{quantity}</div>
+            <div className="ml-27 text-26 font-semibold">{quantity}인분</div>
           </div>
           <div className="my-26 text-22 font-medium">{content}</div>
           <div className="w-full flex place-content-between">
             <div className="text-22">
-              댓글 {commentsCnt} 좋아요 {likes}
+              댓글 {commentsCnt} 좋아요 {likes} 조회수 {visit}
             </div>
             <img
-              src={`/assets/heart${favoriteHeart}.png`}
+              src={`/assets/heart${likeOrNot}.png`}
               alt=""
               className="mr-43"
             />
@@ -75,22 +108,35 @@ const ArticleDetailPage = () => {
         </div>
       </div>
       {Object.entries(recipeSteps).map(([key, value], idx) => (
-        <OrderBlockComponent imgPath={value} text={key} idx={idx} />
+        <OrderBlockComponent key={key} imgPath={value} text={key} idx={idx} />
       ))}
       <div className="mt-150 w-1200 mx-auto">
-        <div className="flex items-center">
+        <div className="flex items-center mb-40">
           <div className="text-37 font-bold">댓글</div>
           <div className="text-55 text-#FF6B6C font-extrabold ml-22">
             {commentsCnt}
           </div>
         </div>
-        <div>
+        <div className="relative h-219 pb-64 grey-underbar mb-25">
           <input
             type="text"
-            className="text-26 w-full border border-[#DFE0DF] py-30 px-23"
+            className="text-26 w-full border border-[#DFE0DF] py-27 px-23"
             placeholder="댓글을 입력하세요."
+            onChange={(e) => setNewComment(e.target.value)}
+            onKeyUp={(e) => {
+              if (e.key === "Enter") {
+                newCommentSubmitHandler();
+              }
+            }}
           />
+          <button
+            type="button"
+            className="absolute right-0 bottom-64 bg-[#5B5F97] text-prettywhite text-24 font-bold px-14 py-7"
+          >
+            작성
+          </button>
         </div>
+        <div>{comment}</div>
       </div>
     </div>
   );
@@ -102,7 +148,7 @@ export async function loader({ params }) {
   const res = await axios.get(`/boards/board/${params.articleId}`, {
     headers: {
       Bearer:
-        "eyJ0eXAiOiJKV1QiLCJyZWdEYXRlIjoxNjc5ODk3Njk0ODI1LCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2Nzk4OTk0OTQsInN1YiI6ImFjY2Vzcy10b2tlbiIsImVtYWlsIjoiYWRtaW5Ac3NhZnkuY29tIn0.hm787uYxodsHcmvJbmJslj8KYP4ETBLlyG-w9qxYj4o",
+        "eyJ0eXAiOiJKV1QiLCJyZWdEYXRlIjoxNjc5OTY4MjE4NDkxLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2Nzk5NzAwMTgsInN1YiI6ImFjY2Vzcy10b2tlbiIsImVtYWlsIjoiYWRtaW5Ac3NhZnkuY29tIn0.Wp9z3ejSx-rWhr82ZN2SFMuUMudU-GciofED2GBCH8A",
     },
   });
   console.log(res);
