@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 const Modal = (props) => {
-  const { open, close, foodId } = props;
-
+  const { open, close, foodId, searchResult, foodTitle } = props;
+  console.log(searchResult);
   const modalShow = `
     @keyframes modalShow {
       from {
@@ -26,6 +27,8 @@ const Modal = (props) => {
       }
     }
   `;
+  
+    
 
   return (
     <div
@@ -43,6 +46,7 @@ const Modal = (props) => {
           <style>{modalShow}</style>
           <main className="p-4 border-b border-gray-300 bordet-t">
             {props.children}
+            {foodTitle}
             {/* 형준오빠 여따가 넣어놓으면 돼 */}
 
             {/* 여기입니다 */}
