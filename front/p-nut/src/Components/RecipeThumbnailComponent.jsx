@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Modal from "../UI/Modal";
 import axios from "axios";
+// import dotenv from "dotenv";
 
 const RecipeThumbnailComponent = (props) => {
   const { imgPath, title, kcal, mainIngredients, time, id } = props;
@@ -8,12 +9,15 @@ const RecipeThumbnailComponent = (props) => {
   // open일 떄 true로 만들어 열림
   const [modalOpen, setModalOpen] = useState(false);
   const [ data, setData] = useState() ;
+  // youtube api key
+  //require("dotenv").config();
+  //const key = process.env.YOUTUBE_KEY;
   
   const openModal = (event) => {
     event.stopPropagation();
     axios
       .get(
-        `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=3&q=${title}&type=video&videoDefinition=high&key=유튜브api 키키키`
+        `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=3&q=${title}&type=video&videoDefinition=high&key=${key}`
       )
       .then((res)=>{
         setData(res.data.items);
