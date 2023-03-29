@@ -47,7 +47,7 @@ const Modal = (props) => {
           <main className="p-4 border-b border-gray-300 bordet-t">
             {props.children}
             {foodTitle}
-            {/* 형준오빠 여따가 넣어놓으면 돼 */}
+            {/** */}
 
             {/* 여기입니다 */}
           </main>

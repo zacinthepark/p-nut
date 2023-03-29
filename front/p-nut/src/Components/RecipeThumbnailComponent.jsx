@@ -7,17 +7,16 @@ const RecipeThumbnailComponent = (props) => {
 
   // open일 떄 true로 만들어 열림
   const [modalOpen, setModalOpen] = useState(false);
-  let data;
+  const [ data, setData] = useState() ;
   
   const openModal = (event) => {
     event.stopPropagation();
     axios
       .get(
-        `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=3&q=${title}&type=video&videoDefinition=high&key=유튜브 api키키키`
+        `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=3&q=${title}&type=video&videoDefinition=high&key=유튜브api 키키키`
       )
       .then((res)=>{
-        console.log(res);
-        data = res.data.items;
+        setData(res.data.items);
       })
       .catch(()=>{});
     setModalOpen(true);
@@ -30,9 +29,9 @@ const RecipeThumbnailComponent = (props) => {
 
   return (
     <div>
-      <Modal open={modalOpen} close={closeModal} foodId={id} foodTitle={title} searchResult={data}>
+      {modalOpen && <Modal open={modalOpen} close={closeModal} foodId={id} foodTitle={title} searchResult={data}>
         어쩌구저쩌구
-      </Modal>
+      </Modal>}
       <img
         className="cursor-pointer"
         onClick={openModal}
