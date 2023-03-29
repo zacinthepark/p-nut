@@ -40,19 +40,19 @@ const LoginFormComponent = () => {
           </label>
           <input
             type="text"
-            className="px-10 mx-75 my-12 w-465 h-50 border border-gray-300 rounded-xl"
+            className="px-10 mx-75 my-12 w-465 h-50 border border-gray-300 rounded-xl focus:border-blue-500"
             id="email"
             placeholder="이메일 주소를 입력해주세요."
             onChange={emailChangeHandler}
           />
         </div>
-        <div className="mt-15 flex flex-col">
+        <div className="mt-30 flex flex-col">
           <label htmlFor="password" className="mx-75">
             비밀번호
           </label>
           <input
             type="password"
-            className="px-10 mx-75 my-12 w-465 h-50 border border-gray-300 rounded-xl bg-white text-gray-400 font-noto"
+            className="px-10 mx-75 my-12 w-465 h-50 border border-gray-300 rounded-xl bg-white text-gray-400 font-noto focus:border-blue-500"
             id="password"
             placeholder="********"
             onChange={passwordChageHandler}
@@ -60,7 +60,7 @@ const LoginFormComponent = () => {
         </div>
         <button
           type="submit"
-          className="mx-75 mt-150 w-464 h-50 bg-red-400 rounded-xl text-white font-semibold"
+          className="mx-75 mt-140 w-464 h-50 bg-red-400 rounded-xl text-white font-semibold"
         >
           로그인
         </button>
