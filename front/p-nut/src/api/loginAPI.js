@@ -18,7 +18,8 @@ async function loginAPI(email, password) {
   if (response.status === 200) {
     return response;
   }
-  return response;
+
+  return response.response;
 }
 
 export default loginAPI;

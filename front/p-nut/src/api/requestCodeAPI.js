@@ -9,7 +9,7 @@ async function requestCodeAPI(email) {
     return response;
   }
 
-  return response;
+  return response.response;
 }
 
 export default requestCodeAPI;

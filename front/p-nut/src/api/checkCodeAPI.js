@@ -7,11 +7,13 @@ async function checkCodeAPI(email, code) {
   });
   console.log("checkCodeAPI: ", response);
   if (response.status === 200) {
-    return response;
+    return "valid code";
   }
   // 인증번호 만료 시 로직 필요
-
-  return response;
+  if (response.response.status === 408) {
+    return "code timeout";
+  }
+  return "invalid code";
 }
 
 export default checkCodeAPI;

@@ -24,7 +24,8 @@ async function logoutAPI() {
   if (response.status === 200) {
     return response;
   }
-  return response;
+
+  return response.response;
 }
 
 export default logoutAPI;

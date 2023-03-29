@@ -21,6 +21,8 @@ const SignupFormComponent = () => {
 
   const [isNicknameDuplicated, setIsNicknameDuplicated] = useState(false);
   const [isEmailDuplicated, setIsEmailDuplicated] = useState(false);
+  const [isCodeValid, setIsCodeValid] = useState(false);
+  const [codeValidationMessage, setCodeValidationMessage] = useState("");
 
   const nicknameChangeHandler = (event) => {
     setUserInputNickname(event.target.value);
@@ -69,8 +71,21 @@ const SignupFormComponent = () => {
     requestCodeAPI(userInputEmail);
   };
 
-  const checkCodeHandler = () => {
-    checkCodeAPI(userInputEmail, userInputCode);
+  const checkCodeHandler = async () => {
+    const checkResult = await checkCodeAPI(userInputEmail, userInputCode);
+    console.log("checkResult: ", checkResult);
+    if (checkResult === "valid code") {
+      setCodeValidationMessage("인증에 성공했습니다.");
+      setIsCodeValid(true);
+    }
+    if (checkResult === "code timeout") {
+      setCodeValidationMessage("인증 번호가 만료되었습니다.");
+      setIsCodeValid(false);
+    }
+    if (checkResult === "invalid code") {
+      setCodeValidationMessage("유효하지 않은 인증 번호입니다.");
+      setIsCodeValid(false);
+    }
   };
 
   const submitHandler = (event) => {
@@ -104,7 +119,7 @@ const SignupFormComponent = () => {
               id="nickname"
               className={`px-10 ml-75 my-10 w-300 h-40 border rounded-10 ${
                 isNicknameDuplicated ? "border-red-500" : "border-gray-300"
-              }`}
+              } focus:border-blue-500`}
               onChange={nicknameChangeHandler}
               onBlur={duplicateNicknameCheckHandler}
             />
@@ -124,7 +139,7 @@ const SignupFormComponent = () => {
             <input
               type="text"
               id="name"
-              className="px-10 w-120 h-40 border border-gray-300 rounded-10"
+              className="px-10 w-120 h-40 border border-gray-300 rounded-10 focus:border-blue-500"
               onChange={nameChangeHandler}
             />
           </div>
@@ -134,7 +149,7 @@ const SignupFormComponent = () => {
             </label>
             <select
               name="gender"
-              className="px-10 w-120 h-40 border border-gray-300 rounded-10"
+              className="px-10 w-120 h-40 border border-gray-300 rounded-10 focus:border-blue-500"
               onChange={genderChangeHandler}
             >
               <option value="0">남성</option>
@@ -148,7 +163,7 @@ const SignupFormComponent = () => {
             <input
               type="text"
               id="age"
-              className="px-10 w-120 h-40 border border-gray-300 rounded-10"
+              className="px-10 w-120 h-40 border border-gray-300 rounded-10 focus:border-blue-500"
               onChange={ageChangeHandler}
             />
           </div>
@@ -159,7 +174,9 @@ const SignupFormComponent = () => {
             <input
               type="text"
               id="email"
-              className="px-15 mt-10 w-330 h-40 border border-gray-300 rounded-10"
+              className={`px-15 mt-10 w-330 h-40 border rounded-10 ${
+                isEmailDuplicated ? "border-red-500" : "border-gray-300"
+              } focus:border-blue-500`}
               placeholder="이메일 주소를 입력해주세요."
               onChange={emailChangeHandler}
               onBlur={duplicateEmailCheckHandler}
@@ -180,36 +197,44 @@ const SignupFormComponent = () => {
             사용 중인 이메일입니다.
           </span>
         )}
-        <div className="flex">
-          <div className="ml-75 mt-5 mb-4 flex-1 flex flex-col">
-            <input
-              type="text"
-              id="code"
-              className="px-15 w-330 h-40 border border-gray-300 rounded-10"
-              placeholder="인증 코드를 입력해주세요."
-              onChange={codeChangeHandler}
-            />
+        <div>
+          <div className="flex">
+            <div className="ml-75 mt-5 mb-4 flex-1 flex flex-col">
+              <input
+                type="text"
+                id="code"
+                className={`px-15 w-330 h-40 border rounded-10 focus:border-blue-500 ${
+                  isCodeValid ? "border-green-500" : "border-gray-300"
+                }`}
+                placeholder="인증 코드를 입력해주세요."
+                onChange={codeChangeHandler}
+              />
+            </div>
+            <div className="flex-1">
+              <button
+                type="button"
+                className="mx-15 mt-5 w-120 h-40 bg-#2F80ED rounded-xl text-white font-semibold"
+                onClick={checkCodeHandler}
+              >
+                인증번호 확인
+              </button>
+            </div>
           </div>
-          <div className="flex-1">
-            <button
-              type="button"
-              className="mx-15 mt-5 w-120 h-40 bg-#2F80ED rounded-xl text-white font-semibold"
-              onClick={checkCodeHandler}
-            >
-              인증번호 확인
-            </button>
-          </div>
+          <span
+            className={`ml-75 px-15 ${
+              isCodeValid ? "text-green-500" : "text-red-500"
+            }`}
+          >
+            {codeValidationMessage}
+          </span>
         </div>
-        <span className="ml-75 px-15 text-red-500">
-          인증 번호가 일치하지 않습니다.
-        </span>
-        <div className="ml-75 mt-20 inline-flex">
+        <div className="ml-75 mt-10 inline-flex">
           <div className="flex flex-col">
             <label htmlFor="password">비밀번호</label>
             <input
               type="password"
               id="password"
-              className="px-10 mt-10 w-200 h-40 border border-gray-300 rounded-10 text-gray-400 font-noto"
+              className="px-10 mt-10 w-200 h-40 border border-gray-300 rounded-10 text-gray-400 font-noto focus:border-blue-500"
               placeholder="********"
               onChange={password1ChangeHandler}
             />
@@ -219,7 +244,7 @@ const SignupFormComponent = () => {
             <input
               type="password"
               id="passwordcheck"
-              className="px-10 mt-10 w-200 h-40 border border-gray-300 rounded-10 text-gray-400 font-noto"
+              className="px-10 mt-10 w-200 h-40 border border-gray-300 rounded-10 text-gray-400 font-noto focus:border-blue-500"
               placeholder="********"
             />
           </div>
