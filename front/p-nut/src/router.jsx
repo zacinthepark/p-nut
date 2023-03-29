@@ -3,12 +3,19 @@ import { createBrowserRouter } from "react-router-dom";
 import RootLayout from "./Pages/RootLayout";
 import MainPage from "./Pages/MainPage";
 import ArticleCreatePage from "./Pages/ArticleCreatePage";
-import ArticleListPage from "./Pages/ArticleListPage";
-import ArticleDetailPage from "./Pages/ArticleDetailPage";
+import ArticleListPage, {
+  loader as articleListLoader,
+} from "./Pages/ArticleListPage";
+import ArticleDetailPage, {
+  loader as articleDetailLoader,
+} from "./Pages/ArticleDetailPage";
 import RecipeDetailPage from "./Pages/RecipeDetailPage";
 import SymptomsRecommandPage from "./Pages/SymptomsRecommandPage";
+import SurveyRecommendPage from "./Pages/SurveyRecommendPage";
 import LoginPage from "./Pages/LoginPage";
 import SignupPage from "./Pages/SignupPage";
+import MyPage from "./Pages/MyPage";
+import SearchRecommendPage from "./Pages/SearchRecommendPage";
 
 const router = createBrowserRouter([
   {
@@ -23,18 +30,32 @@ const router = createBrowserRouter([
       {
         path: "board",
         element: <ArticleListPage />,
+        loader: articleListLoader,
+      },
+      {
+        path: "board/:articleId",
+        element: <ArticleDetailPage />,
+        loader: articleDetailLoader,
       },
       {
         path: "newpost",
         element: <ArticleCreatePage />,
       },
       {
-        path: "board/:articleId",
-        element: <ArticleDetailPage />,
-      },
-      {
         path: "recipe/:recipeId",
         element: <RecipeDetailPage />,
+      },
+      {
+        path: "survey",
+        element: <SurveyRecommendPage />,
+      },
+      {
+        path: "mypage",
+        element: <MyPage />,
+      },
+      {
+        path: "search",
+        element: <SearchRecommendPage />,
       },
     ],
   },
