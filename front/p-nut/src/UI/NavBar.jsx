@@ -1,4 +1,4 @@
-import { Fragment, React, useEffect } from "react";
+import { Fragment, React } from "react";
 import { Menu, Transition } from "@headlessui/react";
 
 import { useNavigate } from "react-router-dom";
