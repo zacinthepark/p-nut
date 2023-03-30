@@ -59,18 +59,7 @@ const SignupFormComponent = () => {
   const [isCodeValid, setIsCodeValid] = useState(false);
   const [codeValidationMessage, setCodeValidationMessage] = useState("");
 
-  const isFormValid = (
-    isNicknameValid,
-    isEmailValid,
-    isCodeValid,
-    isPasswordValid
-  ) => {
-    if (isNicknameValid && isEmailValid && isCodeValid && isPasswordValid) {
-      return true;
-    } else {
-      return false;
-    }
-  };
+  const [isFormValid, setIsFormValid] = useState(false);
 
   const nicknameChangeHandler = (event) => {
     setUserInputNickname(event.target.value);
@@ -149,15 +138,24 @@ const SignupFormComponent = () => {
       userInputGender,
       userInputName,
       userInputNickname,
-      // userInputPassword1
       passwordState.password2
     );
     navigate("/login");
   };
 
   useEffect(() => {
-    isFormValid(isNicknameValid, isEmailValid, isCodeValid, passwordState);
-  }, [isNicknameValid, isEmailValid, isCodeValid, passwordState]);
+    console.log("isNicknameValid: ", isNicknameValid);
+    console.log("isEmailValid: ", isEmailValid);
+    console.log("isCodeValid: ", isCodeValid);
+    console.log("isPasswordValid: ", passwordState.passwordIsValid);
+    setIsFormValid(
+      isNicknameValid &&
+        isEmailValid &&
+        isCodeValid &&
+        passwordState.passwordIsValid
+    );
+    console.log("isFormValid: ", isFormValid);
+  }, [isNicknameValid, isEmailValid, isCodeValid, passwordState, isFormValid]);
 
   return (
     <Fragment>
@@ -323,7 +321,10 @@ const SignupFormComponent = () => {
         </div>
         <button
           type="submit"
-          className="mx-75 mt-50 w-464 h-50 bg-red-400 rounded-xl text-white font-semibold"
+          className={`mx-75 mt-50 w-464 h-50 bg-red-400 rounded-xl text-white font-semibold ${
+            isFormValid ? "" : "opacity-50"
+          }`}
+          disabled={!isFormValid}
         >
           회원가입
         </button>
