@@ -28,12 +28,6 @@ const NavBar = () => {
     navigate("/mypage");
   };
 
-  useEffect(() => {
-    if (!token) {
-      navigate("/");
-    }
-  }, [token, navigate]);
-
   return (
     <div className="fixed z-50 flex w-full p-3 h-60 bg-white/80">
       <div className="flex items-center w-full justify-evenly">
