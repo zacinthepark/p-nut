@@ -160,13 +160,13 @@ const NavBar = () => {
         {!token && (
           <div className="flex items-center text-sm space-x-30">
             <div
-              className="px-12 py-8 text-gray-800 bg-gray-100 rounded-full"
+              className="px-12 py-8 text-gray-800 font-semibold bg-gray-100 rounded-full hover:bg-gray-300 transition duration-300"
               onClick={goToSignup}
             >
               회원가입
             </div>
             <div
-              className="px-12 py-8 text-white font-semibold bg-#FF6B6C rounded-full"
+              className="px-12 py-8 text-white font-semibold bg-#FF6B6C rounded-full hover:bg-red-500 transition duration-300"
               onClick={goToLogin}
             >
               로그인
@@ -176,13 +176,13 @@ const NavBar = () => {
         {token && (
           <div className="flex items-center text-sm space-x-30">
             <div
-              className="px-12 py-8 text-gray-800 bg-gray-100 rounded-full"
+              className="px-12 py-8 text-gray-800 font-semibold bg-gray-100 rounded-full hover:bg-gray-300 transition duration-300"
               onClick={goToMyPage}
             >
               마이페이지
             </div>
             <div
-              className="px-12 py-8 text-white font-semibold bg-#FF6B6C rounded-full"
+              className="px-12 py-8 text-white font-semibold bg-#FF6B6C rounded-full hover:bg-red-500 transition duration-300"
               onClick={logout}
             >
               로그아웃
