@@ -104,8 +104,11 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User checkUser(String type, String value) {
-        if("email".equals(type)) return userRepository.findByEmail(value);
-        else if ("nickname".equals(type)) return userRepository.findByNickname(value);
+        if(type.equals("email")){
+            return userRepository.findByEmail(value);
+        }else if(type.equals("nickname")){
+            return userRepository.findByNickname(value);
+        }
         return null;
     }
 

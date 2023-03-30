@@ -17,6 +17,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
@@ -49,10 +52,17 @@ public class UserController {
         try{
             //create UserEntity by Builder Pattern
 //            if(redisUtil.getData(userDto.getEmail()).equals("validate")){
+            LocalDateTime time = LocalDateTime.now();
+            userDto.setJoinDate(time);
+            userDto.setAuth("");
+            userDto.setProfileImageUrl("");
+            userDto.setType("");
                 User user = userDto.toEntity();
                 User result = userService.registerUser(user);
                 if (result != null) {
                     resultMap.put("message", SUCCESS);
+                    resultMap.put("email", user.getEmail());
+                    resultMap.put("password", user.getPassword());
                     status = HttpStatus.OK;
                     //if success register, return success message , 200 response code
                 } else {
@@ -114,14 +124,14 @@ public class UserController {
     }
 
     @ApiOperation(value = "로그아웃", notes = "로그아웃하는 유저의 refresh token을 삭제한다.", response = Map.class)
-    @GetMapping("/logout/{userEmail}")
-    public ResponseEntity<?> logoutUser(
-            @PathVariable @ApiParam(value = "로그아웃 할 유저의 이메일", required = true) String userEmail){
+    @PostMapping("/logout")
+    public ResponseEntity<?> logoutUser(HttpServletRequest request){
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status;
+        String email = userService.getUserByToken(request.getHeader("access-token")).getEmail();
 
         try{
-            userService.delRefreshToken(userEmail);
+            userService.delRefreshToken(email);
             resultMap.put("message", SUCCESS);
             status = HttpStatus.OK;
         }catch(Exception e){
@@ -168,12 +178,13 @@ public class UserController {
     }
 
     @ApiOperation(value = "회원탈퇴", notes = "회원정보를 삭제한다", response = Map.class)
-    @DeleteMapping("/{userEmail}")
+    @DeleteMapping("")
     public ResponseEntity<?> deleteUser(
-            @PathVariable @ApiParam(value = "탈퇴한 회원 정보", required = true) String userEmail, HttpServletRequest request){
+            @RequestBody @ApiParam(value = "탈퇴한 회원 정보", required = true) HttpServletRequest request){
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = HttpStatus.UNAUTHORIZED;
         String access_token = request.getHeader("access-token");
+        String email = userService.getUserByToken(access_token).getEmail();
 
         if(access_token == null || "".equals(access_token)){
             logger.error("need access-token : {}");
@@ -182,12 +193,12 @@ public class UserController {
         }
         if(jwtService.checkToken(request.getHeader("access-token"))){
             logger.info("회원 탈퇴: 사용 가능한 access-token");
-            logger.info("삭제하려는 email : {}", userEmail);
+            logger.info("삭제하려는 email : {}", email);
             try{
-                int result = userService.deleteUser(userEmail);
+                int result = userService.deleteUser(email);
                 if(result==1){
                     //회원삭제 성공한 경우, 성공 메시지 반환, 200응답 코드
-                    logger.debug("탈퇴한 회원 email : {}", userEmail);
+                    logger.debug("탈퇴한 회원 email : {}", email);
                     resultMap.put("message", SUCCESS);
                     status = HttpStatus.OK;
                 } else{
@@ -289,7 +300,7 @@ public class UserController {
     }
 
     @ApiOperation(value = "중복검사", notes = "email, nickname 중복검사", response = Map.class)
-    @GetMapping("/check")
+    @PostMapping("/duplication")
     public ResponseEntity<?> checkDuplicate(@RequestParam String type, @RequestParam String value){
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status;
@@ -297,10 +308,10 @@ public class UserController {
         try{
             User result = userService.checkUser(type, value);
             if(result != null){
+                if(type.equals("email")) resultMap.put("message", "email duplication");
+                else resultMap.put("message", "nickname duplication");
                 //존재하는 값인 경우, 200과 중복 메시지 반환
-                resultMap.put("message", ALREADY_EXIST);
             }else{
-                //200과 정상 메시지 반환
                 resultMap.put("message", SUCCESS);
             }
             status = HttpStatus.OK;
@@ -336,12 +347,13 @@ public class UserController {
     }
 
     @ApiOperation(value = "이메일본인인증확인", notes = "email을 통해 인증번호 요청해 본인인증", response = Map.class)
-    @GetMapping("/eamil")
-    public ResponseEntity<?> validateEmailCheck(@RequestParam String code){
+    @PostMapping("/email/check")
+    public ResponseEntity<?> validateEmailCheck(@RequestBody Map<String, String> map){
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status;
+        System.out.println(map.get("email")+" "+map.get("code"));
 
-        if(userMailService.checkCode(code)){
+        if(userMailService.checkCode(map.get("email"), map.get("code"))){
             resultMap.put("message", SUCCESS);
             status = HttpStatus.OK;
         }else{
@@ -352,7 +364,7 @@ public class UserController {
     }
 
     @ApiOperation(value = "본인인증 여부 확인", notes = "본인인증이 되었는지 확인", response = Map.class)
-    @GetMapping("/auth")
+    @PostMapping("/auth")
     public ResponseEntity<?> checkAuthentication(@RequestParam String email){
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status;
@@ -362,7 +374,7 @@ public class UserController {
             status = HttpStatus.OK;
         }else{
             resultMap.put("message", FAIL);
-            status = HttpStatus.REQUEST_TIMEOUT;
+            status = HttpStatus.UNAUTHORIZED;
         }
         return new ResponseEntity<>(resultMap, status);
     }
