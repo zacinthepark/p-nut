@@ -18,6 +18,9 @@ const NavBar = () => {
   const logout = () => {
     dispatch(logoutHandler());
   };
+  const goToMain = () => {
+    navigate("/");
+  };
   const goToLogin = () => {
     navigate("/login");
   };
@@ -31,7 +34,12 @@ const NavBar = () => {
   return (
     <div className="fixed z-50 flex w-full p-3 h-60 bg-white/80">
       <div className="flex items-center w-full justify-evenly">
-        <img className="h-50" src="assets\Logo1.png" alt="logo" />
+        <img
+          className="h-50 hover:border hover:border-white hover:rounded-xl"
+          src="assets\Logo1.png"
+          alt="logo"
+          onClick={goToMain}
+        />
 
         <div className="flex items-center space-x-50">
           {/* 음식추천 */}
