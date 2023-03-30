@@ -31,7 +31,7 @@ const NavBar = () => {
   return (
     <div className="fixed z-50 flex w-full p-3 h-60 bg-white/80">
       <div className="flex items-center w-full justify-evenly">
-        <img className="h-50" src="assets\Logo1.png" alt="logo" />
+        <img className="h-50" src="/assets/Logo1.png" alt="logo" />
 
         <div className="flex items-center space-x-50">
           {/* 음식추천 */}
@@ -41,7 +41,7 @@ const NavBar = () => {
                 음식추천
                 <img
                   className="h-10 ml-10 rotate-90"
-                  src="assets\chevron.png"
+                  src="/assets/chevron.png"
                   alt=""
                 />
               </Menu.Button>
@@ -108,7 +108,7 @@ const NavBar = () => {
                 게시판
                 <img
                   className="h-10 ml-10 rotate-90"
-                  src="assets\chevron.png"
+                  src="/assets/chevron.png"
                   alt=""
                 />
               </Menu.Button>
