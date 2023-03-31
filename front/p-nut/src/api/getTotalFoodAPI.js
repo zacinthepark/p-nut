@@ -1,19 +1,18 @@
 import axios from "axios";
 
-async function foodTestAPI(foodId, userEmail) {
+async function getTotalFoodAPI(userEmail) {
   const response = await axios({
     method: "get",
-    baseURL: "https://pnut.site/api/",
-    url: "/foods/info",
+    baseURL: "http://j8a704.p.ssafy.io:8000/",
+    url: "/foods/",
     params: {
-      food_id: foodId,
       user_email: userEmail,
     },
   });
   if (response.status === 200) {
-    return response;
+    return response.data.data;
   }
   return response.response;
 }
 
-export default foodTestAPI;
+export default getTotalFoodAPI;
