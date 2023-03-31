@@ -48,7 +48,7 @@ const SurveySymptomsPage = () => {
   };
 
   return (
-    <div className="w-674">
+    <div className="w-674 h-768">
       {data && (
         <>
           <div className="text-22 font-bold text-#7F807F mb-18">질문 1</div>
@@ -59,9 +59,10 @@ const SurveySymptomsPage = () => {
             우선적으로 관리가 필요한 곳을 선택하세요.
           </div>
           <div className="grey-underbar" />
-          {data.map((val, idx) => (
+          {data.map((content, idx) => (
             <OptionSelectComponent
-              val={val}
+              type="checkbox"
+              content={content}
               idx={idx}
               eventDispatcher={eventDispatcher}
               refInfo={symptomsRef[idx]}
