@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useLoaderData } from "react-router-dom";
 import Sidebar from "../Components/Sidebar";
 import NutrientStatus from "../Components/NutrientStatus";
 import UpdateUserData from "../Components/UpdateUserData";
@@ -8,13 +9,10 @@ import BookmarkedRecipe from "../Components/BookmarkedRecipe";
 import getUserInfo from "../api/getUserInfo";
 
 const MyPage = () => {
-  const [activeTab, setActiveTab] = useState("nutrientStatus");
+  const data = useLoaderData();
+  console.log("data: ", data);
 
-  const testInfo = async () => {
-    const userInfo = await getUserInfo();
-    console.log(userInfo);
-  };
-  testInfo();
+  const [activeTab, setActiveTab] = useState("nutrientStatus");
 
   return (
     <div className="w-full flex justify-center text-#2B2C2B bg-gray-100">
@@ -35,3 +33,10 @@ const MyPage = () => {
 };
 
 export default MyPage;
+
+export async function loader() {
+  console.log("Loading...");
+  const userInfo = await getUserInfo();
+
+  return userInfo;
+}
