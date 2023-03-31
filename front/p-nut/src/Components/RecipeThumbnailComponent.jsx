@@ -17,7 +17,7 @@ const RecipeThumbnailComponent = (props) => {
     event.stopPropagation();
     axios
       .get(
-        `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=3&q=${title}&type=video&videoDefinition=high&key=AIzaSyCMdNM2YNPPuW2Jia5gCXPQ0dQP7-oWSA0`
+        `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=3&q=${title}&type=video&videoDefinition=high&key=AIzaSyCI8t8M1ADPjcTTAuIOs3G2w-Nev9hXwRs`
       )
       .then((res) => {
         setData(res.data.items);
@@ -25,13 +25,14 @@ const RecipeThumbnailComponent = (props) => {
 
       .catch(() => {});
     setModalOpen(() => {
-      console.log("hi");
       return true;
     });
   };
+
   const closeModal = (event) => {
     event.stopPropagation();
-    setModalOpen(false);
+    // setModalOpen(false);
+    setData(null);
   };
 
   return (

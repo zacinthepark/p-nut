@@ -12,19 +12,18 @@ const Modal = (props) => {
   const { close, foodId, searchResult, foodTitle } = props;
   const open = true;
 
+  // background div만 close
+  const preventionClose = (event) => {
+    event.stopPropagation();
+  };
+
   const [food, setFood] = useState(null);
 
-  console.log("searchResult: ", searchResult);
-  // console.log(searchResult[0].id.videoId);
-
-  // <iframe
-  // id="ytplayer"
-  // type="text/html"
-  // width="720"
-  // height="405"
-  // src="https://www.youtube.com/embed/M7lc1UVf-VE"
-  // frameborder="0"
-  // allowfullscreen="allowfullscreen"></iframe>
+  console.log(
+    "searchResult: ",
+    searchResult[0].id.videoId,
+    searchResult[0].snippet.title
+  );
 
   const modalShow = `
     @keyframes modalShow {
@@ -80,9 +79,20 @@ const Modal = (props) => {
         </div>
       );
     } else if (activeTab === "레시피") {
+      const videoData = searchResult.map((result) => ({
+        url: result.id.videoId,
+        title: result.snippet.title,
+      }));
+
       return (
-        <div>
-          <ModalRecipeComponent />
+        <div className="flex justify-center space-x-30 pt-40">
+          {videoData.map((video, index) => (
+            <ModalRecipeComponent
+              key={index}
+              videoUrl={video.url}
+              videoTitle={video.title}
+            />
+          ))}
         </div>
       );
     }
@@ -95,14 +105,16 @@ const Modal = (props) => {
       } fixed top-0 right-0 bottom-0 left-0 z-50 bg-black bg-opacity-60 transition-all duration-300
     `}
       style={{ animation: open ? modalBgShow : "" }}
+      onClick={close}
     >
       {open ? (
         <section
+          onClick={preventionClose}
           className="mx-auto bg-white rounded-lg max-w-450 w-1100 h-800"
           style={{ animation: open ? `modalShow 0.3s` : "" }}
         >
           <style>{modalShow}</style>
-          <main className="flex p-4 m-50">
+          <main className="flex flex-col p-4 m-50">
             {food ? (
               <div>
                 <div className="flex">
@@ -122,7 +134,7 @@ const Modal = (props) => {
                     <div className="flex items-center space-x-10">
                       <p className="text-3xl font-bold">{food.name}</p>
                       <p className="px-10 py-5 bg-#FF6B6C/70 font-bold text-white rounded-full">
-                        {food.cal}kcal
+                        {Math.round(food.cal)}kcal
                       </p>
                     </div>
                     <p className="text-lg font-semibold text-gray-500">
@@ -163,16 +175,14 @@ const Modal = (props) => {
             ) : (
               <p>Loading...</p>
             )}
-          </main>
-          <footer className="p-4 text-right">
             <button
               type="button"
               onClick={close}
-              className="px-4 py-2 text-white bg-gray-600 rounded focus:outline-none"
+              className="px-4 py-2 text-white bg-gray-600 rounded w-100 h-30 mx-auto focus:outline-none"
             >
-              close
+              닫기
             </button>
-          </footer>
+          </main>
         </section>
       ) : null}
     </div>

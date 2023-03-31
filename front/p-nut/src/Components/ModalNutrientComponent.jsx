@@ -53,7 +53,7 @@ const ModalNutrientComponent = ({ nutrientData }) => {
   const chartOptions = {
     responsive: true,
     maintainAspectRaio: false,
-    aspectRatio: 3.2,
+    aspectRatio: 4,
     plugins: {
       datalabels: {
         color: "#2B2C2B",
@@ -81,14 +81,13 @@ const ModalNutrientComponent = ({ nutrientData }) => {
         grid: {
           display: false,
         },
-        barPercentage: 0.2,
         categoryPercentage: 1,
       },
     },
   };
 
   return (
-    <div className="relative h-300">
+    <div className="relative h-260">
       {/* 우상단 labels */}
       <div className="flex justify-end items-center mt-4 mr-40">
         <div className="flex items-center mr-20">
