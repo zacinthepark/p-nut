@@ -46,6 +46,7 @@ const ModalNutrientComponent = ({ nutrientData }) => {
         backgroundColor: "#FFD771",
         borderColor: "#FFD771",
         borderWidth: 1,
+        barThickness: 40,
       },
     ],
   };
