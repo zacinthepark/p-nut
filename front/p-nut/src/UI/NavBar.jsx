@@ -36,7 +36,7 @@ const NavBar = () => {
       <div className="flex items-center w-full justify-evenly">
         <img
           className="h-50 hover:border hover:border-white hover:rounded-xl"
-          src="assets\Logo1.png"
+          src="/assets/Logo1.png"
           alt="logo"
           onClick={goToMain}
         />
@@ -49,7 +49,7 @@ const NavBar = () => {
                 음식추천
                 <img
                   className="h-10 ml-10 rotate-90"
-                  src="assets\chevron.png"
+                  src="/assets/chevron.png"
                   alt=""
                 />
               </Menu.Button>
@@ -75,7 +75,7 @@ const NavBar = () => {
                         href="#"
                         className={classNames(
                           active ? "bg-white " : "",
-                          "block px-15 py-10 text-md rounded-5",
+                          "block px-15 py-10 text-md rounded-5"
                         )}
                       >
                         개인설문조사
@@ -88,7 +88,7 @@ const NavBar = () => {
                         href="#"
                         className={classNames(
                           active ? "bg-white " : "",
-                          "block px-15 py-10 text-md rounded-5",
+                          "block px-15 py-10 text-md rounded-5"
                         )}
                       >
                         보편적인 증상
@@ -101,7 +101,7 @@ const NavBar = () => {
                         href="#"
                         className={classNames(
                           active ? "bg-white " : "",
-                          "block px-15 py-10 text-md rounded-5",
+                          "block px-15 py-10 text-md rounded-5"
                         )}
                       >
                         식재료 음식 검색
@@ -119,7 +119,7 @@ const NavBar = () => {
                 게시판
                 <img
                   className="h-10 ml-10 rotate-90"
-                  src="assets\chevron.png"
+                  src="/assets/chevron.png"
                   alt=""
                 />
               </Menu.Button>
@@ -142,7 +142,7 @@ const NavBar = () => {
                         href="#"
                         className={classNames(
                           active ? "bg-white " : "",
-                          "block px-15 py-10 text-md rounded-5",
+                          "block px-15 py-10 text-md rounded-5"
                         )}
                       >
                         금주의 레시피
@@ -155,7 +155,7 @@ const NavBar = () => {
                         href="#"
                         className={classNames(
                           active ? "bg-white " : "",
-                          "block px-15 py-10 text-md rounded-5",
+                          "block px-15 py-10 text-md rounded-5"
                         )}
                       >
                         게시물 조회
