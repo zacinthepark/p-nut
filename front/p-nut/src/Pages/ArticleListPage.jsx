@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useLoaderData } from "react-router-dom";
+import axiosInterface from "../api/axiosInterface";
 import ArticleListThumbnailComponent from "../Components/ArticleListThumbnailComponent";
 
 const ArticleListPage = () => {
@@ -87,7 +88,7 @@ export default ArticleListPage;
 
 export async function loader() {
   const recentArticleList = new Promise((resolve, reject) => {
-    axios("/boards")
+    axiosInterface("get", "/boards")
       .then((res) => {
         resolve(res);
       })
@@ -95,7 +96,7 @@ export async function loader() {
   });
 
   const top3List = new Promise((resolve, reject) => {
-    axios("/boards/top3")
+    axiosInterface("get", "/boards/top3")
       .then((res) => {
         resolve(res);
       })

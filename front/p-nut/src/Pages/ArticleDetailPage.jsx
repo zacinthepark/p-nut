@@ -1,14 +1,16 @@
-import axios from "axios";
-import React, { useMemo, useState } from "react";
-import { useLoaderData, useParams } from "react-router-dom";
+import axiosInterface from "../api/axiosInterface";
+import React, { useEffect, useMemo, useState } from "react";
+import { useParams } from "react-router-dom";
 import OrderBlockComponent from "../Components/OrderBlockComponent";
 import CommentComponent from "../Components/CommentComponent";
+import { useSelector } from "react-redux";
 
 const ArticleDetailPage = () => {
   // content ingredients nickNAme quantity recipeSteps thumbnail_image_url time title visit
-  const data = useLoaderData();
+  const [data, setData] = useState();
   const [newComment, setNewComment] = useState("");
   const { articleId } = useParams();
+  const token = useSelector((state) => state.auth.authtication.token);
 
   const quantityArr = useMemo(() => {
     return ["15분컷", "30분컷", "45분컷", "45분 이상"];
@@ -32,6 +34,18 @@ const ArticleDetailPage = () => {
   const profileImgPath = "/assets/Article_circle.png";
   const commentsCnt = comments.length;
 
+  useEffect(() => {
+    if (token) {
+      axiosInterface("GET", `/boards/board/${articleId}`, "", {
+        Authorization: `Bearer ${token}`,
+      }).then((res) => setData(res));
+    } else {
+      axiosInterface("GET", `/boards/board/${articleId}`).then((res) =>
+        setData(res)
+      );
+    }
+  }, [articleId, token]);
+
   // 댓글 보여주기
   let comment = <div className="text-#AEFEAE mb-40">댓글이 아직 없어요</div>;
   if (commentsCnt > 0) {
@@ -50,21 +64,27 @@ const ArticleDetailPage = () => {
 
   // 댓글 작성 이벤트
   const newCommentSubmitHandler = () => {
-    const token =
-      "eyJ0eXAiOiJKV1QiLCJyZWdEYXRlIjoxNjc5OTY4MjE4NDkxLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2Nzk5NzAwMTgsInN1YiI6ImFjY2Vzcy10b2tlbiIsImVtYWlsIjoiYWRtaW5Ac3NhZnkuY29tIn0.Wp9z3ejSx-rWhr82ZN2SFMuUMudU-GciofED2GBCH8A";
-    axios
-      .post(
-        `/boards/comments/${articleId}`,
-        {
-          content: newComment,
-        },
-        {
-          headers: {
-            Bearer: `${token}`,
-          },
+    axiosInterface(
+      "post",
+      `/boards/comments/${articleId}`,
+      {
+        content: newComment,
+      },
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    )
+      .then(() => {
+        if (token) {
+          axiosInterface("GET", `/boards/board/${articleId}`, "", {
+            Authorization: `Bearer ${token}`,
+          }).then((res) => setData(res));
+        } else {
+          axiosInterface("GET", `/boards/board/${articleId}`).then((res) =>
+            setData(res)
+          );
         }
-      )
-      .then((res) => console.log(res))
+      })
       .catch((err) => console.log(err));
   };
 
@@ -143,9 +163,3 @@ const ArticleDetailPage = () => {
 };
 
 export default ArticleDetailPage;
-
-export async function loader({ params }) {
-  const res = await axios.get(`/boards/board/${params.articleId}`);
-  console.log(res);
-  return res;
-}
