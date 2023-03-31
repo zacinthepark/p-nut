@@ -36,6 +36,7 @@ module.exports = {
     "func-names": "off",
     "no-shadow": "off",
     "no-else-return": "off",
+    "no-nested-ternary": "off",
     "prefer-const": "off",
     "object-shorthand": "off",
     "consistent-return": "off",
@@ -47,6 +48,7 @@ module.exports = {
     "import/order": "off",
     "import/prefer-default-export": "off",
     "import/no-mutable-exports": "off",
+    radix: "off",
   },
   settings: {
     react: {

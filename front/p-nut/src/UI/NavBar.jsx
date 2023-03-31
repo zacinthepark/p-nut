@@ -1,7 +1,7 @@
-import { Fragment, React, useEffect } from "react";
+import { Fragment, React } from "react";
 import { Menu, Transition } from "@headlessui/react";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigateToTop } from "../hooks/useNavigateToTop";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutHandler } from "../stores/auth";
 
@@ -13,10 +13,13 @@ const NavBar = () => {
   const token = useSelector((state) => state.auth.authentication.token);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const navigate = useNavigateToTop();
 
   const logout = () => {
     dispatch(logoutHandler());
+  };
+  const goToMain = () => {
+    navigate("/");
   };
   const goToLogin = () => {
     navigate("/login");
@@ -28,16 +31,15 @@ const NavBar = () => {
     navigate("/mypage");
   };
 
-  useEffect(() => {
-    if (!token) {
-      navigate("/");
-    }
-  }, [token, navigate]);
-
   return (
     <div className="fixed z-50 flex w-full p-3 h-60 bg-white/80">
       <div className="flex items-center w-full justify-evenly">
-        <img className="h-50" src="assets\Logo1.png" alt="logo" />
+        <img
+          className="h-50 hover:border hover:border-white hover:rounded-xl"
+          src="assets\Logo1.png"
+          alt="logo"
+          onClick={goToMain}
+        />
 
         <div className="flex items-center space-x-50">
           {/* 음식추천 */}
@@ -169,13 +171,13 @@ const NavBar = () => {
         {!token && (
           <div className="flex items-center text-sm space-x-30">
             <div
-              className="px-12 py-8 text-gray-800 bg-gray-100 rounded-full"
+              className="px-12 py-8 text-gray-800 font-semibold bg-gray-100 rounded-full hover:bg-gray-300 transition duration-300"
               onClick={goToSignup}
             >
               회원가입
             </div>
             <div
-              className="px-12 py-8 text-white font-semibold bg-#FF6B6C rounded-full"
+              className="px-12 py-8 text-white font-semibold bg-#FF6B6C rounded-full hover:bg-red-500 transition duration-300"
               onClick={goToLogin}
             >
               로그인
@@ -185,13 +187,13 @@ const NavBar = () => {
         {token && (
           <div className="flex items-center text-sm space-x-30">
             <div
-              className="px-12 py-8 text-gray-800 bg-gray-100 rounded-full"
+              className="px-12 py-8 text-gray-800 font-semibold bg-gray-100 rounded-full hover:bg-gray-300 transition duration-300"
               onClick={goToMyPage}
             >
               마이페이지
             </div>
             <div
-              className="px-12 py-8 text-white font-semibold bg-#FF6B6C rounded-full"
+              className="px-12 py-8 text-white font-semibold bg-#FF6B6C rounded-full hover:bg-red-500 transition duration-300"
               onClick={logout}
             >
               로그아웃

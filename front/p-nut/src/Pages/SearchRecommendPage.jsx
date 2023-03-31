@@ -171,9 +171,9 @@ const SearchRecommendPage = () => {
                 value={searchQuery}
                 onChange={handleSearchChange}
               />
-              <button type="button" className="" onClick={handleSearchClick}>
+              <button type="button" onClick={handleSearchClick}>
                 <img
-                  src="public\assets\Search.png"
+                  src="assets\Search.png"
                   alt=""
                   className="absolute text-gray-400 top-1 mt-15 right-50 h-30"
                 />
