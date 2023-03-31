@@ -3,15 +3,13 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import symptomsAPI from "../api/symptomsAPI";
 import OptionSelectComponent from "../Components/OptionSelectComponent";
+import { useDivInputEventHandler } from "../hooks/useInputDivHandler";
 
 const SurveySymptomsPage = () => {
   const token = useSelector((state) => state.auth.authentication.token);
   const [data, setData] = useState();
   const [nickname, setNickname] = useState();
-  const [clickedCnt, setClickedCnt] = useState(0);
   const [symptomsRef, setSymptomsRef] = useState([]);
-
-  const [checkedObj, setCheckedObj] = useState({});
 
   const navigate = useNavigate();
 
@@ -32,71 +30,8 @@ const SurveySymptomsPage = () => {
     sympHandler(token);
   }, [sympHandler, token]);
 
-  const symptomsDivClickHandler = (e) => {
-    const { id } = e.target;
-    if (!id) {
-      return;
-    }
-
-    const inputTag = symptomsRef[id].current;
-    const isChecked = inputTag.checked;
-    const target = inputTag.name;
-
-    if (isChecked) {
-      inputTag.checked = false;
-      setCheckedObj((prev) => {
-        delete prev[id];
-        return { ...prev };
-      });
-      setClickedCnt((prev) => {
-        return prev - 1;
-      });
-      return;
-    }
-
-    if (clickedCnt >= 3) {
-      return;
-    }
-
-    inputTag.checked = !isChecked;
-
-    setCheckedObj((prev) => {
-      prev[id] = target;
-      return { ...prev };
-    });
-    setClickedCnt((prev) => {
-      return prev + 1;
-    });
-  };
-
-  const symptomsInputChangeHandler = (e) => {
-    const id = e.target.id.split("-")[1];
-    const target = e.target.name;
-
-    if (!e.target.checked) {
-      setCheckedObj((prev) => {
-        delete prev[id];
-        return { ...prev };
-      });
-      setClickedCnt((prev) => {
-        return prev - 1;
-      });
-      return;
-    }
-
-    if (clickedCnt >= 3) {
-      e.target.checked = false;
-      return;
-    }
-
-    setCheckedObj((prev) => {
-      prev[id] = target;
-      return { ...prev };
-    });
-    setClickedCnt((prev) => {
-      return prev + 1;
-    });
-  };
+  const [clickedCnt, checkedObj, eventDispatcher] =
+    useDivInputEventHandler(symptomsRef);
 
   const aboveBtnClickHandler = () => {
     navigate("/newsurvey");
@@ -128,8 +63,7 @@ const SurveySymptomsPage = () => {
             <OptionSelectComponent
               val={val}
               idx={idx}
-              symptomsInputChangeHandler={symptomsInputChangeHandler}
-              symptomsDivClickHandler={symptomsDivClickHandler}
+              eventDispatcher={eventDispatcher}
               refInfo={symptomsRef[idx]}
             />
           ))}

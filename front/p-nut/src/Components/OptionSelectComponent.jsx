@@ -1,7 +1,7 @@
 import React from "react";
 
 const OptionSelectComponent = (props) => {
-  const { val, idx, inputChangeHandler, divClickHandler, refInfo } = props;
+  const { val, idx, eventDispatcher, refInfo } = props;
   return (
     <div className="mt-15 flex flex-row" key={val}>
       <input
@@ -9,9 +9,9 @@ const OptionSelectComponent = (props) => {
         name={val}
         id={`input-${idx}`}
         ref={refInfo}
-        onChange={inputChangeHandler}
+        onChange={eventDispatcher}
       />
-      <div className="text-19 ml-13" id={idx} onClick={divClickHandler}>
+      <div className="text-19 ml-13" id={idx} onClick={eventDispatcher}>
         {val}
       </div>
     </div>
