@@ -5,8 +5,16 @@ import UpdateUserData from "../Components/UpdateUserData";
 import MyRecipe from "../Components/MyRecipe";
 import BookmarkedRecipe from "../Components/BookmarkedRecipe";
 
+import getUserInfo from "../api/getUserInfo";
+
 const MyPage = () => {
   const [activeTab, setActiveTab] = useState("nutrientStatus");
+
+  const testInfo = async () => {
+    const userInfo = await getUserInfo();
+    console.log(userInfo);
+  };
+  testInfo();
 
   return (
     <div className="w-full flex justify-center text-#2B2C2B bg-gray-100">

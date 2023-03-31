@@ -67,8 +67,8 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
           </div>
         </div>
         {/* 로그아웃, 회원탈퇴 */}
-        <div className="space-y-10">
-          <div className="rounded-10 text-#FF6B6C border border-#FF6B6C">
+        <div className="space-y-20">
+          <div className="rounded-10 text-#FF6B6C border border-#FF6B6C hover:bg-#FF6B6C hover:text-white">
             <p className="font-extrabold py-15">로그아웃</p>
           </div>
           <p className="flex items-center justify-center text-gray-500">
