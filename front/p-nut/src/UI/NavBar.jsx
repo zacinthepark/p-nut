@@ -69,10 +69,10 @@ const NavBar = () => {
                   <Menu.Item>
                     {({ active }) => (
                       <button
+                        type="button"
                         onClick={() => {
                           navigate("/my-survey");
                         }}
-                        href="#"
                         className={classNames(
                           active ? "bg-white " : "",
                           "block px-15 py-10 text-md rounded-5"
@@ -84,7 +84,11 @@ const NavBar = () => {
                   </Menu.Item>
                   <Menu.Item>
                     {({ active }) => (
-                      <a
+                      <button
+                        type="button"
+                        onClick={() => {
+                          navigate("/symptoms");
+                        }}
                         href="#"
                         className={classNames(
                           active ? "bg-white " : "",
@@ -92,20 +96,21 @@ const NavBar = () => {
                         )}
                       >
                         보편적인 증상
-                      </a>
+                      </button>
                     )}
                   </Menu.Item>
                   <Menu.Item>
                     {({ active }) => (
-                      <a
-                        href="#"
+                      <button
+                        type="button"
+                        onClick={() => navigate("/search")}
                         className={classNames(
                           active ? "bg-white " : "",
                           "block px-15 py-10 text-md rounded-5"
                         )}
                       >
                         식재료 음식 검색
-                      </a>
+                      </button>
                     )}
                   </Menu.Item>
                 </div>
@@ -138,28 +143,44 @@ const NavBar = () => {
                 <div className="py-2">
                   <Menu.Item>
                     {({ active }) => (
-                      <a
-                        href="#"
+                      <button
+                        type="button"
+                        onClick={() => navigate("/newpost")}
                         className={classNames(
                           active ? "bg-white " : "",
                           "block px-15 py-10 text-md rounded-5"
                         )}
                       >
-                        금주의 레시피
-                      </a>
+                        게시글 작성
+                      </button>
                     )}
                   </Menu.Item>
                   <Menu.Item>
                     {({ active }) => (
-                      <a
-                        href="#"
+                      <button
+                        type="button"
+                        onClick={() => navigate("/board")}
                         className={classNames(
                           active ? "bg-white " : "",
                           "block px-15 py-10 text-md rounded-5"
                         )}
                       >
                         게시물 조회
-                      </a>
+                      </button>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active }) => (
+                      <button
+                        type="button"
+                        onClick={() => navigate("/newsurvey")}
+                        className={classNames(
+                          active ? "bg-white " : "",
+                          "block px-15 py-10 text-md rounded-5"
+                        )}
+                      >
+                        설문조사
+                      </button>
                     )}
                   </Menu.Item>
                 </div>
