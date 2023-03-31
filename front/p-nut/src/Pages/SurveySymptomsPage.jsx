@@ -2,6 +2,7 @@ import React, { createRef, useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import symptomsAPI from "../api/symptomsAPI";
+import OptionSelectComponent from "../Components/OptionSelectComponent";
 
 const SurveySymptomsPage = () => {
   const token = useSelector((state) => state.auth.authentication.token);
@@ -104,7 +105,8 @@ const SurveySymptomsPage = () => {
   const startBtnClickHandler = () => {
     let params = "";
     Object.entries(checkedObj).forEach(([key, value]) => {
-      params += `/${key}=${value}`;
+      const transformValue = value.replace("/", "or");
+      params += `/${key}=${transformValue}`;
     });
     console.log(`/newsurvey${params}`);
     navigate(`/newsurvey${params}`);
@@ -123,22 +125,13 @@ const SurveySymptomsPage = () => {
           </div>
           <div className="grey-underbar" />
           {data.map((val, idx) => (
-            <div className="mt-15 flex flex-row" key={val}>
-              <input
-                type="checkbox"
-                name={val}
-                id={`input-${idx}`}
-                ref={symptomsRef[idx]}
-                onChange={symptomsInputChangeHandler}
-              />
-              <div
-                className="text-19 ml-13"
-                id={idx}
-                onClick={symptomsDivClickHandler}
-              >
-                {val}
-              </div>
-            </div>
+            <OptionSelectComponent
+              val={val}
+              idx={idx}
+              symptomsInputChangeHandler={symptomsInputChangeHandler}
+              symptomsDivClickHandler={symptomsDivClickHandler}
+              refInfo={symptomsRef[idx]}
+            />
           ))}
           <button
             type="button"
