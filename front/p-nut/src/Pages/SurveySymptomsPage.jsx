@@ -1,5 +1,6 @@
 import React, { createRef, useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import symptomsAPI from "../api/symptomsAPI";
 
 const SurveySymptomsPage = () => {
@@ -9,12 +10,15 @@ const SurveySymptomsPage = () => {
   const [clickedCnt, setClickedCnt] = useState(0);
   const [symptomsRef, setSymptomsRef] = useState([]);
 
-  const checkedList = {};
+  const [checkedObj, setCheckedObj] = useState({});
+
+  const navigate = useNavigate();
 
   const sympHandler = useCallback(async (token) => {
     const res = await symptomsAPI(token);
     setData(res.slice(1));
     setNickname(res[0]);
+
     for (let i = 1; i < res.length; i += 1) {
       setSymptomsRef((prev) => {
         return [...prev, createRef(null)];
@@ -28,7 +32,6 @@ const SurveySymptomsPage = () => {
   }, [sympHandler, token]);
 
   const symptomsDivClickHandler = (e) => {
-    console.log(clickedCnt);
     const { id } = e.target;
     if (!id) {
       return;
@@ -36,9 +39,14 @@ const SurveySymptomsPage = () => {
 
     const inputTag = symptomsRef[id].current;
     const isChecked = inputTag.checked;
+    const target = inputTag.name;
 
     if (isChecked) {
       inputTag.checked = false;
+      setCheckedObj((prev) => {
+        delete prev[id];
+        return { ...prev };
+      });
       setClickedCnt((prev) => {
         return prev - 1;
       });
@@ -51,6 +59,10 @@ const SurveySymptomsPage = () => {
 
     inputTag.checked = !isChecked;
 
+    setCheckedObj((prev) => {
+      prev[id] = target;
+      return { ...prev };
+    });
     setClickedCnt((prev) => {
       return prev + 1;
     });
@@ -58,8 +70,13 @@ const SurveySymptomsPage = () => {
 
   const symptomsInputChangeHandler = (e) => {
     const id = e.target.id.split("-")[1];
+    const target = e.target.name;
 
     if (!e.target.checked) {
+      setCheckedObj((prev) => {
+        delete prev[id];
+        return { ...prev };
+      });
       setClickedCnt((prev) => {
         return prev - 1;
       });
@@ -71,9 +88,26 @@ const SurveySymptomsPage = () => {
       return;
     }
 
+    setCheckedObj((prev) => {
+      prev[id] = target;
+      return { ...prev };
+    });
     setClickedCnt((prev) => {
       return prev + 1;
     });
+  };
+
+  const aboveBtnClickHandler = () => {
+    navigate("/newsurvey");
+  };
+
+  const startBtnClickHandler = () => {
+    let params = "";
+    Object.entries(checkedObj).forEach(([key, value]) => {
+      params += `/${key}=${value}`;
+    });
+    console.log(`/newsurvey${params}`);
+    navigate(`/newsurvey${params}`);
   };
 
   return (
@@ -92,7 +126,7 @@ const SurveySymptomsPage = () => {
             <div className="mt-15 flex flex-row" key={val}>
               <input
                 type="checkbox"
-                name=""
+                name={val}
                 id={`input-${idx}`}
                 ref={symptomsRef[idx]}
                 onChange={symptomsInputChangeHandler}
@@ -106,6 +140,20 @@ const SurveySymptomsPage = () => {
               </div>
             </div>
           ))}
+          <button
+            type="button"
+            className="w-172 border border-#535453 rounded-42 h-55 text-18 font-bold mt-20"
+            onClick={aboveBtnClickHandler}
+          >
+            이전
+          </button>
+          <button
+            type="button"
+            className="ml-36 w-465 bg-#FF6B6C rounded-42 h-55 text-18 font-bold text-prettywhite mt-20"
+            onClick={startBtnClickHandler}
+          >
+            시작하기
+          </button>
         </>
       )}
     </div>
