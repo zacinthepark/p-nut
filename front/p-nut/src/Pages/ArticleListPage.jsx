@@ -1,5 +1,4 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useLoaderData } from "react-router-dom";
 import axiosInterface from "../api/axiosInterface";
 import ArticleListThumbnailComponent from "../Components/ArticleListThumbnailComponent";
