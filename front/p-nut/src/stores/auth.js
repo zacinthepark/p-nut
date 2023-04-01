@@ -81,19 +81,25 @@ export const loginHandler = (data) => {
   };
 };
 
-export const logoutHandler = () => {
+export const logoutHandler = (navigate) => {
   console.log("logout handler start");
   return (dispatch) => {
     return new Promise((resolve) => {
       try {
         logoutAPI().then((response) => {
-          if (response.status !== 200) {
+          if (response.status !== 200 && response.status !== 202) {
             throw new Error(response.data.message);
           }
 
-          console.log("logoutAPI: ", response.data);
-
-          dispatch(authActions.logout());
+          console.log("logoutAPI: ", response);
+          if (response.status === 200) {
+            dispatch(authActions.logout());
+            navigate("/");
+          }
+          if (response.status === 202) {
+            dispatch(authActions.logout());
+            navigate("/login");
+          }
 
           dispatch(
             UIActions.changeNotification({
