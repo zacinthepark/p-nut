@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "../UI/Modal";
 import axios from "axios";
 // import dotenv from "dotenv";
+
+import foodTestAPI from "../api/foodTestAPI";
 
 const RecipeThumbnailComponent = (props) => {
   const { imgPath, title, kcal, mainIngredients, time, id } = props;
@@ -12,6 +14,29 @@ const RecipeThumbnailComponent = (props) => {
   // youtube api key
   // require("dotenv").config();
   // const key = process.env.YOUTUBE_KEY;
+
+  // FoodTestAPI를 위한 userEmail 가져오기
+  const state = JSON.parse(localStorage.getItem("persist:root"));
+  const authentication = JSON.parse(state.auth);
+  const userEmail = authentication.authentication.email;
+
+  // FoodTestAPI
+  const foodTest = async () => {
+    try {
+      // foodID 바꾸기
+      const response = await foodTestAPI(13, userEmail);
+      console.log("Test response: ", response.data.data);
+
+      setFood(response.data.data);
+    } catch (err) {
+      console.log("error: ", err);
+    }
+  };
+  const [food, setFood] = useState(null);
+
+  useEffect(() => {
+    foodTest();
+  }, []);
 
   const openModal = (event) => {
     event.stopPropagation();
@@ -37,14 +62,7 @@ const RecipeThumbnailComponent = (props) => {
 
   return (
     <div>
-      {data && (
-        <Modal
-          close={closeModal}
-          foodId={id}
-          foodTitle={title}
-          searchResult={data}
-        />
-      )}
+      {data && <Modal close={closeModal} searchResult={data} food={food} />}
       <img
         className="cursor-pointer"
         onClick={openModal}

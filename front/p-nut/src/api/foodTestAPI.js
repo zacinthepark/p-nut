@@ -3,7 +3,7 @@ import axios from "axios";
 async function foodTestAPI(foodId, userEmail) {
   const response = await axios({
     method: "get",
-    baseURL: "https://pnut.site/api/",
+    baseURL: "http://j8a704.p.ssafy.io:8000/",
     url: "/foods/info",
     params: {
       food_id: foodId,
