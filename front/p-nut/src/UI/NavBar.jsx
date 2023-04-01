@@ -35,7 +35,7 @@ const NavBar = () => {
     <div className="fixed z-50 flex w-full p-3 h-60 bg-white/80">
       <div className="flex items-center w-full justify-evenly">
         <img
-          className="h-50 hover:border hover:border-white hover:rounded-xl"
+          className="cursor-pointer h-50 hover:border hover:border-transparent hover:rounded-5xl"
           src="/assets/Logo1.png"
           alt="logo"
           onClick={goToMain}
