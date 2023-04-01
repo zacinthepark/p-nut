@@ -95,18 +95,17 @@ const SurveyRecommendPage = (props) => {
         </div>
         {/* # 영양소 카드 컴포넌트 */}
         <div className="py-30 ">
-          {dummyData.map((test) => (
+          {data.foodNutrient.map((nutrient, index) => (
             <SurveyCardComponent
-              title={test.title}
-              tag1={test.tag1}
-              tag2={test.tag2}
-              guidetitle={test.guidetitle}
-              guidecontext={test.guidecontext}
-              nutrienttitle={test.nutrienttitle}
-              nutrientcontext={test.nutrientcontext}
-              key={`${test.id}`}
-              initialExpanded={test.id === 3}
-              additionalClass={test.id === 3 ? "rounded-b-lg" : ""}
+              title={nutrient[0].name}
+              tag1={nutrient[0].tag1}
+              tag2={nutrient[0].tag2}
+              guidecontext={nutrient[0].guide}
+              nutrientcontext={nutrient[0].description}
+              key={`${index} - ${nutrient[0].name}`}
+              initialExpanded={nutrient[0].id === 3}
+              additionalClass={nutrient[0].id === 3 ? "rounded-b-lg" : ""}
+              nutrientfood={nutrient[1]}
             />
           ))}
         </div>
