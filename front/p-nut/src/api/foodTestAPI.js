@@ -1,4 +1,5 @@
 import axiosInterface from "./axiosInterface";
+import axios from "axios";
 
 async function foodTestAPI(foodId, userEmail) {
   const response = await axios({
@@ -9,8 +10,8 @@ async function foodTestAPI(foodId, userEmail) {
     params: {
       food_id: foodId,
       user_email: userEmail,
-    }
-  );
+    },
+  });
   if (response.status === 200) {
     return response;
   }
