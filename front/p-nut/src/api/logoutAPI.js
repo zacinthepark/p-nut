@@ -21,6 +21,7 @@ async function logoutAPI() {
     url: "/users/check",
     headers: {
       "access-token": accessToken,
+      // "access-token": "asdasd",
     },
   });
 
