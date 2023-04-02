@@ -88,6 +88,7 @@ const SurveyCardComponent = (props) => {
                 <SurveyCardThumbnailComponent
                   imgPath={food.url}
                   foodTitle={food.name}
+                  foodId={food.food_id}
                   key={`${index} - ${food.name}`}
                 />
               ))}

@@ -13,46 +13,6 @@ const SurveyRecommendPage = (props) => {
   const data = useLoaderData();
   console.log("data: ", data);
 
-  // dummy data
-  const dummyData = [
-    {
-      title: "비타민D",
-      tag1: "# 유산균 증식 및 유해균 억제",
-      tag2: "# 유산균 증식 및 유해균 억제",
-      guidetitle: "비타민 D는 아침에 먹어야해요요",
-      guidecontext:
-        "비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요",
-      nutrienttitle: "비타민 D는 어떤게 좋아여",
-      nutrientcontext:
-        "비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요",
-      id: 1,
-    },
-    {
-      title: "비타민D",
-      tag1: "# 유산균 증식 및 유해균 억제",
-      tag2: "# 유산균 증식 및 유해균 억제",
-      guidetitle: "비타민 D는 아침에 먹어야해요요",
-      guidecontext:
-        "비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요",
-      nutrienttitle: "비타민 D는 어떤게 좋아여",
-      nutrientcontext:
-        "비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요",
-      id: 2,
-    },
-    {
-      title: "비타민D",
-      tag1: "# 유산균 증식 및 유해균 억제",
-      tag2: "# 유산균 증식 및 유해균 억제",
-      guidetitle: "비타민 D는 아침에 먹어야해요요",
-      guidecontext:
-        "비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요",
-      nutrienttitle: "비타민 D는 어떤게 좋아여",
-      nutrientcontext:
-        "비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요비타민 D는 아침에 먹어야해요요",
-      id: 3,
-    },
-  ];
-
   return (
     <div className="w-full flex justify-center text-#2B2C2B ">
       <div className="flex flex-col w-1200">
@@ -83,6 +43,7 @@ const SurveyRecommendPage = (props) => {
                   <SurveyCardThumbnailComponent
                     imgPath={food.url}
                     foodTitle={food.name}
+                    foodId={food.food_id}
                     key={`${index} - ${food.name}`}
                   />
                 ))}
