@@ -1,6 +1,7 @@
 import axios from "axios";
 import store from "../stores";
 import { updateTokenHandler, removeTokenHandler } from "../stores/auth";
+import { baseURL } from "./baseURL";
 
 /** axiosInterface is using axios module.
  * This is just to help easily fetch easly axios's argument.
