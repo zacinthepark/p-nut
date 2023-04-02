@@ -1,12 +1,6 @@
 import React from "react";
-// import { useDispatch } from "react-redux";
-// import { logoutHandler } from "../stores/auth";
 
 const Sidebar = ({ activeTab, setActiveTab }) => {
-  // const dispatch = useDispatch();
-  // const logout = () => {
-  //   dispatch(logoutHandler());
-  // };
   return (
     <div className="flex justify-center w-full text-center">
       <div className="flex flex-col w-250 space-y-50 my-75">
