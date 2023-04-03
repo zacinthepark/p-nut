@@ -69,7 +69,7 @@ const RecipeThumbnailComponent = (props) => {
       />
       <div className="flex items-end my-10 space-x-5 text-end truncate">
         <p className="text-xl font-bold">{title}</p>
-        <p className="bg-#FF6B6C/70 text-end text-white px-10 py-3 rounded-full">
+        <p className="bg-#FF6B6C/70 text-end text-white px-10 py-3 rounded-full ">
           {Math.round(kcal)} kcal
         </p>
       </div>
