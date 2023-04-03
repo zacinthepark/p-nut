@@ -67,10 +67,10 @@ const RecipeThumbnailComponent = (props) => {
         onClick={openModal}
         style={{ backgroundImage: `url(${imgPath})` }}
       />
-      <div className="flex items-end my-10 space-x-5 text-end">
+      <div className="flex items-end my-10 space-x-5 text-end truncate">
         <p className="text-xl font-bold">{title}</p>
         <p className="bg-#FF6B6C/70 text-end text-white px-10 py-3 rounded-full">
-          {kcal} kcal
+          {Math.round(kcal)} kcal
         </p>
       </div>
       <div className="text-lg text-gray-700">주 재료 : {mainIngredients}</div>

@@ -138,7 +138,7 @@ const SymptomsRecommandPage = () => {
           <RecipeThumbnailComponent
             imgPath={food.url}
             title={food.name}
-            kcal={food.kcal}
+            kcal={food.cal}
             mainIngredients={food.ingredients}
             time={food.time}
             foodId={food.food_id}
