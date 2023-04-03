@@ -1,18 +1,8 @@
-import React, {
-  Fragment,
-  useState,
-  useReducer,
-  useRef,
-  useEffect,
-} from "react";
+import React, { Fragment, useState, useReducer, useEffect } from "react";
 import checkDuplicationAPI from "../api/checkDuplicationAPI";
 import { imageBaseURL } from "../api/baseURL";
 
 const UpdateUserData = ({ userInfo }) => {
-  const nicknameInputRef = useRef();
-  const nameInputRef = useRef();
-  const ageInputRef = useRef();
-
   const [nicknameIsTouched, setNicknameIsTouched] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
 
@@ -118,21 +108,21 @@ const UpdateUserData = ({ userInfo }) => {
 
   const [nicknameState, dispatchNickname] = useReducer(nicknameReducer, {
     value: userInfo.nickname,
-    isValid: false,
+    isValid: true,
     isDuplicated: false,
   });
   const [nameState, dispatchName] = useReducer(nameReducer, {
     value: userInfo.name,
-    isValid: false,
+    isValid: true,
   });
   const [ageState, dispatchAge] = useReducer(ageReducer, {
     value: userInfo.age,
-    isValid: false,
+    isValid: true,
   });
   const [passwordState, dispatchPassword] = useReducer(passwordReducer, {
     password1: "",
     password2: "",
-    passwordMatched: false,
+    passwordMatched: true,
     passwordIsValid: false,
   });
 
@@ -175,14 +165,13 @@ const UpdateUserData = ({ userInfo }) => {
   };
 
   useEffect(() => {
-    nicknameInputRef.current.value = userInfo.nickname;
-    nameInputRef.current.value = userInfo.name;
-    ageInputRef.current.value = userInfo.age;
-
     setIsFormValid(
-      nicknameState.isValid && nameState.isValid && ageState.isValid
+      nicknameState.isValid &&
+        nameState.isValid &&
+        ageState.isValid &&
+        passwordState.passwordMatched
     );
-  }, [nicknameState, nameState, ageState]);
+  }, [nicknameState, nameState, ageState, passwordState]);
 
   return (
     <Fragment>
@@ -203,7 +192,7 @@ const UpdateUserData = ({ userInfo }) => {
           />
         </div>
 
-        <div className="ml-150">
+        <div className="ml-200">
           <div className="flex flex-col">
             <label htmlFor="nickname" className="text-gray-800">
               닉네임
@@ -212,12 +201,10 @@ const UpdateUserData = ({ userInfo }) => {
               <input
                 type="text"
                 id="nickname"
-                className={`px-10 my-10 w-300 h-40 border-2 rounded-10 ${
-                  nicknameState.isValid ? "border-green-500" : "border-gray-300"
-                } focus:border-blue-500`}
+                className="px-10 my-10 w-277 h-40 border-2 border-gray rounded-10 focus:border-blue-500"
+                value={nicknameState.value}
                 onChange={nicknameChangeHandler}
                 onBlur={duplicateNicknameCheckHandler}
-                ref={nicknameInputRef}
               />
               {nicknameIsTouched &&
                 nicknameState.isDuplicated &&
@@ -242,21 +229,19 @@ const UpdateUserData = ({ userInfo }) => {
           </div>
 
           <div className="flex my-10">
-            <div className="flex flex-col flex-1">
+            <div className="flex flex-col">
               <label htmlFor="name" className="text-gray-800 mb-7">
                 이름 (실명)
               </label>
               <input
                 type="text"
                 id="name"
-                className={`px-10 w-120 h-40 border-2 rounded-10 focus:border-blue-500 ${
-                  nameState.isValid ? "border-green-500" : "border-gray-300"
-                }`}
+                className="px-10 w-120 h-40 border-2 border-gray rounded-10 focus:border-blue-500"
+                value={nameState.value}
                 onChange={nameChangeHandler}
-                ref={nameInputRef}
               />
             </div>
-            <div className="flex flex-col flex-1">
+            <div className="flex flex-col ml-40">
               <label htmlFor="gender" className="text-gray-800 mb-7">
                 성별
               </label>
@@ -270,18 +255,16 @@ const UpdateUserData = ({ userInfo }) => {
                 <option value="1">여성</option>
               </select>
             </div>
-            <div className="flex flex-col flex-1">
+            <div className="flex flex-col ml-40">
               <label htmlFor="age" className="text-gray-800 mb-7">
                 나이 (만)
               </label>
               <input
                 type="text"
                 id="age"
-                className={`px-10 w-120 h-40 border-2 rounded-10 focus:border-blue-500 ${
-                  ageState.isValid ? "border-green-500" : "border-gray-300"
-                }`}
+                className="px-10 w-120 h-40 border-2 border-gray rounded-10 focus:border-blue-500"
+                value={ageState.value}
                 onChange={ageChangeHandler}
-                ref={ageInputRef}
               />
             </div>
           </div>
@@ -294,7 +277,7 @@ const UpdateUserData = ({ userInfo }) => {
               <input
                 type="password"
                 id="password"
-                className="h-40 px-10 mt-10 text-gray-400 border-2 border-gray-300 w-150 rounded-10 font-noto focus:border-blue-500"
+                className="h-40 px-10 mt-10 text-gray-400 border-2 border-gray-300 w-205 rounded-10 font-noto focus:border-blue-500"
                 placeholder="********"
                 onChange={password1ChangeHandler}
               />
@@ -306,31 +289,27 @@ const UpdateUserData = ({ userInfo }) => {
               <input
                 type="password"
                 id="passwordcheck"
-                className={`px-10 mt-10 w-150 h-40 border-2 rounded-10 text-gray-400 font-noto ${
-                  passwordState.passwordIsValid
-                    ? "border-green-500"
-                    : "border-gray-300"
-                }`}
+                className="px-10 mt-10 w-205 h-40 border-2 border-gray rounded-10 text-gray-400 font-noto"
                 placeholder="********"
                 onChange={password2ChangeHandler}
               />
             </div>
-            {passwordState.passwordIsValid && (
+            {passwordState.passwordMatched && passwordState.passwordIsValid && (
               <span className="mt-40 ml-3 text-green-500 px-15">
                 일치합니다.
               </span>
             )}
           </div>
-          <button
-            type="submit"
-            className={`mx-130 mt-50 w-300 h-50 bg-red-400 rounded-xl text-white font-semibold ${
-              isFormValid ? "" : "opacity-50"
-            }`}
-            disabled={!isFormValid}
-          >
-            수정완료
-          </button>
         </div>
+        <button
+          type="submit"
+          className={`ml-280 mt-50 w-300 h-50 bg-red-400 rounded-xl text-white font-semibold ${
+            isFormValid ? "" : "opacity-50"
+          }`}
+          disabled={!isFormValid}
+        >
+          수정완료
+        </button>
       </form>
     </Fragment>
   );
