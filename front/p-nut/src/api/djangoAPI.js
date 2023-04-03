@@ -3,9 +3,9 @@ import axios from "axios";
 export default async function djangoAPI(
   method,
   url,
+  params = {},
   data = {},
-  headers = {},
-  params = {}
+  headers = {}
 ) {
   const baseURL = "http://j8a704.p.ssafy.io:8000";
   // django
