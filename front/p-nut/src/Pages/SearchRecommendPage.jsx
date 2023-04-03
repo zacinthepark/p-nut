@@ -1,17 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useLoaderData } from "react-router-dom";
 import { searchArrRequest } from "../stores/searchSlice";
 import { useAutoComplete } from "../hooks/useAutoComplete";
 import RecipeThumbnailComponent from "../Components/RecipeThumbnailComponent";
+import SelectBtn from "../UI/SelectBtn";
+import djangoAPI from "../api/djangoAPI";
 
 const SearchRecommendPage = () => {
   const dispatch = useDispatch();
+  const [tag10, food] = useLoaderData();
+  console.log(tag10);
+  console.log(food);
 
   const [searchQuery, setSearchQuery] = useState("");
   // 검색 버튼 눌리기 전에
   const [searched, setSearched] = useState(false);
   // 검색 결과
   const [searchResults, setSearchResults] = useState([]);
+  // 검색 타입
+  const [searchType, setSearchType] = useState("음식");
 
   const foodArr = useSelector((state) => state.search.foodArr);
   const ingredientArr = useSelector((state) => state.search.ingredientArr);
@@ -21,23 +29,7 @@ const SearchRecommendPage = () => {
     ingredientArr
   );
 
-  // 부족한 영양소 기준 재료를 가져와서 10개 슬라이싱
-  const tag10 = [
-    "계란",
-    "닭고기",
-    "두부",
-    "햄",
-    "김치",
-    "치즈",
-    "감자",
-    "소고기",
-    "돼지고기",
-    "참치",
-  ];
-
-  // const [tag10, setTag10] = useState();
-
-  // const email = useSelector((state) => state.auth.authentication.email);
+  const email = useSelector((state) => state.auth.authentication.email);
 
   useEffect(() => {
     dispatch(searchArrRequest());
@@ -48,114 +40,29 @@ const SearchRecommendPage = () => {
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
-    autoCompleteHandler(event.target.value);
+    if (event.target.value) {
+      autoCompleteHandler(event.target.value);
+      return;
+    }
+    setAutoCompleteArr("");
   };
 
+  // 검색 버튼
   const handleSearchClick = (event) => {
     event.preventDefault();
-    const results = [];
-    setSearchResults(results);
-    setSearched(true);
+    let typeInParams = "food";
+    if (searchType === "") {
+      typeInParams = "ingredient";
+    }
+    djangoAPI("GET", "foods/search", {
+      type: typeInParams,
+      keyword: searchQuery,
+    }).then((res) => {
+      console.log(res);
+      setSearchResults(res.data.data);
+      setSearched(true);
+    });
   };
-
-  const food = [
-    {
-      imgPath: "/assets/chicken.png",
-      title: "닭도리탕",
-      kcal: 356,
-      mainIngredients: ["닭", "감자", "양파", "파"],
-      time: 30,
-      id: 1,
-    },
-    {
-      imgPath: "/assets/chicken.png",
-      title: "닭도리탕",
-      kcal: 356,
-      mainIngredients: ["닭", "감자", "양파", "파"],
-      time: 30,
-      id: 2,
-    },
-    {
-      imgPath: "/assets/chicken.png",
-      title: "닭도리탕",
-      kcal: 356,
-      mainIngredients: ["닭", "감자", "양파", "파"],
-      time: 30,
-      id: 3,
-    },
-    {
-      imgPath: "/assets/chicken.png",
-      title: "닭도리탕",
-      kcal: 356,
-      mainIngredients: ["닭", "감자", "양파", "파"],
-      time: 30,
-      id: 4,
-    },
-    {
-      imgPath: "/assets/chicken.png",
-      title: "닭도리탕",
-      kcal: 356,
-      mainIngredients: ["닭", "감자", "양파", "파"],
-      time: 30,
-      id: 5,
-    },
-    {
-      imgPath: "/assets/chicken.png",
-      title: "닭도리탕",
-      kcal: 356,
-      mainIngredients: ["닭", "감자", "양파", "파"],
-      time: 30,
-      id: 6,
-    },
-    {
-      imgPath: "/assets/chicken.png",
-      title: "닭도리탕",
-      kcal: 356,
-      mainIngredients: ["닭", "감자", "양파", "파"],
-      time: 30,
-      id: 7,
-    },
-    {
-      imgPath: "/assets/chicken.png",
-      title: "닭도리탕",
-      kcal: 356,
-      mainIngredients: ["닭", "감자", "양파", "파"],
-      time: 30,
-      id: 8,
-    },
-    {
-      imgPath: "/assets/chicken.png",
-      title: "닭도리탕",
-      kcal: 356,
-      mainIngredients: ["닭", "감자", "양파", "파"],
-      time: 30,
-      id: 9,
-    },
-    {
-      imgPath: "/assets/chicken.png",
-      title: "닭도리탕",
-      kcal: 356,
-      mainIngredients: ["닭", "감자", "양파", "파"],
-      time: 30,
-      id: 10,
-    },
-    {
-      imgPath: "/assets/chicken.png",
-      title: "닭도리탕",
-      kcal: 356,
-      mainIngredients: ["닭", "감자", "양파", "파"],
-      time: 30,
-      id: 11,
-    },
-    {
-      imgPath: "/assets/chicken.png",
-      title: "닭도리탕",
-      kcal: 356,
-      mainIngredients: ["닭", "감자", "양파", "파"],
-      time: 30,
-      id: 12,
-    },
-  ];
 
   // pills 클릭 시 bg color 바뀌기
   const [selectedPills, setSelectedPills] = useState([]);
@@ -170,6 +77,7 @@ const SearchRecommendPage = () => {
     }
   };
 
+  // 자동완성 관련 로직
   const [autoCompleteArr, setAutoCompleteArr] = useState([]);
 
   const autoCompleteHandler = (input) => {
@@ -184,8 +92,14 @@ const SearchRecommendPage = () => {
         arr.push(matchingRegex);
       }
     }
+    arr.sort((prev, cur) => {
+      if (prev.index > cur.index) return 1;
+      return -1;
+    });
     setAutoCompleteArr(arr);
   };
+
+  console.log(autoCompleteArr);
 
   return (
     <div>
@@ -201,29 +115,8 @@ const SearchRecommendPage = () => {
         />
         <div className="absolute inset-0 bg-black/40" />
         <div className="absolute text-center text-white inset-9">
-          <div className="h-40" />
-          <p className="text-3xl font-semibold ">음식을 검색해보세요!</p>
-          <div className="h-40 " />
-          <div className="flex justify-center w-full">
-            <form className="relative">
-              <input
-                className="block py-2 pr-3 text-xl font-bold text-white placeholder-gray-200 border border-gray-300 rounded-full shadow-md placeholder:font-medium w-700 h-60 pl-50 bg-white/20"
-                type="text"
-                placeholder="음식이나 식재료를 검색해보세요"
-                value={searchQuery}
-                onChange={handleSearchChange}
-              />
-              <button type="button" onClick={handleSearchClick}>
-                <img
-                  src="assets\Search.png"
-                  alt=""
-                  className="absolute text-gray-400 top-1 mt-15 right-50 h-30"
-                />
-              </button>
-            </form>
-          </div>
-          <div className="h-20 " />
-          <div className="flex flex-col justify-center space-y-20">
+          <p className="text-3xl font-semibold my-40">음식을 검색해보세요!</p>
+          <div className="flex flex-col justify-center space-y-20 mb-20">
             <div className="flex mx-auto space-x-30">
               {tag10 &&
                 tag10.map((item, index) => (
@@ -239,39 +132,72 @@ const SearchRecommendPage = () => {
                 ))}
             </div>
           </div>
+          <div className="flex justify-center w-full">
+            <form className="relative w-700" onSubmit={handleSearchClick}>
+              <input
+                className="block py-2 pr-3 text-xl font-bold text-white placeholder-gray-200 border border-gray-300 rounded-full shadow-md placeholder:font-medium w-full h-60 pl-50 bg-white/20"
+                type="text"
+                placeholder="음식이나 식재료를 검색해보세요"
+                value={searchQuery}
+                onChange={handleSearchChange}
+              />
+              <div className="absolute text-gray-400 top-1 mt-15 right-10 flex flex-row">
+                <button type="button">
+                  <img src="assets\Search.png" alt="" className="h-30" />
+                </button>
+                <SelectBtn
+                  choiceFontColor="black"
+                  fontColor="gray-200"
+                  fontSize="xl"
+                  btnName={searchType}
+                  choiceArr={["음식", "재료"]}
+                  clickHandler={setSearchType}
+                />
+              </div>
+              {autoCompleteArr.length > 0 && (
+                <div className="block py-2 pr-3 text-xl font-bold border border-gray-300 rounded-40 shadow-md w-full pl-50 bg-white/20">
+                  {autoCompleteArr.map((key) => (
+                    <div key={key.input}>{key.input}</div>
+                  ))}
+                </div>
+              )}
+            </form>
+          </div>
         </div>
       </div>
       <div className="w-full flex justify-center text-#2B2C2B ">
         <div className="flex flex-col w-1200">
-          {!searched ? (
+          {!searched && (
             <div className="grid grid-cols-4 gap-56 w-1200 mb-50">
               {food.map((value) => (
                 <RecipeThumbnailComponent
-                  imgPath={value.imgPath}
-                  title={value.title}
+                  imgPath={value.url}
+                  title={value.name}
                   kcal={value.kcal}
-                  mainIngredients={value.mainIngredients}
+                  mainIngredients={value.ingredients}
                   time={value.time}
-                  id={value.id}
-                  key={`${value.id}`}
+                  id={value.food_id}
+                  key={`${value.food_id}`}
                 />
               ))}
             </div>
-          ) : searchResults.length > 0 ? (
+          )}
+          {searched && searchResults.length > 0 && (
             <div className="grid grid-cols-4 gap-56 w-1200 mb-50">
-              {food.map((value) => (
+              {searchResults.map((value) => (
                 <RecipeThumbnailComponent
-                  imgPath={value.imgPath}
-                  title={value.title}
+                  imgPath={value.url}
+                  title={value.name}
                   kcal={value.kcal}
-                  mainIngredients={value.mainIngredients}
+                  mainIngredients={value.ingredients}
                   time={value.time}
-                  id={value.id}
-                  key={`${value.id}`}
+                  id={value.food_id}
+                  key={`${value.food_id}`}
                 />
               ))}
             </div>
-          ) : (
+          )}
+          {searched && searchResults.length === 0 && (
             // 검색 결과가 없을 때
             <div className="flex flex-col justify-center h-350">
               <div className="w-full h-30" />
@@ -298,3 +224,33 @@ const SearchRecommendPage = () => {
 };
 
 export default SearchRecommendPage;
+
+export async function loader() {
+  const tagRes = await djangoAPI("get", "/foods/tag");
+  const tag10 = tagRes.data.data;
+  let food = [];
+
+  const setFood = new Promise((resolve) => {
+    tag10.forEach((key, idx) => {
+      djangoAPI("GET", "/foods/search", {
+        type: "ingredient",
+        keyword: key,
+      })
+        .then((res) => {
+          food = [...food, ...res.data.data];
+          console.log(res);
+        })
+        .finally(() => {
+          if (food.length > 12) {
+            resolve();
+          }
+          if (idx === 9) {
+            resolve();
+          }
+        });
+    });
+  });
+  await setFood;
+  const random12Food = food.slice(0, 12);
+  return [tag10, random12Food];
+}
