@@ -26,11 +26,12 @@ export default async function axiosInterface(
 
   // Authorization Required
   // https://gisastudy.tistory.com/127
-  if (headers.Authorization.trim() === "Bearer") {
-    return "token does not exist";
-  }
 
   if (headers.Authorization) {
+    if (headers.Authorization.trim() === "Bearer") {
+      return "token does not exist";
+    }
+
     const myInterceptor = axios.interceptors.response.use(
       (res) => {
         axios.interceptors.response.eject(myInterceptor);
