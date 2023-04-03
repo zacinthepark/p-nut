@@ -1,5 +1,6 @@
 import React, { Fragment, useState, useReducer, useEffect } from "react";
 import checkDuplicationAPI from "../api/checkDuplicationAPI";
+import putUserInfo from "../api/putUserInfo";
 import { imageBaseURL } from "../api/baseURL";
 
 const UpdateUserData = ({ userInfo }) => {
@@ -164,6 +165,17 @@ const UpdateUserData = ({ userInfo }) => {
     }
   };
 
+  const submitHandler = (event) => {
+    event.preventDefault();
+    putUserInfo(
+      nicknameState.value,
+      nameState.value,
+      userInputGender,
+      ageState.value,
+      passwordState.password2
+    );
+  };
+
   useEffect(() => {
     setIsFormValid(
       nicknameState.isValid &&
@@ -178,7 +190,7 @@ const UpdateUserData = ({ userInfo }) => {
       <p className="mt-5 text-xl font-bold text-gray-800 ml-30">
         회원정보 수정
       </p>
-      <form>
+      <form onSubmit={submitHandler}>
         <div className="flex flex-col items-center mt-40">
           <img
             className="rounded-full shadow-md w-125"
