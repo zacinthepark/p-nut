@@ -10,8 +10,6 @@ import djangoAPI from "../api/djangoAPI";
 const SearchRecommendPage = () => {
   const dispatch = useDispatch();
   const [tag10, food] = useLoaderData();
-  console.log(tag10);
-  console.log(food);
 
   const [searchQuery, setSearchQuery] = useState("");
   // 검색 버튼 눌리기 전에
@@ -33,9 +31,6 @@ const SearchRecommendPage = () => {
 
   useEffect(() => {
     dispatch(searchArrRequest());
-    // djangoAPI("get", "/ingredients/tags", {
-    //   email,
-    // }).then((res) => console.log(res));
   }, [dispatch]);
 
   const handleSearchChange = (event) => {
@@ -44,12 +39,14 @@ const SearchRecommendPage = () => {
       autoCompleteHandler(event.target.value);
       return;
     }
-    setAutoCompleteArr("");
+    setAutoCompleteArr([]);
+    setAutoCompleteArrShow(false);
   };
 
   // 검색 버튼
   const handleSearchClick = (event) => {
     event.preventDefault();
+    setAutoCompleteArrShow(false);
     let typeInParams = "food";
     if (searchType === "") {
       typeInParams = "ingredient";
@@ -58,33 +55,58 @@ const SearchRecommendPage = () => {
       type: typeInParams,
       keyword: searchQuery,
     }).then((res) => {
-      console.log(res);
       setSearchResults(res.data.data);
       setSearched(true);
     });
   };
 
   // pills 클릭 시 bg color 바뀌기
-  const [selectedPills, setSelectedPills] = useState([]);
+  const [selectedPills, setSelectedPills] = useState(Array(10).fill(false));
 
-  const handlePillClick = (index) => {
-    if (selectedPills.includes(index)) {
-      setSelectedPills(
-        selectedPills.filter((pillIndex) => pillIndex !== index)
-      );
+  const handlePillClick = (index, tagClass) => {
+    if (selectedPills[index]) {
+      setSelectedPills((prev) => {
+        prev[index] = false;
+        return prev;
+      });
     } else {
-      setSelectedPills([...selectedPills, index]);
+      setSelectedPills((prev) => {
+        for (let i = 0; i < 10; i += 1) {
+          prev[i] = false;
+        }
+        prev[index] = true;
+        return prev;
+      });
     }
+
+    setAutoCompleteArrShow(false);
+
+    for (let i = tagClass.length - 1; i >= 0; i -= 1) {
+      if (tagClass[i] === "bg-#FF6B6C") {
+        setSearchResults(null);
+        setSearched(false);
+        return;
+      }
+    }
+
+    djangoAPI("GET", "foods/search", {
+      type: "ingredient",
+      keyword: tag10[index],
+    }).then((res) => {
+      setSearchResults(res.data.data);
+      setSearched(true);
+    });
   };
 
   // 자동완성 관련 로직
   const [autoCompleteArr, setAutoCompleteArr] = useState([]);
+  const [autoCompleteArrShow, setAutoCompleteArrShow] = useState(false);
 
   const autoCompleteHandler = (input) => {
     const regex = createFuzzyMatcher(input);
     const arr = [];
     for (let i = 0; totalTitleArr.length > i; i += 1) {
-      if (arr.length >= 10) {
+      if (arr.length >= 5) {
         break;
       }
       const matchingRegex = totalTitleArr[i].match(regex);
@@ -97,14 +119,13 @@ const SearchRecommendPage = () => {
       return -1;
     });
     setAutoCompleteArr(arr);
+    setAutoCompleteArrShow(true);
   };
-
-  console.log(autoCompleteArr);
 
   return (
     <div>
       {/* 동영상 헤더 */}
-      <div className="relative mx-auto overflow-hidden h-380 mb-50">
+      <div className="relative mx-auto overflow-hidden h-400 mb-50">
         <video
           loop
           muted
@@ -120,10 +141,15 @@ const SearchRecommendPage = () => {
             <div className="flex mx-auto space-x-30">
               {tag10 &&
                 tag10.map((item, index) => (
-                  <div key={index} onClick={() => handlePillClick(index)}>
+                  <div
+                    key={item}
+                    onClick={(e) => {
+                      handlePillClick(index, e.target.classList);
+                    }}
+                  >
                     <p
                       className={`border border-white rounded-full w-fit px-15 py-8 ${
-                        selectedPills.includes(index) ? "bg-#FF6B6C" : ""
+                        selectedPills[Number(index)] ? "bg-#FF6B6C" : ""
                       }`}
                     >
                       {item}
@@ -135,11 +161,16 @@ const SearchRecommendPage = () => {
           <div className="flex justify-center w-full">
             <form className="relative w-700" onSubmit={handleSearchClick}>
               <input
-                className="block py-2 pr-3 text-xl font-bold text-white placeholder-gray-200 border border-gray-300 rounded-full shadow-md placeholder:font-medium w-full h-60 pl-50 bg-white/20"
+                className={`block py-2 pr-3 text-xl font-bold text-white placeholder-gray-200 border border-gray-300 rounded-t-30 shadow-md placeholder:font-medium w-full h-60 pl-50 bg-white/20 ${
+                  (!autoCompleteArrShow || autoCompleteArr.length === 0) &&
+                  "rounded-b-30"
+                }`}
                 type="text"
                 placeholder="음식이나 식재료를 검색해보세요"
                 value={searchQuery}
                 onChange={handleSearchChange}
+                onBlur={() => setAutoCompleteArrShow(false)}
+                onFocus={() => setAutoCompleteArrShow(true)}
               />
               <div className="absolute text-gray-400 top-1 mt-15 right-10 flex flex-row">
                 <button type="button">
@@ -154,8 +185,8 @@ const SearchRecommendPage = () => {
                   clickHandler={setSearchType}
                 />
               </div>
-              {autoCompleteArr.length > 0 && (
-                <div className="block py-2 pr-3 text-xl font-bold border border-gray-300 rounded-40 shadow-md w-full pl-50 bg-white/20">
+              {autoCompleteArrShow && autoCompleteArr.length > 0 && (
+                <div className="block py-2 pr-3 text-xl font-bold border border-gray-300 rounded-b-30 shadow-md w-full pl-50 bg-white/20 relative z-10">
                   {autoCompleteArr.map((key) => (
                     <div key={key.input}>{key.input}</div>
                   ))}
@@ -165,7 +196,7 @@ const SearchRecommendPage = () => {
           </div>
         </div>
       </div>
-      <div className="w-full flex justify-center text-#2B2C2B ">
+      <div className="w-full flex justify-center text-#2B2C2B relative z-9">
         <div className="flex flex-col w-1200">
           {!searched && (
             <div className="grid grid-cols-4 gap-56 w-1200 mb-50">
@@ -238,7 +269,6 @@ export async function loader() {
       })
         .then((res) => {
           food = [...food, ...res.data.data];
-          console.log(res);
         })
         .finally(() => {
           if (food.length > 12) {
