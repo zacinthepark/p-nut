@@ -11,6 +11,10 @@ const UpdateUserData = ({ userInfo }) => {
   const [isFormValid, setIsFormValid] = useState(false);
 
   const [userInputGender, setUserInputGender] = useState(userInfo.gender);
+  const [oldProfileImageURL, setOldProfileImageURL] = useState(
+    `${imageBaseURL}/${userInfo.profile_image_url}`
+  );
+  const [newProfileImageURL, setNewProfileImageURL] = useState();
   const [userProfileImage, setUserProfileImage] = useState();
 
   const nicknameReducer = (state, action) => {
@@ -171,7 +175,15 @@ const UpdateUserData = ({ userInfo }) => {
 
   const uploadImage = (event) => {
     console.log("image uploaded: ", event.target.files[0]);
-    setUserProfileImage(event.target.files[0]);
+    const file = event.target.files[0];
+    setUserProfileImage(file);
+
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+    fileReader.onload = (data) => {
+      // console.log("fileReader data: ", data);
+      setNewProfileImageURL(data.target.result);
+    };
   };
 
   const submitHandler = async (event) => {
@@ -186,12 +198,13 @@ const UpdateUserData = ({ userInfo }) => {
     );
     if (response.status === 200) {
       setNicknameIsTouched(false);
+      setNewProfileImageURL();
+      setOldProfileImageURL(newProfileImageURL);
       navigate("/mypage");
     }
   };
 
   useEffect(() => {
-    console.log("nicknameState: ", nicknameState);
     setIsFormValid(
       nicknameState.isValid &&
         nameState.isValid &&
@@ -208,8 +221,8 @@ const UpdateUserData = ({ userInfo }) => {
       <form onSubmit={submitHandler}>
         <div className="flex flex-col items-center mt-40">
           <img
-            className="rounded-full shadow-md w-125"
-            src={`${imageBaseURL}/${userInfo.profile_image_url}`}
+            className="rounded-full shadow-md h-125 w-125"
+            src={newProfileImageURL || oldProfileImageURL}
             alt=""
           />
           <label
