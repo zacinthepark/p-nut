@@ -162,17 +162,24 @@ const SurveyQuestionsPage = () => {
       </div>
       {question1Data &&
         question1Data.map((content, idx) => (
-          <div className="flex flex-row mt-15" key={content}>
-            <input
-              type="text"
-              name={content}
-              id={`input-0-${idx}`}
-              ref={inputRef[0][idx]}
-              className="border w-30"
-              onChange={inputChangeHandler}
-            />
+          <div className="flex flex-row mt-15 justify-between " key={content}>
             <div className="text-19 ml-13" id={`0-${idx}`}>
               {content}
+            </div>
+            <div className="flex space-x-10">
+              <p>0</p>
+              <input
+                className="w-150 bg-gray-200 rounded appearance-none cursor-pointer "
+                type="range"
+                min="0"
+                max="3"
+                step="1"
+                name={content}
+                id={`input-0-${idx}`}
+                ref={inputRef[0][idx]}
+                onChange={inputChangeHandler}
+              />
+              <p>3</p>
             </div>
           </div>
         ))}
@@ -181,17 +188,24 @@ const SurveyQuestionsPage = () => {
       </div>
       {question2Data &&
         question2Data.map((content, idx) => (
-          <div className="flex flex-row mt-15" key={content}>
-            <input
-              type="text"
-              name={content}
-              id={`input-1-${idx}`}
-              ref={inputRef[1][idx]}
-              className="border w-30"
-              onChange={inputChangeHandler}
-            />
+          <div className="flex flex-row mt-15 justify-between " key={content}>
             <div className="text-19 ml-13" id={`1-${idx}`}>
               {content}
+            </div>
+            <div className="flex space-x-10">
+              <p>0</p>
+              <input
+                className="w-150 bg-gray-200 rounded appearance-none cursor-pointer "
+                type="range"
+                min="0"
+                max="3"
+                step="1"
+                name={content}
+                id={`input-1-${idx}`}
+                ref={inputRef[1][idx]}
+                onChange={inputChangeHandler}
+              />
+              <p>3</p>
             </div>
           </div>
         ))}
@@ -200,17 +214,24 @@ const SurveyQuestionsPage = () => {
       </div>
       {question3Data &&
         question3Data.map((content, idx) => (
-          <div className="flex flex-row mt-15" key={content}>
-            <input
-              type="text"
-              name={content}
-              id={`input-2-${idx}`}
-              ref={inputRef[2][idx]}
-              className="border w-30"
-              onChange={inputChangeHandler}
-            />
+          <div className="flex flex-row mt-15 justify-between " key={content}>
             <div className="text-19 ml-13" id={`2-${idx}`}>
               {content}
+            </div>
+            <div className="flex space-x-10">
+              <p>0</p>
+              <input
+                className="w-150 bg-gray-200 rounded appearance-none cursor-pointer "
+                type="range"
+                min="0"
+                max="3"
+                step="1"
+                name={content}
+                id={`input-2-${idx}`}
+                ref={inputRef[2][idx]}
+                onChange={inputChangeHandler}
+              />
+              <p>3</p>
             </div>
           </div>
         ))}
