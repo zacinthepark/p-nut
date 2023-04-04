@@ -198,8 +198,10 @@ const UpdateUserData = ({ userInfo }) => {
     );
     if (response.status === 200) {
       setNicknameIsTouched(false);
+      if (newProfileImageURL) {
+        setOldProfileImageURL(newProfileImageURL);
+      }
       setNewProfileImageURL();
-      setOldProfileImageURL(newProfileImageURL);
       navigate("/mypage");
     }
   };
