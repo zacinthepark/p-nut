@@ -1,26 +1,29 @@
 import React, { useState } from "react";
 
+import deletepostAPI from "../api/deletepostAPI";
+
 const MyPageRecipeBlock = (props) => {
   const { imgPath, recipeTitle, recipeId } = props;
 
   const [isHovering, setIsHovering] = useState(false);
   const [isTrashHovering, setIsTrashHovering] = useState(false);
   const [isEditHovering, setIsEditHovering] = useState(false);
-
   const handleTrashMouseEnter = () => {
     setIsTrashHovering(true);
   };
-
   const handleTrashMouseLeave = () => {
     setIsTrashHovering(false);
   };
-
   const handleEditMouseEnter = () => {
     setIsEditHovering(true);
   };
-
   const handleEditMouseLeave = () => {
     setIsEditHovering(false);
+  };
+
+  const deletePost = async () => {
+    const response = await deletepostAPI(recipeId);
+    console.log("delete response: ", response);
   };
 
   return (
@@ -41,6 +44,7 @@ const MyPageRecipeBlock = (props) => {
               alt=""
               onMouseEnter={handleTrashMouseEnter}
               onMouseLeave={handleTrashMouseLeave}
+              onClick={deletePost}
             />
           </div>
           <div className="flex justify-between p-10 text-center">
