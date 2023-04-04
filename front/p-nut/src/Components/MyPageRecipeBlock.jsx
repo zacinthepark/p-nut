@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { useNavigateToTop } from "../hooks/useNavigateToTop";
 
 import deletepostAPI from "../api/deletepostAPI";
 
 const MyPageRecipeBlock = (props) => {
+  const navigate = useNavigateToTop();
+
   const { imgPath, recipeTitle, recipeId } = props;
 
   const [isHovering, setIsHovering] = useState(false);
@@ -21,6 +24,9 @@ const MyPageRecipeBlock = (props) => {
     setIsEditHovering(false);
   };
 
+  const goToPostDetail = (postId) => {
+    navigate(`/board/${postId}`);
+  };
   const deletePost = async () => {
     const response = await deletepostAPI(recipeId);
     console.log("delete response: ", response);
@@ -61,6 +67,7 @@ const MyPageRecipeBlock = (props) => {
               alt=""
               onMouseEnter={handleEditMouseEnter}
               onMouseLeave={handleEditMouseLeave}
+              onClick={(event) => goToPostDetail(recipeId)}
             />
           </div>
         </div>
