@@ -4,8 +4,11 @@ import { useNavigate } from "react-router-dom";
 import symptomsAPI from "../api/symptomsAPI";
 import OptionSelectComponent from "../Components/OptionSelectComponent";
 import { useDivInputEventHandler } from "../hooks/useInputDivHandler";
+import AlertModal from "../UI/AlertModal";
 
 const SurveySymptomsPage = () => {
+  // 모달 관련
+  const [showAlertModal, setShowAlertModal] = useState(false);
   const token = useSelector((state) => state.auth.authentication.token);
   const [data, setData] = useState();
   const [nickname, setNickname] = useState();
@@ -48,11 +51,11 @@ const SurveySymptomsPage = () => {
   };
 
   return (
-    <div className="w-674 h-768">
+    <div className="w-674 py-50">
       {data && (
         <>
           <div className="text-22 font-bold text-#7F807F mb-18">질문 1</div>
-          <div className="text-22 font-bold mb-18">
+          <div className="font-bold text-22 mb-18">
             {nickname}님이 불편하시고 걱정되는 3가지를 선택하세요.
           </div>
           <div className="text-22 text-#7F807F pb-18">

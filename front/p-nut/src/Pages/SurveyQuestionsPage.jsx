@@ -148,27 +148,27 @@ const SurveyQuestionsPage = () => {
   };
 
   return (
-    <div className="py-31">
+    <div className="py-50">
       <div className="text-22 font-bold text-#7F807F mb-18">질문 2</div>
-      <div className="text-22 font-bold mb-18">
+      <div className="font-bold text-22 mb-18">
         {nickname}님이 느끼시는 불편함의 정도를 말해주세요.
       </div>
       <div className="text-22 text-#7F807F pb-18">
         0 = 이상 없음. 1 = 조금 불편함. 2 = 관리가 필요할 것 같음. 3 = 불편함
       </div>
       <div className="grey-underbar" />
-      <div className="mt-15 text-24 font-bold">
+      <div className="font-bold mt-15 text-24">
         {questionObj.questionThema[0]}
       </div>
       {question1Data &&
         question1Data.map((content, idx) => (
-          <div className="mt-15 flex flex-row" key={content}>
+          <div className="flex flex-row mt-15" key={content}>
             <input
               type="text"
               name={content}
               id={`input-0-${idx}`}
               ref={inputRef[0][idx]}
-              className="w-30 border"
+              className="border w-30"
               onChange={inputChangeHandler}
             />
             <div className="text-19 ml-13" id={`0-${idx}`}>
@@ -176,18 +176,18 @@ const SurveyQuestionsPage = () => {
             </div>
           </div>
         ))}
-      <div className="mt-15 text-24 font-bold">
+      <div className="font-bold mt-15 text-24">
         {questionObj.questionThema[1]}
       </div>
       {question2Data &&
         question2Data.map((content, idx) => (
-          <div className="mt-15 flex flex-row" key={content}>
+          <div className="flex flex-row mt-15" key={content}>
             <input
               type="text"
               name={content}
               id={`input-1-${idx}`}
               ref={inputRef[1][idx]}
-              className="w-30 border"
+              className="border w-30"
               onChange={inputChangeHandler}
             />
             <div className="text-19 ml-13" id={`1-${idx}`}>
@@ -195,18 +195,18 @@ const SurveyQuestionsPage = () => {
             </div>
           </div>
         ))}
-      <div className="mt-15 text-24 font-bold">
+      <div className="font-bold mt-15 text-24">
         {questionObj.questionThema[2]}
       </div>
       {question3Data &&
         question3Data.map((content, idx) => (
-          <div className="mt-15 flex flex-row" key={content}>
+          <div className="flex flex-row mt-15" key={content}>
             <input
               type="text"
               name={content}
               id={`input-2-${idx}`}
               ref={inputRef[2][idx]}
-              className="w-30 border"
+              className="border w-30"
               onChange={inputChangeHandler}
             />
             <div className="text-19 ml-13" id={`2-${idx}`}>
