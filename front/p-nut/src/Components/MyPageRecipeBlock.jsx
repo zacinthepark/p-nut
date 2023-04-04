@@ -6,7 +6,7 @@ import deletepostAPI from "../api/deletepostAPI";
 const MyPageRecipeBlock = (props) => {
   const navigate = useNavigateToTop();
 
-  const { imgPath, recipeTitle, recipeId } = props;
+  const { imgPath, recipeTitle, recipeId, onRecipeDelete } = props;
 
   const [isHovering, setIsHovering] = useState(false);
   const [isTrashHovering, setIsTrashHovering] = useState(false);
@@ -30,6 +30,9 @@ const MyPageRecipeBlock = (props) => {
   const deletePost = async () => {
     const response = await deletepostAPI(recipeId);
     console.log("delete response: ", response);
+    if (response.status === 200) {
+      onRecipeDelete(recipeId);
+    }
   };
 
   return (
