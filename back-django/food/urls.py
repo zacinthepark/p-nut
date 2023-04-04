@@ -16,5 +16,4 @@ urlpatterns = [
     path('nutrient', views.lack_of_nutrient),
     path('nutrient/', views.lack_of_nutrient),
     path('symptom/<symptom_id>', views.search_symptom),
-    path('symptom/<symptom_id>/', views.search_symptom),
 ]
