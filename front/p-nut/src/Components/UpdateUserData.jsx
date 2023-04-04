@@ -11,6 +11,7 @@ const UpdateUserData = ({ userInfo }) => {
   const [isFormValid, setIsFormValid] = useState(false);
 
   const [userInputGender, setUserInputGender] = useState(userInfo.gender);
+  const [userProfileImage, setUserProfileImage] = useState();
 
   const nicknameReducer = (state, action) => {
     if (action.type === "USER_INPUT") {
@@ -168,6 +169,11 @@ const UpdateUserData = ({ userInfo }) => {
     }
   };
 
+  const uploadImage = (event) => {
+    console.log("image uploaded: ", event.target.files[0]);
+    setUserProfileImage(event.target.files[0]);
+  };
+
   const submitHandler = async (event) => {
     event.preventDefault();
     const response = await putUserInfo(
@@ -175,7 +181,8 @@ const UpdateUserData = ({ userInfo }) => {
       nameState.value,
       userInputGender,
       ageState.value,
-      passwordState.password2
+      passwordState.password2,
+      userProfileImage
     );
     if (response.status === 200) {
       setNicknameIsTouched(false);
@@ -205,11 +212,24 @@ const UpdateUserData = ({ userInfo }) => {
             src={`${imageBaseURL}/${userInfo.profile_image_url}`}
             alt=""
           />
-          <img
+          <label
+            className="mt-20 mb-10 cursor-pointer text-sky-500 font-semibold"
+            htmlFor="profileImg"
+          >
+            프로필 이미지 변경
+          </label>
+          <input
+            type="file"
+            className="hidden"
+            accept="image/*"
+            id="profileImg"
+            onChange={uploadImage}
+          />
+          {/* <img
             className="relative transition duration-200 ease-in-out transform left-80 -top-40 hover:opacity-80"
             src="assets/imageUpdatePencil.png"
             alt=""
-          />
+          /> */}
         </div>
 
         <div className="ml-200">
@@ -268,7 +288,7 @@ const UpdateUserData = ({ userInfo }) => {
               <select
                 name="gender"
                 value={userInputGender}
-                className="h-40 border-2 border-gray-300 first-letter:px-10 w-120 rounded-10 focus:border-blue-500"
+                className="cursor-pointer h-40 border-2 border-gray-300 first-letter:px-10 w-120 rounded-10 focus:border-blue-500"
                 onChange={genderChangeHandler}
               >
                 <option value="0">남성</option>
