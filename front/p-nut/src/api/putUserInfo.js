@@ -73,7 +73,7 @@ async function putUserInfo(nickname, name, gender, age, password) {
     if (refreshResponse.status === 200) {
       accessToken = refreshResponse.data["access-token"];
 
-      console.log("response1");
+      console.log("putUserInfo successed!");
       const response1 = await axios({
         method: "put",
         baseURL: baseURL,
@@ -95,7 +95,7 @@ async function putUserInfo(nickname, name, gender, age, password) {
       return refreshResponse;
     }
   } else {
-    console.log("response2");
+    console.log("putUserInfo successed!");
     const response2 = await axios({
       method: "put",
       baseURL: baseURL,

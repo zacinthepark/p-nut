@@ -1,9 +1,12 @@
 import React, { Fragment, useState, useReducer, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import checkDuplicationAPI from "../api/checkDuplicationAPI";
 import putUserInfo from "../api/putUserInfo";
 import { imageBaseURL } from "../api/baseURL";
 
 const UpdateUserData = ({ userInfo }) => {
+  const navigate = useNavigate();
+
   const [nicknameIsTouched, setNicknameIsTouched] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
 
@@ -165,18 +168,23 @@ const UpdateUserData = ({ userInfo }) => {
     }
   };
 
-  const submitHandler = (event) => {
+  const submitHandler = async (event) => {
     event.preventDefault();
-    putUserInfo(
+    const response = await putUserInfo(
       nicknameState.value,
       nameState.value,
       userInputGender,
       ageState.value,
       passwordState.password2
     );
+    if (response.status === 200) {
+      setNicknameIsTouched(false);
+      navigate("/mypage");
+    }
   };
 
   useEffect(() => {
+    console.log("nicknameState: ", nicknameState);
     setIsFormValid(
       nicknameState.isValid &&
         nameState.isValid &&
