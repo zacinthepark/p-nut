@@ -9,6 +9,7 @@ import AlertModal from "../UI/AlertModal";
 const SurveySymptomsPage = () => {
   // 모달 관련
   const [showAlertModal, setShowAlertModal] = useState(false);
+
   const token = useSelector((state) => state.auth.authentication.token);
   const [data, setData] = useState();
   const [nickname, setNickname] = useState();
@@ -41,13 +42,25 @@ const SurveySymptomsPage = () => {
   };
 
   const startBtnClickHandler = () => {
-    let params = "";
-    Object.entries(checkedObj).forEach(([key, value]) => {
-      const transformValue = value.replace("/", "or");
-      params += `/${key}=${transformValue}`;
-    });
-    console.log(`/newsurvey${params}`);
-    navigate(`/newsurvey${params}`);
+    let selectedOptions = Object.entries(checkedObj)
+      .filter(([key, value]) => value !== "")
+      .map(([key, value]) => key);
+
+    if (selectedOptions.length < 3) {
+      setShowAlertModal(true);
+    } else {
+      let params = "";
+      selectedOptions.forEach((key) => {
+        const transformValue = checkedObj[key].replace("/", "or");
+        params += `/${key}=${transformValue}`;
+      });
+      console.log(`/newsurvey${params}`);
+      navigate(`/newsurvey${params}`);
+    }
+  };
+
+  const closeModal = () => {
+    setShowAlertModal(false);
   };
 
   return (
@@ -85,6 +98,13 @@ const SurveySymptomsPage = () => {
           >
             시작하기
           </button>
+          <AlertModal
+            open={showAlertModal}
+            close={closeModal}
+            onCheck={closeModal}
+          >
+            <p>3가지를 선택해주세요.</p>
+          </AlertModal>
         </>
       )}
     </div>
