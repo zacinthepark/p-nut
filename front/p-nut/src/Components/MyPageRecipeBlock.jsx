@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 const MyPageRecipeBlock = (props) => {
-  const { imgPath, foodTitle } = props;
+  const { imgPath, recipeTitle, recipeId } = props;
 
   const [isHovering, setIsHovering] = useState(false);
   const [isTrashHovering, setIsTrashHovering] = useState(false);
@@ -44,7 +44,7 @@ const MyPageRecipeBlock = (props) => {
             />
           </div>
           <div className="flex justify-between p-10 text-center">
-            <p className="text-lg text-white">{foodTitle}</p>
+            <p className="text-lg text-white">{recipeTitle}</p>
             <img
               className={`h-30 cursor-pointer transition-transform duration-200 ${
                 isEditHovering ? "scale-125" : ""

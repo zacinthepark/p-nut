@@ -1,30 +1,7 @@
 import React from "react";
 import MyPageRecipeBlock from "./MyPageRecipeBlock";
 
-const MyPageRecipe = () => {
-  const data = [
-    {
-      imgPath: "/assets/recipe_1.png",
-      foodTitle: "닭도리탕",
-      id: 1,
-    },
-    {
-      imgPath: "/assets/recipe_1.png",
-      foodTitle: "닭도리탕",
-      id: 2,
-    },
-    {
-      imgPath: "/assets/recipe_1.png",
-      foodTitle: "닭도리탕",
-      id: 3,
-    },
-    {
-      imgPath: "/assets/recipe_1.png",
-      foodTitle: "닭도리탕",
-      id: 4,
-    },
-  ];
-
+const MyPageRecipe = ({ myRecipe }) => {
   return (
     <div>
       <div className="flex items-center">
@@ -33,11 +10,12 @@ const MyPageRecipe = () => {
       </div>
       <div className="flex justify-center py-30">
         <div className="grid grid-cols-3 gap-20 ">
-          {data.map((food) => (
+          {myRecipe.map((recipe) => (
             <MyPageRecipeBlock
-              imgPath={food.imgPath}
-              foodTitle={food.foodTitle}
-              key={`${food.id}`}
+              imgPath={recipe.thumbnail_image_url}
+              recipeTitle={recipe.title}
+              recipeId={recipe.id}
+              key={`recipe-${recipe.id}`}
             />
           ))}
         </div>
