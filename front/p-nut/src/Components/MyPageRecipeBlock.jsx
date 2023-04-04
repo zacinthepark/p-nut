@@ -32,7 +32,11 @@ const MyPageRecipeBlock = (props) => {
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
-      <img className="object-cover shadow-md w-250" src={imgPath} alt="" />
+      <img
+        className="object-cover shadow-md w-full h-full"
+        src={imgPath}
+        alt=""
+      />
       {isHovering && (
         <div className="absolute inset-0 grid content-between w-full h-full grid-cols-1 rounded-10 bg-gray-800/50">
           <div className="flex justify-end w-full p-10">
