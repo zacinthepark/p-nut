@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import { symptomsQuestionAPI } from "../api/symptomsQuestionAPI";
 import axios from "axios";
 import axiosInterface from "../api/axiosInterface";
-import axios from "axios";
 
 const SurveyQuestionsPage = () => {
   const navigate = useNavigate();
@@ -12,6 +11,7 @@ const SurveyQuestionsPage = () => {
   const token = useSelector((state) => state.auth.authentication.token);
   const email = useSelector((state) => state.auth.authentication.email);
   const [inputValue, setInputValue] = useState([]);
+  console.log(inputValue);
   const prevAnswer = preAnswer
     .split("-")
     .slice(0, 3)
@@ -71,7 +71,12 @@ const SurveyQuestionsPage = () => {
   const inputChangeHandler = (e) => {
     console.log(e.target.value);
     const [tag, y, x] = e.target.id.split("-");
-    inputValue[y][x] = Number(e.target.value);
+    setInputValue((prev) => {
+      console.log(prev[y][x]);
+      prev[y][x] = Number(e.target.value);
+      console.log(prev[y][x]);
+      return { ...prev };
+    });
   };
 
   // 요청 고
