@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo, createRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { symptomsQuestionAPI } from "../api/symptomsQuestionAPI";
+import axios from "axios";
 import axiosInterface from "../api/axiosInterface";
 import axios from "axios";
 
