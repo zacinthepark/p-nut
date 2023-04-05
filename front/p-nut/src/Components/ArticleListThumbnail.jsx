@@ -27,7 +27,11 @@ const ArticleListThumbnail = (props) => {
         </div>
         <div className="font-bold text-22 mt-15 mb-9 ml-20">{title}</div>
         <div className="flex items-center ml-20">
-          <img src={profileImg} alt="" className="w-22 h-22" />
+          <img
+            src={profileImg}
+            alt="./assets/Article_circle.png"
+            className="rounded-full shadow-lg w-40 h-40"
+          />
           <div className="font-medium text-14 ml-5">{author}</div>
         </div>
       </Fragment>
@@ -43,7 +47,11 @@ const ArticleListThumbnail = (props) => {
       </div>
       <div className="font-bold text-22 mt-15 mb-9 ml-20">{title}</div>
       <div className="flex items-center ml-20">
-        <img src={profileImg} alt="" className="w-22 h-22" />
+        <img
+          src={profileImg}
+          alt="./assets/Article_circle.png"
+          className="rounded-full shadow-lg w-40 h-40"
+        />
         <div className="font-medium text-14 ml-5">{author}</div>
       </div>
     </Fragment>
