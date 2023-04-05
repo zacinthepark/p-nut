@@ -145,10 +145,7 @@ const SurveyQuestionsPage = () => {
     });
 
     await Promise.all([req1, req2, req3]);
-    await axios.get("/foods/calc", {
-      params: {
-        user_email: email
-      },
+    await axios.get(`/foods/calc?user_email=${email}`, {
       baseURL: "https://pnut.site"
     });
     navigate("/my-survey");
