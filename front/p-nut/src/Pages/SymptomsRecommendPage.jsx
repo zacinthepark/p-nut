@@ -5,7 +5,7 @@ import RecipeThumbnail from "../Components/RecipeThumbnail";
 import getSymptomsCategoryAPI from "../api/getSymptomsCategoryAPI";
 import getUserInfo from "../api/getUserInfo";
 
-const SymptomsRecommandPage = () => {
+const SymptomsRecommendPage = () => {
   const btnIcons = [
     {
       imgPath: "/assets/cate_all.png",
@@ -164,7 +164,7 @@ const SymptomsRecommandPage = () => {
   );
 };
 
-export default SymptomsRecommandPage;
+export default SymptomsRecommendPage;
 
 export async function loader() {
   console.log("Loading SymptomRecommend Page...");
