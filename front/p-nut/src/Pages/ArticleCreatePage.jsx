@@ -8,11 +8,12 @@ const ArticleCreatePage = () => {
   const subTitle = "font-semibold mb-24";
   const [orderArr, setOrderArr] = useState([1]);
   const [thumbnailImgFile, setThumbnailImgFile] = useState(null);
-  const [title, setTitle] = useState(null);
-  const [content, setContent] = useState(null);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
   const [cookingTime, setCookingTime] = useState(0);
-  const [ingredients, setIngredient] = useState(null);
+  const [ingredients, setIngredient] = useState("");
   const [quantity, setQuantity] = useState(1);
+
   const thumbnailInputRef = useRef(null);
   const token = useSelector((state) => state.auth.authentication.token);
 
@@ -30,6 +31,11 @@ const ArticleCreatePage = () => {
   const [stepContent, setStepContent] = useState([""]);
   const [stepImgFile, setStepImgFile] = useState([null]);
   const [stepNums, setStepNums] = useState([]);
+
+  // 단게별 글자수
+  const [stepContentLetterCount, setStepContentLetterCount] = useState(
+    Array(orderArr.length).fill(0)
+  );
 
   // 요리 단계 추가 버튼
   const addStepBtnHandler = () => {
@@ -76,10 +82,12 @@ const ArticleCreatePage = () => {
 
   // 양 변경
   const quantityHandler = (type) => {
-    if (type === "-" && quantity > 1) {
-      setQuantity((prev) => {
-        return prev - 1;
-      });
+    if (type === "-") {
+      if (quantity > 1) {
+        setQuantity((prev) => {
+          return prev - 1;
+        });
+      }
     } else {
       setQuantity((prev) => {
         return prev + 1;
@@ -93,7 +101,12 @@ const ArticleCreatePage = () => {
     const idx = Number(id.split("-")[2]) - 1;
 
     if (type === "text") {
-      stepContent[idx] = e.target.value;
+      const newStepContent = [...stepContent];
+      newStepContent[idx] = e.target.value;
+      setStepContent(newStepContent);
+      const newStepContentLetterCount = [...stepContentLetterCount];
+      newStepContentLetterCount[idx] = e.target.value.length;
+      setStepContentLetterCount(newStepContentLetterCount);
     }
     if (type === "file") {
       const file = e.target.files[0];
@@ -131,15 +144,32 @@ const ArticleCreatePage = () => {
       });
   };
 
+  // 제목 글자수 관리 & title
+  const handleTitleChange = (e) => {
+    e.stopPropagation();
+    setTitle(e.target.value);
+  };
+
+  // 내용 글자수 관리 & content
+  const handleContentChange = (e) => {
+    e.stopPropagation();
+    setContent(e.target.value);
+  };
+
+  // 재료 글자수 관리 & ingredient
+  const handleIngredientChange = (e) => {
+    setIngredient(e.target.value);
+  };
+
   return (
     <>
-      <div className="flex items-center justify-evenly w-full h-100 px-auto grey-underbar">
-        <div className="text-23 text-center ml-48">
+      <div className="fixed z-50 flex items-center w-full justify-evenly h-100 px-auto grey-underbar bg-white/80">
+        <div className="ml-48 text-center text-23">
           자신의 레시피에 대해 자유롭게 이야기 해주세요!
         </div>
         <button
           type="button"
-          className="bg-#2F80ED rounded-full text-prettywhite font-semibold w-200 h-50  px-50 py-5 text-xl"
+          className="bg-#2F80ED hover:bg-#2F80ED/80  rounded-full text-prettywhite font-semibold w-200 h-50  px-50 py-5 text-xl"
           onClick={(e) => {
             newpostBtnClickHandler(e);
           }}
@@ -148,7 +178,7 @@ const ArticleCreatePage = () => {
         </button>
       </div>
       <div
-        className="w-1200 mx-auto border-x border-solid border-#7F807F px-203 pt-41"
+        className="w-1200 mx-auto border-x border-solid border-#7F807F px-203 pt-141"
         onChange={(e) => {
           if (e.target.type !== "file") {
             return;
@@ -169,34 +199,30 @@ const ArticleCreatePage = () => {
           />
         </div>
         <div className="flex flex-col w-full text-21">
-          <div className="w-full grey-underbar flex items-center">
+          <div className="flex items-center w-full grey-underbar">
             <input
               type="text"
               name="title"
               id="title"
               placeholder="레시피의 이름이 무엇인가요?"
-              className="py-26 w-full px-38 inline-block"
-              onChange={(e) => {
-                e.stopPropagation();
-                setTitle(e.target.value);
-              }}
+              className="inline-block w-full py-26 px-38"
+              onChange={handleTitleChange}
+              maxLength={30}
             />
-            <div className="inline">0/30</div>
+            <div className="inline pr-30">{title.length}/30</div>
           </div>
-          <div className="w-full grey-underbar flex items-center">
+          <div className="flex flex-col items-center w-full grey-underbar">
             <textarea
               name="content"
               id="content"
               cols="30"
-              rows="10"
-              className="resize-none py-26 px-38 w-full"
+              rows="5"
+              className="w-full resize-none py-26 px-38"
               placeholder="레시피에 대한 간단한 설명을 붙여주세요"
-              onChange={(e) => {
-                e.stopPropagation();
-                setContent(e.target.value);
-              }}
+              onChange={handleContentChange}
+              maxLength={255}
             />
-            <div className="inline">0/30</div>
+            <div className="w-full p-30 text-end">{content.length}/255</div>
           </div>
           {/* 이 요소의 하위 항목에 버튼이 존재하고 키보드 작동이 가능합니다. */}
           {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events */}
@@ -250,7 +276,7 @@ const ArticleCreatePage = () => {
               >
                 -
               </button>
-              <div className="text-27 mx-20">{quantity}</div>
+              <div className="mx-20 text-27">{quantity}</div>
               <button
                 type="button"
                 className="w-45 h-45 text-41 leading-none bg-#ECECEC"
@@ -260,26 +286,27 @@ const ArticleCreatePage = () => {
               >
                 +
               </button>
-              <div className="text-27 mx-20">인분</div>
+              <div className="mx-20 text-27">인분</div>
             </div>
           </div>
-          <div className="px-40 w-full mt-26 pb-31 grey-underbar">
+          <div className="w-full px-40 mt-26 pb-31 grey-underbar">
             <div className={subTitle}>재료</div>
-            <div className="w-full flex items-center">
+            <div className="flex flex-col w-full">
               <textarea
                 name=""
                 id=""
                 cols="30"
-                rows="10"
-                className="resize-none w-full py-26"
+                rows="5"
+                className="w-full resize-none py-26"
                 placeholder="재료를 입력해주세요"
-                onChange={(e) => setIngredient(e.target.value)}
+                onChange={handleIngredientChange}
+                maxLength={255}
               />
-              <div className="inline">0/30</div>
+              <div className="inline text-end">{ingredients.length}/255</div>
             </div>
           </div>
           <div
-            className="px-40 w-full mt-26 pb-31"
+            className="w-full px-40 mt-26 pb-31"
             onChange={stepChangeHandler}
           >
             <div className={subTitle}>만드는 방법</div>
@@ -288,14 +315,23 @@ const ArticleCreatePage = () => {
                 <div className="bg-#AEAFAE w-70 h-70 rounded-50 text-prettywhite flex items-center justify-center mr-24 text-30">
                   {value}
                 </div>
-                <div className="text-26">
-                  <input
-                    type="text"
-                    id={`step-content-${value}`}
-                    ref={stepContentRef[value - 1]}
-                    className="h-70 p-3 w-full"
-                    placeholder="만드는 방법을 입력하세요."
-                  />
+                <div className="text-md">
+                  <div className="flex items-center justify-between">
+                    <input
+                      type="text"
+                      id={`step-content-${value}`}
+                      ref={stepContentRef[value - 1]}
+                      className="w-full p-3 h-70"
+                      placeholder="만드는 방법을 입력하세요."
+                      maxLength={50}
+                      onChange={(e) => {
+                        stepChangeHandler(e, value - 1);
+                      }}
+                    />
+                    <div className="inline">
+                      {stepContentLetterCount[value - 1]}/50
+                    </div>
+                  </div>
                   <div className="w-624 h-303">
                     <ArticleImgBlock
                       setRef={stepImgFileRef[value - 1]}
@@ -309,25 +345,27 @@ const ArticleCreatePage = () => {
                 </div>
               </div>
             ))}
+            <div className="flex justify-end">
+              <button
+                type="button"
+                className="rounded-full w-200 h-60 bg-#FFD1D1 hover:bg-#FF6B6C mt-40 text-lg"
+                id="addStep"
+                onClick={addStepBtnHandler}
+              >
+                <strong>+</strong> 단계 추가
+              </button>
+            </div>
             <button
               type="button"
-              className="w-712 h-86 bg-#FFD1D1 mt-100"
-              id="addStep"
-              onClick={addStepBtnHandler}
+              className="bg-#2F80ED hover:bg-#2F80ED/80 my-60 rounded text-prettywhite font-semibold w-full h-90 justify-center text-xl"
+              onClick={(e) => {
+                newpostBtnClickHandler(e);
+              }}
             >
-              단계 추가
+              글 등록하기
             </button>
           </div>
         </div>
-        <button
-          type="button"
-          className="bg-#2F80ED rounded-20 text-prettywhite font-semibold px-50 py-5 text-xl my-20"
-          onClick={(e) => {
-            newpostBtnClickHandler(e);
-          }}
-        >
-          글 등록하기
-        </button>
       </div>
     </>
   );
