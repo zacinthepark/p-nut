@@ -99,7 +99,7 @@ const SurveyQuestionsPage = () => {
   };
 
   // 요청 고
-  const submitBtnClickHandler = () => {
+  const submitBtnClickHandler = async () => {
     console.log(inputValue[0]);
     const req1 = axiosInterface(
       "POST",
@@ -143,8 +143,8 @@ const SurveyQuestionsPage = () => {
       return res;
     });
 
-    const req = Promise.all([req1, req2, req3]);
-    req.then(() => navigate("/"));
+    const req = await Promise.all([req1, req2, req3]);
+    req.then(() => navigate("/my-survey"));
   };
 
   return (
