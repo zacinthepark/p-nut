@@ -90,13 +90,14 @@ const SurveySymptomsPage = () => {
       }
     });
     console.log(whatToRemove);
+    console.log(alreadyAnsweredArr);
     selectedOptions.forEach((key) => {
       console.log(key);
       console.log(alreadyAnsweredArr[key]);
       const transformValue = checkedObj[key].replace("/", "or");
       params += `/${key}=${transformValue}`;
       alreadyAnsweredArr[key].forEach((value, idx) => {
-        preAnswer += `${idx}`;
+        preAnswer += `${value.degree}`;
       });
       preAnswer += "-";
       whatToRemove = whatToRemove.filter((value) => value !== key);
