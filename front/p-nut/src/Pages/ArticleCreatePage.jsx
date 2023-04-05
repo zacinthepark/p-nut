@@ -2,6 +2,7 @@ import React, { createRef, useRef, useState } from "react";
 import ArticleImgBlock from "../Components/ArticleImgBlock";
 import newpostAPI from "../api/newpostAPI";
 import { useSelector } from "react-redux";
+import { useNavigateToTop } from "../hooks/useNavigateToTop";
 
 const ArticleCreatePage = () => {
   const subTitle = "font-semibold mb-24";
@@ -14,6 +15,8 @@ const ArticleCreatePage = () => {
   const [quantity, setQuantity] = useState(1);
   const thumbnailInputRef = useRef(null);
   const token = useSelector((state) => state.auth.authentication.token);
+
+  const navigate = useNavigateToTop();
 
   const cookingTimeRefArr = [
     useRef(null),
@@ -74,7 +77,7 @@ const ArticleCreatePage = () => {
   // 양 변경
   const quantityHandler = (type) => {
     if (type === "-" && quantity > 1) {
-      setOrderArr((prev) => {
+      setQu((prev) => {
         return prev - 1;
       });
     } else {
@@ -121,6 +124,7 @@ const ArticleCreatePage = () => {
     newpostAPI(jsonData, thumbnailImgFile, stepImgFile, token)
       .then(() => {
         console.log("hi");
+        navigate("/board");
       })
       .catch(() => {
         console.log("error");
