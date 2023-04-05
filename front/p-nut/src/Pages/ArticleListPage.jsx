@@ -7,6 +7,8 @@ const ArticleListPage = () => {
   // data 파싱
   const data = useLoaderData();
   const [recentArticleList, top3List] = data;
+  console.log("recentArticleList: ", recentArticleList);
+  console.log("top3List: ", top3List);
 
   return (
     <div className="flex flex-col items-center">
@@ -33,7 +35,7 @@ const ArticleListPage = () => {
       <div className="w-full h-494 bg-#ECECEC mt-62 py-42">
         <div className="mx-auto w-1300">
           <div className="text-45 font-extrabold mb-17">금주의 레시피</div>
-          <div className="flex place-content-between">
+          <div className="flex place-content-between hover:opcaity-70">
             {top3List.data.map((ele, idx) => (
               <ArticleListThumbnail
                 rank={idx + 1}
@@ -47,6 +49,7 @@ const ArticleListPage = () => {
           </div>
         </div>
       </div>
+
       <div className="mt-45 mx-auto w-1300">
         <div className="m-8 flex items-center place-content-between">
           <div className="text-45 font-extrabold">레시피</div>
@@ -71,6 +74,7 @@ const ArticleListPage = () => {
           {recentArticleList.data.map((ele) => (
             <ArticleListThumbnail
               key={ele.id}
+              boardId={ele.id}
               imgSrc={ele.thumbnail_image_url}
               title={ele.title}
               author={ele.nickName}
