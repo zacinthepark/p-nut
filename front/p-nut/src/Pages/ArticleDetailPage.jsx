@@ -86,8 +86,9 @@ const ArticleDetailPage = () => {
   if (comments?.length > 0) {
     comment = (
       <div className="mb-40">
-        {comments.map((value) => (
+        {comments.map((value, idx) => (
           <CommentForm
+            key={`comment-${idx}`}
             content={value.content}
             nickName={value.nickName}
             date={value.createDate}
@@ -141,6 +142,14 @@ const ArticleDetailPage = () => {
         }
       })
       .catch((err) => console.log(err));
+  };
+
+  // 로그인 확인
+  const tokenCheckHandler = (e) => {
+    if (!token) {
+      e.target.blur();
+      return;
+    }
   };
 
   return (
@@ -209,10 +218,12 @@ const ArticleDetailPage = () => {
                     newCommentSubmitHandler();
                   }
                 }}
+                onFocus={tokenCheckHandler}
               />
               <button
                 type="button"
                 className="absolute right-0 bottom-64 bg-[#5B5F97] text-prettywhite text-24 font-bold px-14 py-7"
+                onClick={() => newCommentSubmitHandler()}
               >
                 작성
               </button>

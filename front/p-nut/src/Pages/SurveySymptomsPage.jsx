@@ -4,18 +4,23 @@ import { useNavigate } from "react-router-dom";
 import symptomsAPI from "../api/symptomsAPI";
 import OptionSelect from "../Components/OptionSelect";
 import { useDivInputEventHandler } from "../hooks/useInputDivHandler";
+import AlertModal from "../UI/AlertModal";
+import axios from "axios";
 
 const SurveySymptomsPage = () => {
+  // 모달 관련
+  const [showAlertModal, setShowAlertModal] = useState(false);
   const token = useSelector((state) => state.auth.authentication.token);
-  const [data, setData] = useState();
+  const [question, setQuestion] = useState();
   const [nickname, setNickname] = useState();
   const [symptomsRef, setSymptomsRef] = useState([]);
+  const [alreadyAnsweredIdxArr, setAlreadyAnsweredIdxArr] = useState([]);
+  const [alreadyAnsweredArr, setAlreadyAnsweredArr] = useState({});
 
   const navigate = useNavigate();
-
   const sympHandler = useCallback(async (token) => {
     const res = await symptomsAPI(token);
-    setData(res.slice(1));
+    setQuestion(res.slice(1));
     setNickname(res[0]);
 
     for (let i = 1; i < res.length; i += 1) {
@@ -26,46 +31,114 @@ const SurveySymptomsPage = () => {
     return res;
   }, []);
 
-  useEffect(() => {
-    sympHandler(token);
-  }, [sympHandler, token]);
+  const renderingHandler = useCallback(async () => {
+    let alreadyArr = [];
+    const res = await axios.get("/survey/mypage", {
+      baseURL: "https://pnut.site/api",
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
-  const [clickedCnt, checkedObj, eventDispatcher] =
+    setAlreadyAnsweredArr(res.data.slice(1));
+    res.data.forEach((alreadyQuestion) => {
+      if (alreadyQuestion.length) {
+        alreadyArr.push(true);
+      } else {
+        alreadyArr.push(false);
+      }
+    });
+
+    return alreadyArr;
+  }, []);
+
+  useEffect(() => {
+    console.log("useEffect");
+    if (nickname) {
+      renderingHandler().then((alreadyAnswered) => {
+        if (alreadyAnswered.length > 0) {
+          setAlreadyAnsweredIdxArr(alreadyAnswered.slice(1));
+          initCheckedObj(alreadyAnswered.slice(1), question, symptomsRef);
+        }
+      });
+    } else {
+      sympHandler(token);
+      console.log("질문 done");
+    }
+    console.log("useEffect done");
+  }, [question]);
+
+  const [clickedCnt, checkedObj, initCheckedObj, eventDispatcher] =
     useDivInputEventHandler(symptomsRef);
 
+  console.log(checkedObj);
   const aboveBtnClickHandler = () => {
     navigate("/newsurvey");
   };
 
   const startBtnClickHandler = () => {
+    console.log(checkedObj);
+    let selectedOptions = Object.entries(checkedObj)
+      .filter(([key, value]) => value !== "")
+      .map(([key, value]) => key);
+    console.log(selectedOptions);
+    let preAnswer = "";
     let params = "";
-    Object.entries(checkedObj).forEach(([key, value]) => {
-      const transformValue = value.replace("/", "or");
-      params += `/${key}=${transformValue}`;
+
+    let whatToRemove = [];
+    alreadyAnsweredArr.forEach((value, idx) => {
+      if (value.length) {
+        whatToRemove.push(`${idx}`);
+      }
     });
-    console.log(`/newsurvey${params}`);
-    navigate(`/newsurvey${params}`);
+    console.log(whatToRemove);
+    console.log(alreadyAnsweredArr);
+    selectedOptions.forEach((key) => {
+      console.log(key);
+      console.log(alreadyAnsweredArr[key]);
+      const transformValue = checkedObj[key].replace("/", "or");
+      params += `/${key}=${transformValue}`;
+      alreadyAnsweredArr[key].forEach((value, idx) => {
+        preAnswer += `${value.degree}`;
+      });
+      preAnswer += "-";
+      whatToRemove = whatToRemove.filter((value) => value !== key);
+    });
+
+    preAnswer += whatToRemove.join("");
+
+    if (selectedOptions.length !== 3) {
+      setShowAlertModal(true);
+      return;
+    }
+    const url = `/newsurvey${params}/${preAnswer}`;
+    console.log(preAnswer);
+    console.log(url);
+    navigate(url);
+  };
+
+  const closeModal = () => {
+    setShowAlertModal(false);
   };
 
   return (
-    <div className="w-674 h-768">
-      {data && (
+    <div className="w-674 py-50">
+      {symptomsRef.length > 0 && (
         <>
           <div className="text-22 font-bold text-#7F807F mb-18">질문 1</div>
-          <div className="text-22 font-bold mb-18">
+          <div className="font-bold text-22 mb-18">
             {nickname}님이 불편하시고 걱정되는 3가지를 선택하세요.
           </div>
           <div className="text-22 text-#7F807F pb-18">
             우선적으로 관리가 필요한 곳을 선택하세요.
           </div>
           <div className="grey-underbar" />
-          {data.map((content, idx) => (
+          {question.map((content, idx) => (
             <OptionSelect
               type="checkbox"
               content={content}
               idx={idx}
               eventDispatcher={eventDispatcher}
               refInfo={symptomsRef[idx]}
+              key={content}
             />
           ))}
           <button
@@ -82,6 +155,13 @@ const SurveySymptomsPage = () => {
           >
             시작하기
           </button>
+          <AlertModal
+            open={showAlertModal}
+            close={closeModal}
+            onCheck={closeModal}
+          >
+            <p>3가지를 선택해주세요.</p>
+          </AlertModal>
         </>
       )}
     </div>
