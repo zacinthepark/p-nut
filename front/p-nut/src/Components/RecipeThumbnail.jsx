@@ -8,21 +8,18 @@ const RecipeThumbnail = (props) => {
   const { imgPath, title, kcal, mainIngredients, time, foodId, userEmail } =
     props;
 
+  /*
+  replace the parentheses in the URL with their respective percent-encoded values, 
+  which should resolve the issue of the image not being displayed as a background image
+  */
+  const encodedImgPath = imgPath.replace(/\(/g, "%28").replace(/\)/g, "%29");
+
   // youtubeData가 존재하면 true로 만들어 열림
   const [youtubeData, setYoutubeData] = useState();
   const [foodData, setFoodData] = useState(null);
   // youtube api key
   // require("dotenv").config();
   // const key = process.env.YOUTUBE_KEY;
-
-  // const [userEmail, setUserEmail] = useState("admin@ssafy.com");
-  // getFoodAPI를 위한 userEmail 가져오기
-  // const state = JSON.parse(localStorage.getItem("persist:root"));
-  // if (state) {
-  //   const authentication = JSON.parse(state.auth);
-  //   setUserEmail(authentication.authentication.email);
-  // }
-  // console.log("userEmail: ", userEmail);
 
   const openModal = (event) => {
     // event.stopPropagation();
@@ -72,9 +69,9 @@ const RecipeThumbnail = (props) => {
         />
       )}
       <div
-        className="cursor-pointer bg-cover h-270 bg-center bg-no-repeat rounded-sm"
+        className="cursor-pointer bg-cover h-270 bg-center bg-no-repeat rounded-sm hover:opacity-70"
         onClick={getFood}
-        style={{ backgroundImage: `url(${imgPath})` }}
+        style={{ backgroundImage: `url(${encodedImgPath})` }}
       />
       <div className="flex items-end my-10 space-x-5 text-end truncate">
         <p className="text-xl font-bold">{title}</p>
