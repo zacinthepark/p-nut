@@ -5,7 +5,8 @@ import getFoodAPI from "../api/getFoodAPI";
 // import dotenv from "dotenv";
 
 const RecipeThumbnail = (props) => {
-  const { imgPath, title, kcal, mainIngredients, time, foodId } = props;
+  const { imgPath, title, kcal, mainIngredients, time, foodId, userEmail } =
+    props;
 
   // youtubeData가 존재하면 true로 만들어 열림
   const [youtubeData, setYoutubeData] = useState();
@@ -14,13 +15,17 @@ const RecipeThumbnail = (props) => {
   // require("dotenv").config();
   // const key = process.env.YOUTUBE_KEY;
 
+  // const [userEmail, setUserEmail] = useState("admin@ssafy.com");
   // getFoodAPI를 위한 userEmail 가져오기
-  const state = JSON.parse(localStorage.getItem("persist:root"));
-  const authentication = JSON.parse(state.auth);
-  const userEmail = authentication.authentication.email;
+  // const state = JSON.parse(localStorage.getItem("persist:root"));
+  // if (state) {
+  //   const authentication = JSON.parse(state.auth);
+  //   setUserEmail(authentication.authentication.email);
+  // }
+  // console.log("userEmail: ", userEmail);
 
   const openModal = (event) => {
-    event.stopPropagation();
+    // event.stopPropagation();
     axios
       .get(
         `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=3&q=${title}레시피&type=video&videoDefinition=high&key=AIzaSyCI8t8M1ADPjcTTAuIOs3G2w-Nev9hXwRs`
@@ -41,17 +46,18 @@ const RecipeThumbnail = (props) => {
       const response = await getFoodAPI(foodId, userEmail);
 
       setFoodData(response.data.data);
+      openModal();
     } catch (err) {
       console.log("error: ", err);
     }
   };
 
-  useEffect(() => {
-    getFood();
-  }, []);
+  // useEffect(() => {
+  //   getFood();
+  // }, []);
 
   const closeModal = (event) => {
-    event.stopPropagation();
+    // event.stopPropagation();
     setYoutubeData(null);
     setFoodData(null);
   };
@@ -67,7 +73,7 @@ const RecipeThumbnail = (props) => {
       )}
       <div
         className="cursor-pointer bg-cover h-270 bg-center bg-no-repeat rounded-sm"
-        onClick={openModal}
+        onClick={getFood}
         style={{ backgroundImage: `url(${imgPath})` }}
       />
       <div className="flex items-end my-10 space-x-5 text-end truncate">
