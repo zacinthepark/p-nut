@@ -77,7 +77,7 @@ const ArticleCreatePage = () => {
   // 양 변경
   const quantityHandler = (type) => {
     if (type === "-" && quantity > 1) {
-      setQu((prev) => {
+      setQuantity((prev) => {
         return prev - 1;
       });
     } else {
@@ -133,13 +133,13 @@ const ArticleCreatePage = () => {
 
   return (
     <>
-      <div className="flex items-center flex-col justify-evenly w-full h-100 px-auto grey-underbar">
+      <div className="flex items-center justify-evenly w-full h-100 px-auto grey-underbar">
         <div className="text-23 text-center ml-48">
           자신의 레시피에 대해 자유롭게 이야기 해주세요!
         </div>
         <button
           type="button"
-          className="bg-#2F80ED rounded-20 text-prettywhite font-semibold px-50 py-5 text-xl"
+          className="bg-#2F80ED rounded-full text-prettywhite font-semibold w-200 h-50  px-50 py-5 text-xl"
           onClick={(e) => {
             newpostBtnClickHandler(e);
           }}
