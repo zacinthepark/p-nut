@@ -4,7 +4,102 @@ import newpostAPI from "../api/newpostAPI";
 import { useSelector } from "react-redux";
 import { useNavigateToTop } from "../hooks/useNavigateToTop";
 
+const modalShow = `
+    @keyframes modalShow {
+      from {
+        opacity: 0;
+        margin-top: -50px;
+      }
+      to {
+        opacity: 1;
+        margin-top: 0;
+      }
+    }
+  `;
+
+const modalBgShow = `
+    @keyframes modalBgShow {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  `;
+
+const AlertModal = ({ open, onConfirm, onCancel }) => {
+  return (
+    <div
+      className={`fixed top-0 right-0 bottom-0 left-0 z-50 bg-black bg-opacity-60 ${
+        open ? "flex justify-center items-center animate-modalBgShow" : "hidden"
+      } transition-all duration-300`}
+      style={{ animation: open ? modalBgShow : "" }}
+      onClick={onCancel}
+    >
+      <div
+        className="grid p-40 bg-white rounded shadow-lg contents-between w-500 h-200"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <p className="mb-4 text-2xl font-bold ">글을 작성하시겠습니까?</p>
+        <div className="flex items-end justify-end w-full h-full">
+          <button
+            type="button"
+            className="px-40 py-10 mr-20 bg-gray-200 rounded hover:bg-gray-300"
+            onClick={onCancel}
+          >
+            취소
+          </button>
+          <button
+            type="button"
+            className="px-40 py-10 text-white bg-blue-500 rounded hover:bg-blue-600"
+            onClick={onConfirm}
+          >
+            확인
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const ArticleCreatePage = () => {
+  // alert
+  const [showAlert, setShowAlert] = useState(false);
+
+  const handleConfirm = () => {
+    setShowAlert(false);
+    const jsonData = {
+      content: content.toString(),
+      ingredients: ingredients.toString(),
+      quantity: quantity.toString(),
+      recipe_steps: stepContent,
+      time: cookingTime.toString(),
+      title: title,
+      stepNums: stepNums,
+    };
+
+    console.log(jsonData);
+
+    newpostAPI(jsonData, thumbnailImgFile, stepImgFile, token)
+      .then(() => {
+        console.log("hi");
+        navigate("/board");
+      })
+      .catch(() => {
+        console.log("error");
+      });
+  };
+
+  const handleCancel = () => {
+    setShowAlert(false);
+  };
+
+  const newpostBtnClickHandler = (e) => {
+    e.preventDefault();
+    setShowAlert(true);
+  };
+
   const subTitle = "font-semibold mb-24";
   const [orderArr, setOrderArr] = useState([1]);
   const [thumbnailImgFile, setThumbnailImgFile] = useState(null);
@@ -120,29 +215,29 @@ const ArticleCreatePage = () => {
   };
 
   // 글 등록
-  const newpostBtnClickHandler = (e) => {
-    e.preventDefault();
-    const jsonData = {
-      content: content.toString(),
-      ingredients: ingredients.toString(),
-      quantity: quantity.toString(),
-      recipe_steps: stepContent,
-      time: cookingTime.toString(),
-      title: title,
-      stepNums: stepNums,
-    };
+  // const newpostBtnClickHandler = (e) => {
+  //   e.preventDefault();
+  //   const jsonData = {
+  //     content: content.toString(),
+  //     ingredients: ingredients.toString(),
+  //     quantity: quantity.toString(),
+  //     recipe_steps: stepContent,
+  //     time: cookingTime.toString(),
+  //     title: title,
+  //     stepNums: stepNums,
+  //   };
 
-    console.log(jsonData);
+  //   console.log(jsonData);
 
-    newpostAPI(jsonData, thumbnailImgFile, stepImgFile, token)
-      .then(() => {
-        console.log("hi");
-        navigate("/board");
-      })
-      .catch(() => {
-        console.log("error");
-      });
-  };
+  //   newpostAPI(jsonData, thumbnailImgFile, stepImgFile, token)
+  //     .then(() => {
+  //       console.log("hi");
+  //       navigate("/board");
+  //     })
+  //     .catch(() => {
+  //       console.log("error");
+  //     });
+  // };
 
   // 제목 글자수 관리 & title
   const handleTitleChange = (e) => {
@@ -364,6 +459,11 @@ const ArticleCreatePage = () => {
             >
               글 등록하기
             </button>
+            <AlertModal
+              open={showAlert}
+              onConfirm={handleConfirm}
+              onCancel={handleCancel}
+            />
           </div>
         </div>
       </div>
