@@ -31,8 +31,8 @@ public class UserDto {
                 user.getType(),
                 user.getJoin_date(),
                 user.getProfile_image_url(),
-                Interger.valueOf(user.getAge()),
-                Interger.valueOf(user.getGender()),
+                Integer.valueOf(user.getAge()),
+                Integer.valueOf(user.getGender()),
                 user.getAuth()
         );
     }
