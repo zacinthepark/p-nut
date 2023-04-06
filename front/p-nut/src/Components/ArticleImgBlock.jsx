@@ -40,7 +40,14 @@ const ArticleImgBlock = (props) => {
         const propsRef = setRef.current;
         console.log(propsRef, setRef);
         inputFileTag.files = dragFile;
-        fileSet(e.dataTransfer.files[0]);
+        if (division === "thumbnail") fileSet(e.dataTransfer.files[0]);
+        else {
+          fileSet((prev) => {
+            const uploadImgFile = e.dataTransfer.files[0];
+            prev[division.split("-")[2] - 1] = uploadImgFile;
+            return [...prev];
+          });
+        }
         const reader = new FileReader();
         reader.onload = ({ target }) => {
           setPreviewImgSrc(target.result);
@@ -73,7 +80,14 @@ const ArticleImgBlock = (props) => {
         className="hidden opacity-90"
         ref={setRef}
         onChange={(e) => {
-          fileSet(e.target.files[0]);
+          if (division === "thumbnail") fileSet(e.target.files[0]);
+          else {
+            fileSet((prev) => {
+              const uploadImgFile = e.target.files[0];
+              prev[division.split("-")[2] - 1] = uploadImgFile;
+              return [...prev];
+            });
+          }
           const reader = new FileReader();
           reader.onload = ({ target }) => {
             setPreviewImgSrc(target.result);

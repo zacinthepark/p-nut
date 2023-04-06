@@ -28,15 +28,20 @@ const ArticleDetailPage = () => {
 
   useEffect(() => {
     console.log(token);
+    console.log(data);
     if (!data) {
       if (token) {
         axiosInterface("GET", `/boards/board/${articleId}`, "", {
           Authorization: `Bearer ${token}`,
-        }).then((res) => setData(res));
+        }).then((res) => {
+          console.log(res);
+          setData(res);
+        });
       } else {
-        axiosInterface("GET", `/boards/board/${articleId}`).then((res) =>
-          setData(res)
-        );
+        axiosInterface("GET", `/boards/board/${articleId}`).then((res) => {
+          console.log(res);
+          setData(res);
+        });
       }
     } else {
       const {

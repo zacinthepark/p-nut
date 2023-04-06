@@ -80,6 +80,10 @@ const ArticleCreatePage = () => {
       stepNums: stepNums,
     };
 
+    console.log(jsonData);
+    console.log(thumbnailImgFile);
+    console.log(stepImgFile);
+
     newpostAPI(jsonData, thumbnailImgFile, stepImgFile, token)
       .then(() => {
         console.log("hi");
@@ -216,28 +220,28 @@ const ArticleCreatePage = () => {
   };
 
   // 이미지, 텍스트 입력 핸들링
-  const stepChangeHandler = (e) => {
-    const { type, id } = e.target;
-    const idx = Number(id.split("-")[2]) - 1;
+  // const stepChangeHandler = (e) => {
+  //   const { type, id } = e.target;
+  //   const idx = Number(id.split("-")[2]) - 1;
 
-    if (type === "text") {
-      const newStepContent = [...stepContent];
-      newStepContent[idx] = e.target.value;
-      setStepContent(newStepContent);
-      const newStepContentLetterCount = [...stepContentLetterCount];
-      newStepContentLetterCount[idx] = e.target.value.length;
-      setStepContentLetterCount(newStepContentLetterCount);
-    }
-    if (type === "file") {
-      const file = e.target.files[0];
-      stepImgFile[idx] = file;
-      setStepNums((prev) => {
-        const newArr = [...prev, idx + 1];
-        newArr.sort();
-        return newArr;
-      });
-    }
-  };
+  //   if (type === "text") {
+  //     const newStepContent = [...stepContent];
+  //     newStepContent[idx] = e.target.value;
+  //     setStepContent(newStepContent);
+  //     const newStepContentLetterCount = [...stepContentLetterCount];
+  //     newStepContentLetterCount[idx] = e.target.value.length;
+  //     setStepContentLetterCount(newStepContentLetterCount);
+  //   }
+  //   if (type === "file") {
+  //     const file = e.target.files[0];
+  //     stepImgFile[idx] = file;
+  //     setStepNums((prev) => {
+  //       const newArr = [...prev, idx + 1];
+  //       newArr.sort();
+  //       return newArr;
+  //     });
+  //   }
+  // };
 
   // 글 등록
   // const newpostBtnClickHandler = (e) => {
@@ -308,17 +312,7 @@ const ArticleCreatePage = () => {
               글 등록하기
             </button>
           </div>
-          <div
-            className="w-1200 mx-auto border-x border-solid border-#7F807F px-203 pt-141"
-            onChange={(e) => {
-              if (e.target.type !== "file") {
-                return;
-              }
-              const file = e.target.files[0];
-              console.log(file);
-              setThumbnailImgFile(file);
-            }}
-          >
+          <div className="w-1200 mx-auto border-x border-solid border-#7F807F px-203 pt-141">
             <div className="w-792 h-354">
               <ArticleImgBlock
                 setRef={thumbnailInputRef}
@@ -440,7 +434,7 @@ const ArticleCreatePage = () => {
               </div>
               <div
                 className="w-full px-40 mt-26 pb-31"
-                onChange={stepChangeHandler}
+                // onChange={stepChangeHandler}
               >
                 <div className={subTitle}>만드는 방법</div>
                 {orderArr.map((value) => (
@@ -457,9 +451,9 @@ const ArticleCreatePage = () => {
                           className="w-full p-3 h-70"
                           placeholder="만드는 방법을 입력하세요."
                           maxLength={50}
-                          onChange={(e) => {
-                            stepChangeHandler(e, value - 1);
-                          }}
+                          // onChange={(e) => {
+                          //   stepChangeHandler(e, value - 1);
+                          // }}
                         />
                         <div className="inline">
                           {/* {stepContentLetterCount[value - 1]}/50 */}
@@ -472,7 +466,7 @@ const ArticleCreatePage = () => {
                           text="이미지 업로드(선택)"
                           width="624"
                           height="303"
-                          fileSet={setThumbnailImgFile}
+                          fileSet={setStepImgFile}
                         />
                       </div>
                     </div>

@@ -21,6 +21,10 @@ export default async function newpostAPI(
       data.append("file", file);
     }
   });
+
+  for (const value of data) {
+    console.log(value);
+  }
   const res = await axiosInterface("post", "/boards/create", data, {
     Authorization: `Bearer ${token}`,
   });
