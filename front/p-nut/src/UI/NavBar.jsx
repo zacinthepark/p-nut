@@ -1,13 +1,8 @@
 import { Fragment, React } from "react";
-// import axios from "axios";
-
 import { Menu, Transition } from "@headlessui/react";
-
 import { useNavigateToTop } from "../hooks/useNavigateToTop";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutHandler } from "../stores/authSlice";
-
-// import { imageBaseURL, defaultProfileImageURL } from "../api/baseURL";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -15,26 +10,9 @@ function classNames(...classes) {
 
 const NavBar = () => {
   const token = useSelector((state) => state.auth.authentication.token);
-  // const nickname = useSelector((state) => state.auth.authentication.nickname);
 
   const dispatch = useDispatch();
   const navigate = useNavigateToTop();
-
-  // const [processedImg, setProcessedImg] = useState(
-  //   `${imageBaseURL}/${nickname}`
-  // );
-  // const getProfileImage = () => {
-  //   axios
-  //     .get(`${processedImg}`)
-  //     .then((res) => {
-  //       console.log("Get NavBar Profile Image Success: ", res);
-  //       setProcessedImg(`${imageBaseURL}/${nickname}`);
-  //     })
-  //     .catch((err) => {
-  //       console.log("Get NavBar Profile Image Fail: ", err);
-  //       setProcessedImg(`${imageBaseURL}/${defaultProfileImageURL}`);
-  //     });
-  // };
 
   const logout = () => {
     dispatch(logoutHandler(navigate));
@@ -52,10 +30,6 @@ const NavBar = () => {
     navigate("/mypage");
   };
 
-  // useEffect(() => {
-  //   getProfileImage();
-  // }, [nickname]);
-
   return (
     <div className="fixed z-50 flex w-full p-3 h-60 bg-white/80 z-100">
       <div className="flex items-center w-full justify-evenly">
@@ -70,7 +44,7 @@ const NavBar = () => {
           {/* 음식추천 */}
           <Menu as="div" className="relative w-170">
             <div>
-              <Menu.Button className="flex items-center justify-center w-full font-regular text-md">
+              <Menu.Button className="flex items-center justify-center w-full font-regular text-md hover:font-semibold">
                 음식추천
                 <img
                   className="h-10 ml-10 rotate-90"
@@ -145,7 +119,7 @@ const NavBar = () => {
           {/* 게시판 */}
           <Menu as="div" className="relative w-170">
             <div>
-              <Menu.Button className="flex items-center justify-center w-full font-regular text-md">
+              <Menu.Button className="flex items-center justify-center w-full font-regular text-md hover:font-semibold">
                 게시판
                 <img
                   className="h-10 ml-10 rotate-90"
@@ -206,7 +180,7 @@ const NavBar = () => {
                   onClick={() => navigate("/newsurvey")}
                   className={classNames(
                     active ? "bg-white " : "",
-                    "block px-15 py-10 text-md rounded-5  w-full text-start"
+                    "block px-15 py-10 text-md rounded-5  w-full text-start hover:font-semibold"
                   )}
                 >
                   설문조사
@@ -246,12 +220,6 @@ const NavBar = () => {
             >
               로그아웃
             </div>
-            {/* <img
-              className="rounded-full shadow-lg h-40 w-40"
-              // src={`https://pnut.s3.ap-northeast-2.amazonaws.com/${nickname}`}
-              src={processedImg}
-              alt=""
-            /> */}
           </div>
         )}
       </div>
