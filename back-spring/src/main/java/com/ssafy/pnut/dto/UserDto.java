@@ -38,6 +38,15 @@ public class UserDto {
     }
 
     public User toEntity(){
-        return new User(email, password, null, null, nickname, name, type, joinDate, profileImageUrl, age, gender, auth);
+        int ageToInt = 0;
+        int genderToInt = 0;
+        if(this.age != null){
+            ageToInt = age
+        }
+        if(this.gender != null) {
+            genderToInt = gender
+        }
+        
+        return new User(email, password, null, null, nickname, name, type, joinDate, profileImageUrl, ageToInt, genderToInt, auth);
     }
 }
