@@ -385,6 +385,7 @@ const SignupForm = () => {
               placeholder="이메일 주소를 입력해주세요."
               onChange={emailChangeHandler}
               onBlur={duplicateEmailCheckHandler}
+              autoComplete="off"
             />
           </div>
           <div className="flex-1">
@@ -454,6 +455,7 @@ const SignupForm = () => {
               className="h-40 px-10 mt-10 text-gray-400 border-2 border-gray-300 w-150 rounded-10 font-noto focus:border-blue-500"
               placeholder="********"
               onChange={password1ChangeHandler}
+              autoComplete="off"
             />
           </div>
           <div className="flex flex-col ml-35">
@@ -470,6 +472,7 @@ const SignupForm = () => {
               }`}
               placeholder="********"
               onChange={password2ChangeHandler}
+              autoComplete="off"
             />
           </div>
           {passwordState.passwordIsValid && (

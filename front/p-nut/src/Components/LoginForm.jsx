@@ -121,6 +121,7 @@ const LoginForm = () => {
               value={emailState.value}
               onChange={emailChangeHandler}
               onBlur={validateEmailHandler}
+              autoComplete="off"
             />
           </div>
         </div>
@@ -141,6 +142,7 @@ const LoginForm = () => {
             value={passwordState.value}
             onChange={passwordChangeHandler}
             onBlur={validatePasswordHandler}
+            autoComplete="off"
           />
         </div>
         {!passwordIsValid && (

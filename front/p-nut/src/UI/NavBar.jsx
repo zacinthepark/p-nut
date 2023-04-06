@@ -1,5 +1,5 @@
-import { Fragment, React, useState, useEffect } from "react";
-import axios from "axios";
+import { Fragment, React } from "react";
+// import axios from "axios";
 
 import { Menu, Transition } from "@headlessui/react";
 
@@ -7,7 +7,7 @@ import { useNavigateToTop } from "../hooks/useNavigateToTop";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutHandler } from "../stores/authSlice";
 
-import { imageBaseURL, defaultProfileImageURL } from "../api/baseURL";
+// import { imageBaseURL, defaultProfileImageURL } from "../api/baseURL";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -15,26 +15,26 @@ function classNames(...classes) {
 
 const NavBar = () => {
   const token = useSelector((state) => state.auth.authentication.token);
-  const nickname = useSelector((state) => state.auth.authentication.nickname);
+  // const nickname = useSelector((state) => state.auth.authentication.nickname);
 
   const dispatch = useDispatch();
   const navigate = useNavigateToTop();
 
-  const [processedImg, setProcessedImg] = useState(
-    `${imageBaseURL}/${nickname}`
-  );
-  const getProfileImage = () => {
-    axios
-      .get(`${processedImg}`)
-      .then((res) => {
-        console.log("res: ", res);
-        setProcessedImg(`${imageBaseURL}/${nickname}`);
-      })
-      .catch((err) => {
-        console.log("err: ", err);
-        setProcessedImg(`${imageBaseURL}/${defaultProfileImageURL}`);
-      });
-  };
+  // const [processedImg, setProcessedImg] = useState(
+  //   `${imageBaseURL}/${nickname}`
+  // );
+  // const getProfileImage = () => {
+  //   axios
+  //     .get(`${processedImg}`)
+  //     .then((res) => {
+  //       console.log("Get NavBar Profile Image Success: ", res);
+  //       setProcessedImg(`${imageBaseURL}/${nickname}`);
+  //     })
+  //     .catch((err) => {
+  //       console.log("Get NavBar Profile Image Fail: ", err);
+  //       setProcessedImg(`${imageBaseURL}/${defaultProfileImageURL}`);
+  //     });
+  // };
 
   const logout = () => {
     dispatch(logoutHandler(navigate));
@@ -52,9 +52,9 @@ const NavBar = () => {
     navigate("/mypage");
   };
 
-  useEffect(() => {
-    getProfileImage();
-  }, [nickname]);
+  // useEffect(() => {
+  //   getProfileImage();
+  // }, [nickname]);
 
   return (
     <div className="fixed z-50 flex w-full p-3 h-60 bg-white/80 z-100">
@@ -246,12 +246,12 @@ const NavBar = () => {
             >
               로그아웃
             </div>
-            <img
+            {/* <img
               className="rounded-full shadow-lg h-40 w-40"
               // src={`https://pnut.s3.ap-northeast-2.amazonaws.com/${nickname}`}
               src={processedImg}
               alt=""
-            />
+            /> */}
           </div>
         )}
       </div>
