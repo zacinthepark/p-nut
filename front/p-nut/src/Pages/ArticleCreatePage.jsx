@@ -63,8 +63,6 @@ const SubmitAlertModal = ({ open, onConfirm, onCancel }) => {
     </div>
   );
 };
-import { useNavigateToTop } from "../hooks/useNavigateToTop";
-import AlertModal from "../UI/AlertModal";
 
 const ArticleCreatePage = () => {
   // alert
