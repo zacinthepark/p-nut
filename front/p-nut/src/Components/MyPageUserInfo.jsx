@@ -194,7 +194,8 @@ const MyPageUserInfo = ({ userInfo }) => {
       userInputGender,
       Number(ageState.value),
       passwordState.password2,
-      userProfileImage
+      userProfileImage,
+      oldProfileImageURL
     );
     if (response.status === 200) {
       setNicknameIsTouched(false);
