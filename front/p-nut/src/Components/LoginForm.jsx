@@ -115,7 +115,7 @@ const LoginForm = () => {
           <div className="flex items-center">
             <input
               type="text"
-              className="px-10 mx-75 my-12 w-465 h-50 border-4 border-gray-300 rounded-xl focus:border-blue-500"
+              className="px-10 mx-75 my-12 w-465 h-50 border-2 border-gray-300 rounded-xl focus:border-blue-500"
               id="email"
               placeholder="이메일 주소를 입력해주세요."
               value={emailState.value}
@@ -135,7 +135,7 @@ const LoginForm = () => {
           </label>
           <input
             type="password"
-            className="px-10 mx-75 my-12 w-465 h-50 border-4 border-gray-300 rounded-xl focus:border-blue-500 font-noto"
+            className="px-10 mx-75 my-12 w-465 h-50 border-2 border-gray-300 rounded-xl focus:border-blue-500 font-noto"
             id="password"
             placeholder="********"
             value={passwordState.value}

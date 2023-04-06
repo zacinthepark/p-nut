@@ -300,7 +300,7 @@ const SignupForm = () => {
             <input
               type="text"
               id="nickname"
-              className={`px-10 ml-75 my-10 w-300 h-40 border-4 rounded-10 ${
+              className={`px-10 ml-75 my-10 w-300 h-40 border-2 rounded-10 ${
                 nicknameState.isValid ? "border-green-500" : "border-gray-300"
               } focus:border-blue-500`}
               onChange={nicknameChangeHandler}
@@ -336,7 +336,7 @@ const SignupForm = () => {
             <input
               type="text"
               id="name"
-              className={`px-10 w-120 h-40 border-4 rounded-10 focus:border-blue-500 ${
+              className={`px-10 w-120 h-40 border-2 rounded-10 focus:border-blue-500 ${
                 nameState.isValid ? "border-green-500" : "border-gray-300"
               }`}
               onChange={nameChangeHandler}
@@ -348,7 +348,7 @@ const SignupForm = () => {
             </label>
             <select
               name="gender"
-              className={`cursor-pointer px-10 w-120 h-40 border-4 rounded-10 focus:border-blue-500 ${
+              className={`cursor-pointer px-10 w-120 h-40 border-2 rounded-10 focus:border-blue-500 ${
                 genderIsTouched ? "border-green-500" : "border-gray-300"
               }`}
               onChange={genderChangeHandler}
@@ -364,7 +364,7 @@ const SignupForm = () => {
             <input
               type="text"
               id="age"
-              className={`px-10 w-120 h-40 border-4 rounded-10 focus:border-blue-500 ${
+              className={`px-10 w-120 h-40 border-2 rounded-10 focus:border-blue-500 ${
                 ageState.isValid ? "border-green-500" : "border-gray-300"
               }`}
               onChange={ageChangeHandler}
@@ -379,7 +379,7 @@ const SignupForm = () => {
             <input
               type="text"
               id="email"
-              className={`px-15 mt-10 w-330 h-40 border-4 rounded-10 ${
+              className={`px-15 mt-10 w-330 h-40 border-2 rounded-10 ${
                 emailState.isValid ? "border-green-500" : "border-gray-300"
               } focus:border-blue-500`}
               placeholder="이메일 주소를 입력해주세요."
@@ -418,7 +418,7 @@ const SignupForm = () => {
               <input
                 type="text"
                 id="code"
-                className={`px-15 w-330 h-40 border-4 rounded-10 focus:border-blue-500 ${
+                className={`px-15 w-330 h-40 border-2 rounded-10 focus:border-blue-500 ${
                   isCodeValid ? "border-green-500" : "border-gray-300"
                 }`}
                 placeholder="인증 코드를 입력해주세요."
@@ -451,7 +451,7 @@ const SignupForm = () => {
             <input
               type="password"
               id="password"
-              className="h-40 px-10 mt-10 text-gray-400 border-4 border-gray-300 w-150 rounded-10 font-noto focus:border-blue-500"
+              className="h-40 px-10 mt-10 text-gray-400 border-2 border-gray-300 w-150 rounded-10 font-noto focus:border-blue-500"
               placeholder="********"
               onChange={password1ChangeHandler}
             />
@@ -463,7 +463,7 @@ const SignupForm = () => {
             <input
               type="password"
               id="passwordcheck"
-              className={`px-10 mt-10 w-150 h-40 border-4 rounded-10 text-gray-400 font-noto ${
+              className={`px-10 mt-10 w-150 h-40 border-2 rounded-10 text-gray-400 font-noto ${
                 passwordState.passwordIsValid
                   ? "border-green-500"
                   : "border-gray-300"

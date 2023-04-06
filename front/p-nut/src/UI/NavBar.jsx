@@ -1,9 +1,13 @@
-import { Fragment, React } from "react";
+import { Fragment, React, useState, useEffect } from "react";
+import axios from "axios";
+
 import { Menu, Transition } from "@headlessui/react";
 
 import { useNavigateToTop } from "../hooks/useNavigateToTop";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutHandler } from "../stores/authSlice";
+
+import { imageBaseURL, defaultProfileImageURL } from "../api/baseURL";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -15,6 +19,22 @@ const NavBar = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigateToTop();
+
+  const [processedImg, setProcessedImg] = useState(
+    `${imageBaseURL}/${nickname}`
+  );
+  const getProfileImage = () => {
+    axios
+      .get(`${processedImg}`)
+      .then((res) => {
+        console.log("res: ", res);
+        setProcessedImg(`${imageBaseURL}/${nickname}`);
+      })
+      .catch((err) => {
+        console.log("err: ", err);
+        setProcessedImg(`${imageBaseURL}/${defaultProfileImageURL}`);
+      });
+  };
 
   const logout = () => {
     dispatch(logoutHandler(navigate));
@@ -31,6 +51,10 @@ const NavBar = () => {
   const goToMyPage = () => {
     navigate("/mypage");
   };
+
+  useEffect(() => {
+    getProfileImage();
+  }, [nickname]);
 
   return (
     <div className="fixed z-50 flex w-full p-3 h-60 bg-white/80 z-100">
@@ -224,7 +248,8 @@ const NavBar = () => {
             </div>
             <img
               className="rounded-full shadow-lg h-40 w-40"
-              src={`https://pnut.s3.ap-northeast-2.amazonaws.com/${nickname}`}
+              // src={`https://pnut.s3.ap-northeast-2.amazonaws.com/${nickname}`}
+              src={processedImg}
               alt=""
             />
           </div>
