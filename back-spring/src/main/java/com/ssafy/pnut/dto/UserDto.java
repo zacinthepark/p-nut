@@ -41,10 +41,10 @@ public class UserDto {
         int ageToInt = 0;
         int genderToInt = 0;
         if(this.age != null){
-            ageToInt = age
+            ageToInt = age;
         }
         if(this.gender != null) {
-            genderToInt = gender
+            genderToInt = gender;
         }
         
         return new User(email, password, null, null, nickname, name, type, joinDate, profileImageUrl, ageToInt, genderToInt, auth);
