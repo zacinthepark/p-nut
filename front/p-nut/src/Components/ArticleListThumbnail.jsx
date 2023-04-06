@@ -94,7 +94,7 @@ const ArticleListThumbnail = (props) => {
     //     <div className="font-medium text-14 ml-5">{author}</div>
     //   </div>
     // </div>
-    <div className="h-342">
+    <div className="h-390">
       {rank && topDiv}
       {!rank && boardDiv}
     </div>

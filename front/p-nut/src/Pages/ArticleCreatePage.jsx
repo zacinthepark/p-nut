@@ -80,8 +80,6 @@ const ArticleCreatePage = () => {
       stepNums: stepNums,
     };
 
-    console.log(jsonData);
-
     newpostAPI(jsonData, thumbnailImgFile, stepImgFile, token)
       .then(() => {
         console.log("hi");
@@ -98,6 +96,22 @@ const ArticleCreatePage = () => {
 
   const newpostBtnClickHandler = (e) => {
     e.preventDefault();
+    if (!title) {
+      window.alert("제목이 없습니다!");
+      return;
+    }
+    if (!content) {
+      window.alert("내용이 없습니다!");
+      return;
+    }
+    if (!ingredients) {
+      window.alert("재료가 없습니다!");
+      return;
+    }
+    if (!quantity) {
+      window.alert("몇인분인지 알려주세요!");
+      return;
+    }
     setShowAlert(true);
   };
 
