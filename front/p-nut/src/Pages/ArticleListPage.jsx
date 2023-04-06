@@ -64,7 +64,7 @@ const ArticleListPage = () => {
                 imgSrc={ele.thumbnail_image_url}
                 title={ele.title}
                 author={ele.nickName}
-                profileImg={`${imageBaseURL}/${ele.nickName}`}
+                // profileImg={`${imageBaseURL}/${ele.nickName}`}
               />
             ))}
           </div>
@@ -99,7 +99,7 @@ const ArticleListPage = () => {
               imgSrc={ele.thumbnail_image_url}
               title={ele.title}
               author={ele.nickName}
-              profileImg={`${imageBaseURL}/${ele.nickName}`}
+              // profileImg={`${imageBaseURL}/${ele.nickName}`}
             />
           ))}
         </div>

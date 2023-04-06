@@ -15,7 +15,6 @@ const MyPageSidebar = ({
   };
   const navigate = useNavigateToTop();
 
-  console.log("Mysidebar ----------------------");
   const surveyUpdateBtnClickHandler = () => {
     navigate("/newsurvey/symptoms");
   };
