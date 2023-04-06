@@ -163,10 +163,10 @@ public class UserController {
 
                 String fileName;
                 if(userDto.getAge()==null) {
-                    userDto.setAge(String.valueOf(now.getAge()));
+                    userDto.setAge(now.getAge());
                 }
                 if(userDto.getGender()==null) {
-                    userDto.setGender(String.valueOf(now.getGender()));
+                    userDto.setGender(now.getGender());
                 }
                 if(userDto.getName()==null){
                     userDto.setName(now.getName());
