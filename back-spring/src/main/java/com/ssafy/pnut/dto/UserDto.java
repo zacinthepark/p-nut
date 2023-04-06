@@ -18,8 +18,8 @@ public class UserDto {
     private String type;
     private LocalDateTime joinDate;
     private String profileImageUrl;
-    private int age;
-    private int gender;
+    private String age;
+    private String gender;
     private String auth;
 
     public static UserDto toDto(User user){
@@ -31,13 +31,13 @@ public class UserDto {
                 user.getType(),
                 user.getJoin_date(),
                 user.getProfile_image_url(),
-                user.getAge(),
-                user.getGender(),
+                String.valueOf(user.getAge()),
+                String.valueOf(user.getGender()),
                 user.getAuth()
         );
     }
 
     public User toEntity(){
-        return new User(email, password, null, null, nickname, name, type, joinDate, profileImageUrl, age, gender, auth);
+        return new User(email, password, null, null, nickname, name, type, joinDate, profileImageUrl, Integer.parseInt(age), Integer.parseInt(gender), auth);
     }
 }
