@@ -96,7 +96,7 @@ SSAFY 2학기 빅데이터 추천 도메인 특화PJT (2023.02.27 ~ 2023.04.07)
 
 
 ## **Architecture**
-  <img src="./docs/pnut_CICD_아키텍쳐.png"  width="800" height="550">
+  <img src="./docs/pnut_CICD.png"  width="800" height="550">
 
 <br>
 
