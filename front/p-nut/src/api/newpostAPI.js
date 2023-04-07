@@ -10,6 +10,7 @@ export default async function newpostAPI(
   stepImgFile,
   token
 ) {
+  console.log(recipeCreateReq);
   const data = new FormData();
   data.append(
     "recipeCreateReq",

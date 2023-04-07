@@ -220,28 +220,19 @@ const ArticleCreatePage = () => {
   };
 
   // 이미지, 텍스트 입력 핸들링
-  // const stepChangeHandler = (e) => {
-  //   const { type, id } = e.target;
-  //   const idx = Number(id.split("-")[2]) - 1;
+  const stepChangeHandler = (e) => {
+    const { type, id } = e.target;
+    const idx = Number(id.split("-")[2]) - 1;
 
-  //   if (type === "text") {
-  //     const newStepContent = [...stepContent];
-  //     newStepContent[idx] = e.target.value;
-  //     setStepContent(newStepContent);
-  //     const newStepContentLetterCount = [...stepContentLetterCount];
-  //     newStepContentLetterCount[idx] = e.target.value.length;
-  //     setStepContentLetterCount(newStepContentLetterCount);
-  //   }
-  //   if (type === "file") {
-  //     const file = e.target.files[0];
-  //     stepImgFile[idx] = file;
-  //     setStepNums((prev) => {
-  //       const newArr = [...prev, idx + 1];
-  //       newArr.sort();
-  //       return newArr;
-  //     });
-  //   }
-  // };
+    if (type === "text") {
+      const newStepContent = [...stepContent];
+      newStepContent[idx] = e.target.value;
+      setStepContent(newStepContent);
+      const newStepContentLetterCount = [...stepContentLetterCount];
+      newStepContentLetterCount[idx] = e.target.value.length;
+      setStepContentLetterCount(newStepContentLetterCount);
+    }
+  };
 
   // 글 등록
   // const newpostBtnClickHandler = (e) => {
@@ -451,9 +442,9 @@ const ArticleCreatePage = () => {
                           className="w-full p-3 h-70"
                           placeholder="만드는 방법을 입력하세요."
                           maxLength={50}
-                          // onChange={(e) => {
-                          //   stepChangeHandler(e, value - 1);
-                          // }}
+                          onChange={(e) => {
+                            stepChangeHandler(e, value - 1);
+                          }}
                         />
                         <div className="inline">
                           {/* {stepContentLetterCount[value - 1]}/50 */}
@@ -467,6 +458,7 @@ const ArticleCreatePage = () => {
                           width="624"
                           height="303"
                           fileSet={setStepImgFile}
+                          setStepNums={setStepNums}
                         />
                       </div>
                     </div>

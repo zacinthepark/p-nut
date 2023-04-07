@@ -196,7 +196,10 @@ const ArticleDetailPage = () => {
           </div>
           {recipeSteps &&
             Object.entries(recipeSteps).map(([key, value], idx) => (
-              <OrderBlock key={key} imgPath={value} text={key} idx={idx} />
+              <>
+                <OrderBlock key={key} imgPath={value} text={key} idx={idx} />
+                <hr />
+              </>
             ))}
           <div className="mt-150 w-1200 mx-auto">
             <div className="flex items-center mb-40">
