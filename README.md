@@ -1,4 +1,4 @@
-# <img src="./docs/images/logo.png" height="32px">Pnut - 영양소 분석 기반 음식 추천 서비스
+# <img src="./docs/logo1.png" height="32px">Pnut - 영양소 분석 기반 음식 추천 서비스
 
 <br>
 
@@ -39,14 +39,14 @@ SSAFY 2학기 빅데이터 추천 도메인 특화PJT (2023.02.27 ~ 2023.04.07)
 ### **메인페이지**
   - 서비스에 대한 소개와 필요성을 소개합니다. 핵심 기능인 "설문조사", "진단" 페이지로 바로 넘어갈 수 있습니다.
   
-    <img src="./exec/images/mainpage.gif" height="400">
+    <img src="./docs/mainpage.gif" height="400">
 
 <br>
 
 ### **설문조사**
   - 실제 질병의 전조증상 기반 설문으로 사용자에게 부족한 영양소를 판단합니다.
   
-    <img src="./exec/images/surveypage.gif" height="400">
+    <img src="./docs/surveypage.gif" height="400">
 
 <br>
 
@@ -56,7 +56,7 @@ SSAFY 2학기 빅데이터 추천 도메인 특화PJT (2023.02.27 ~ 2023.04.07)
   - 부족한 영양소 수치를 종합하여 음식 5가지를 추천합니다.
   - 영양소의 특징과 섭취 가이드라인을 제시합니다.
   
-    <img src="./exec/images/resultpage.gif" height="400">
+    <img src="./docs/resultpage.gif" height="400">
 
 <br>
 
@@ -67,14 +67,14 @@ SSAFY 2학기 빅데이터 추천 도메인 특화PJT (2023.02.27 ~ 2023.04.07)
   - 사용자의 성별, 연령을 고려한 1일 영양소 권장섭취량과 해당 음식에 포함된 영양소의 비율을 그래프로 한 눈에 볼 수 있습니다.
   - 해당 음식의 레시피 정보를 유튜브 링크로 볼 수 있습니다.
   
-    <img src="./exec/images/detail.gif" height="400">
+    <img src="./docs/detail.gif" height="400">
 
 <br>
 
 ### **보편적인 증상별 음식 검색**
   - 나에게 해당되는 증상 뿐만 아니라 다른 증상으로도 음식을 검색할 수 있습니다.
   
-    <img src="./exec/images/symptoms.gif" height="400">
+    <img src="./docs/symptoms.gif" height="400">
 
 <br>
 
@@ -83,7 +83,7 @@ SSAFY 2학기 빅데이터 추천 도메인 특화PJT (2023.02.27 ~ 2023.04.07)
   - 음식의 재료로 요리를 검색할 수 있습니다.
   - 
   
-    <img src="./exec/images/search.gif" height="400">
+    <img src="./docs/search.gif" height="400">
 
 <br>
 
@@ -91,23 +91,21 @@ SSAFY 2학기 빅데이터 추천 도메인 특화PJT (2023.02.27 ~ 2023.04.07)
   - 나만의 레시피를 공유할 수 있습니다.
   - 추천을 통해 금주의 레시피를 선정하여 상단에 노출됩니다.
   
-    <img src="./exec/images/boardcreate.gif" height="400">
+    <img src="./docs/boardcreate.gif" height="400">
 
 <br>
 
 
 ## **Architecture**
-  <img src="./exec/images/pnut_CICD 아키텍쳐.png"  width="800" height="550">
+  <img src="./docs/pnut_CICD 아키텍쳐.png"  width="800" height="550">
 
 <br>
 
 ## **ERD**
-  <img src="./exec/images/pnut_ERD.PNG"  width="800" height="550">
+  <img src="./docs/pnut_ERD.PNG"  width="800" height="550">
 
 <br>
 
 
 
-
-## **팀원 소개**
 
